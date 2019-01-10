@@ -155,10 +155,6 @@
 
                     }).then(resp => {
                         if (resp.success) {
-                            this.$message.success({
-                                message: '配置添加成功',
-                                duration: 1000
-                            });
                             this.$emit("addSuccess");
                         } else {
                             this.$message.error({
@@ -166,11 +162,6 @@
                                 duration: 1000
                             })
                         }
-                    }).catch(resp => {
-                        this.$message.error({
-                            message: '服务器连接超时，请重试',
-                            duration: 1000
-                        })
                     })
                 }
             },
@@ -187,10 +178,6 @@
                         name: this.name,
                     }).then(resp => {
                         if (resp.success) {
-                            this.$message.success({
-                                message: '配置更新成功',
-                                duration: 1000
-                            });
                             this.$emit("addSuccess");
                         } else {
                             this.$message.error({
@@ -198,11 +185,6 @@
                                 duration: 1000
                             })
                         }
-                    }).catch(resp => {
-                        this.$message.error({
-                            message: '服务器连接超时，请重试',
-                            duration: 1000
-                        })
                     })
                 }
             },
