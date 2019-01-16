@@ -31,6 +31,7 @@
                         v-if="dialogTableVisible"
                         :visible.sync="dialogTableVisible"
                         width="70%"
+                        :modal-append-to-body="false"
                     >
                         <report :summary="summary"></report>
                     </el-dialog>
@@ -39,6 +40,7 @@
                         title="Run TestSuite"
                         :visible.sync="dialogTreeVisible"
                         width="45%"
+                        :modal-append-to-body="false"
                     >
                         <div>
                             <div>
@@ -113,12 +115,12 @@
                     >
                         <el-table-column
                             type="selection"
-                            width="55">
+                            width="55"
+                        >
                         </el-table-column>
 
                         <el-table-column
                             label="用例集名称"
-                            width="420"
                         >
                             <template slot-scope="scope">
                                 <div>{{scope.row.name}}</div>
@@ -127,7 +129,6 @@
 
                         <el-table-column
                             label="API个数"
-                            width="300"
                         >
                             <template slot-scope="scope">
                                 <div>{{scope.row.length}} 个</div>
@@ -136,7 +137,6 @@
 
 
                         <el-table-column
-                            width="300"
                             label="更新时间"
                         >
                             <template slot-scope="scope">
@@ -146,7 +146,6 @@
                         </el-table-column>
 
                         <el-table-column
-                            width="300"
                         >
                             <template slot-scope="scope">
                                 <el-row v-show="currentRow === scope.row">
