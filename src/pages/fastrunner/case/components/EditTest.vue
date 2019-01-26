@@ -395,11 +395,6 @@
                     body: this.testData
                 }).then(resp => {
                     if (resp.success) {
-                        this.$message({
-                            message: '用例集添加成功',
-                            type: 'success',
-                            duration: 1000
-                        });
                         this.$emit("addSuccess");
                     } else {
                         this.$message({
@@ -422,11 +417,6 @@
                     body: this.testData
                 }).then(resp => {
                     if (resp.success) {
-                        this.$message({
-                            message: '用例集更新成功',
-                            type: 'success',
-                            duration: 1000
-                        });
                         this.$emit("addSuccess");
                     } else {
                         this.$message({
@@ -489,7 +479,8 @@
                     params: {
                         page: this.currentPage,
                         node: this.currentNode.id,
-                        project: this.project
+                        project: this.project,
+                        search: ''
                     }
                 }).then(res => {
                     this.apiData = res;
@@ -500,7 +491,8 @@
                 this.$api.apiList({
                     params: {
                         node: this.currentNode.id,
-                        project: this.project
+                        project: this.project,
+                        search: ''
                     }
                 }).then(res => {
                     this.apiData = res;

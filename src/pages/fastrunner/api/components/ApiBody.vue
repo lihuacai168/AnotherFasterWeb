@@ -174,6 +174,9 @@
             project: {
                 require: false
             },
+            config: {
+                require: false
+            },
             response: {
                 require: false
             }
@@ -249,10 +252,6 @@
                         times: this.times,
                     }).then(resp => {
                         if (resp.success) {
-                            this.$message.success({
-                                message: '接口更新成功',
-                                duration: 1000
-                            });
                             this.$emit('addSuccess');
                         } else {
                             this.$message.error({
@@ -278,7 +277,8 @@
                         method: this.method,
                         name: this.name,
                         times: this.times,
-                        project: this.project
+                        project: this.project,
+                        config: this.config
                     }).then(resp => {
                         this.summary = resp;
                         this.dialogTableVisible = true;
@@ -305,10 +305,6 @@
 
                     }).then(resp => {
                         if (resp.success) {
-                            this.$message.success({
-                                message: '接口添加成功',
-                                duration: 1000
-                            });
                             this.$emit('addSuccess');
                         } else {
                             this.$message.error({

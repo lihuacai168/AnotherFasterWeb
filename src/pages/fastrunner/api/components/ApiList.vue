@@ -3,9 +3,9 @@
         <el-header style="padding: 0; height: 50px;">
             <div style=" padding-left: 10px;">
                 <el-row :gutter="50">
-                    <el-col :span="6">
+                    <el-col :span="6" v-if="apiData.count > 11">
                         <el-input placeholder="请输入接口名称" clearable v-model="search">
-                            <el-button slot="append" icon="el-icon-search" @click="searchAPI"></el-button>
+                            <el-button slot="append" icon="el-icon-search" @click="getAPIList"></el-button>
                         </el-input>
                     </el-col>
 
@@ -124,7 +124,7 @@
                         </el-table-column>
 
                         <el-table-column
-                            min-width="800"
+                            min-width="450"
                             align="center"
                         >
                             <template slot-scope="scope">
@@ -173,8 +173,7 @@
                             </template>
                         </el-table-column>
 
-                        <el-table-column
-                            width="140">
+                        <el-table-column>
                             <template slot-scope="scope">
                                 <el-row v-show="currentRow === scope.row">
                                     <el-button
@@ -183,6 +182,14 @@
                                         circle size="mini"
                                         @click="handleRowClick(scope.row)"
                                     ></el-button>
+
+                                    <el-button
+                                        type="success"
+                                        icon="el-icon-document"
+                                        circle size="mini"
+                                        @click="handleCopyAPI(scope.row.id)"
+                                    >
+                                    </el-button>
 
                                     <el-button
                                         type="primary"
@@ -218,6 +225,9 @@
         },
         name: "ApiList",
         props: {
+            config: {
+                require: true
+            },
             run: Boolean,
             back: Boolean,
             node: {
@@ -264,6 +274,7 @@
                 this.getAPIList();
             },
             node() {
+                this.search = '';
                 this.getAPIList();
             },
             checked() {
@@ -296,6 +307,23 @@
         },
 
         methods: {
+            handleCopyAPI(id) {
+                this.$prompt('请输入接口名称', '提示', {
+                    confirmButtonText: '确定',
+                    inputPattern: /^[\s\S]*.*[^\s][\s\S]*$/,
+                    inputErrorMessage: '接口名称不能为空'
+                }).then(({value}) => {
+                    this.$api.copyAPI(id, {
+                        'name': value
+                    }).then(resp => {
+                        if (resp.success) {
+                            this.getAPIList();
+                        } else {
+                            this.$message.error(resp.msg);
+                        }
+                    })
+                })
+            },
             filterNode(value, data) {
                 if (!value) return true;
                 return data.label.indexOf(value) !== -1;
@@ -315,7 +343,8 @@
                         "project": this.project,
                         "relation": relation,
                         "async": this.asyncs,
-                        "name": this.reportName
+                        "name": this.reportName,
+                        "config": this.config
                     }).then(resp => {
                         if (resp.hasOwnProperty("status")) {
                             this.$message.info({
@@ -353,7 +382,8 @@
                 this.$api.apiList({
                     params: {
                         node: this.node,
-                        project: this.project
+                        project: this.project,
+                        search: this.search
                     }
                 }).then(res => {
                     this.apiData = res;
@@ -366,7 +396,8 @@
                     params: {
                         page: this.currentPage,
                         node: this.node,
-                        project: this.project
+                        project: this.project,
+                        search: this.search
                     }
                 }).then(res => {
                     this.apiData = res;
@@ -403,7 +434,11 @@
             // 运行API
             handleRunAPI(id) {
                 this.loading = true;
-                this.$api.runAPIByPk(id).then(resp => {
+                this.$api.runAPIByPk(id, {
+                    params: {
+                        config: this.config
+                    }
+                }).then(resp => {
                     this.summary = resp;
                     this.dialogTableVisible = true;
                     this.loading = false;
@@ -418,28 +453,10 @@
 
             cellMouseLeave(row) {
                 this.currentRow = '';
-            },
-            searchAPI() {
-                this.$api.apiList({
-                    params: {
-                        node: '',
-                        project: this.project,
-                        search: this.search
-                    }
-                }).then(res => {
-                    this.apiData = res;
-                })
-            },
+            }
         },
         mounted() {
-            this.$api.apiList({
-                params: {
-                    node: '',
-                    project: this.project
-                }
-            }).then(res => {
-                this.apiData = res;
-            })
+            this.getAPIList();
         }
     }
 </script>

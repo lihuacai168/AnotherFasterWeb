@@ -3,9 +3,9 @@
         <el-header style="padding-top: 10px; height: 50px;">
             <div style="overflow: hidden">
                 <el-row :gutter="50">
-                    <el-col :span="6">
+                    <el-col :span="6" v-if="testData.count > 11">
                         <el-input placeholder="请输入用例集名称" clearable v-model="search">
-                            <el-button slot="append" icon="el-icon-search" @click="searchTest"></el-button>
+                            <el-button slot="append" icon="el-icon-search" @click="getTestList"></el-button>
                         </el-input>
                     </el-col>
                     <el-col :span="7">
@@ -31,6 +31,7 @@
                         v-if="dialogTableVisible"
                         :visible.sync="dialogTableVisible"
                         width="70%"
+                        :modal-append-to-body="false"
                     >
                         <report :summary="summary"></report>
                     </el-dialog>
@@ -39,6 +40,7 @@
                         title="Run TestSuite"
                         :visible.sync="dialogTreeVisible"
                         width="45%"
+                        :modal-append-to-body="false"
                     >
                         <div>
                             <div>
@@ -113,12 +115,12 @@
                     >
                         <el-table-column
                             type="selection"
-                            width="55">
+                            width="55"
+                        >
                         </el-table-column>
 
                         <el-table-column
                             label="用例集名称"
-                            width="420"
                         >
                             <template slot-scope="scope">
                                 <div>{{scope.row.name}}</div>
@@ -127,7 +129,6 @@
 
                         <el-table-column
                             label="API个数"
-                            width="300"
                         >
                             <template slot-scope="scope">
                                 <div>{{scope.row.length}} 个</div>
@@ -136,7 +137,6 @@
 
 
                         <el-table-column
-                            width="300"
                             label="更新时间"
                         >
                             <template slot-scope="scope">
@@ -146,7 +146,6 @@
                         </el-table-column>
 
                         <el-table-column
-                            width="300"
                         >
                             <template slot-scope="scope">
                                 <el-row v-show="currentRow === scope.row">
@@ -224,6 +223,7 @@
                 this.getTree();
             },
             node() {
+                this.search = '';
                 this.getTestList();
             },
 
@@ -330,7 +330,8 @@
                     params: {
                         page: this.currentPage,
                         project: this.project,
-                        node: this.node
+                        node: this.node,
+                        search: this.search
                     }
                 }).then(resp => {
                     this.testData = resp;
@@ -386,7 +387,8 @@
                 this.$api.testList({
                     params: {
                         project: this.project,
-                        node: this.node
+                        node: this.node,
+                        search: this.search
                     }
                 }).then(resp => {
                     this.testData = resp;
@@ -398,28 +400,10 @@
 
             cellMouseLeave(row) {
                 this.currentRow = '';
-            },
-            searchTest() {
-                this.$api.testList({
-                    params: {
-                        project: this.project,
-                        node: '',
-                        search: this.search
-                    }
-                }).then(resp => {
-                    this.testData = resp;
-                })
             }
         },
         mounted() {
-            this.$api.testList({
-                params: {
-                    project: this.project,
-                    node: ''
-                }
-            }).then(resp => {
-                this.testData = resp;
-            })
+           this.getTestList()
         }
     }
 </script>

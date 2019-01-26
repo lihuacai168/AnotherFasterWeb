@@ -80,7 +80,7 @@
                 <div style="padding-top: 8px; padding-left: 30px; overflow: hidden">
                     <el-row :gutter="50">
                         <el-col :span="6">
-                            <el-input placeholder="请输入变量名称" clearable v-model="search">
+                            <el-input placeholder="请输入变量名称" v-if="variablesData.count > 11" clearable v-model="search">
                                 <el-button slot="append" icon="el-icon-search" @click="getVariablesList"></el-button>
                             </el-input>
                         </el-col>
@@ -114,12 +114,12 @@
                         >
                             <el-table-column
                                 type="selection"
-                                width="55">
+                                width="55"
+                            >
                             </el-table-column>
 
                             <el-table-column
                                 label="变量名"
-                                width="350"
                             >
                                 <template slot-scope="scope">
                                     <div>{{scope.row.key}}</div>
@@ -127,7 +127,6 @@
                             </el-table-column>
 
                             <el-table-column
-                                width="450"
                                 label="变量值"
                             >
                                 <template slot-scope="scope">
@@ -137,7 +136,6 @@
                             </el-table-column>
 
                             <el-table-column
-                                width="300"
                                 label="更新时间"
                             >
                                 <template slot-scope="scope">
@@ -146,9 +144,7 @@
                                 </template>
                             </el-table-column>
 
-                            <el-table-column
-                                width="250"
-                            >
+                            <el-table-column>
                                 <template slot-scope="scope">
                                     <el-row v-show="currentRow === scope.row">
                                         <el-button
@@ -263,7 +259,8 @@
                 this.$api.getVariablesPaginationBypage({
                     params: {
                         page: this.currentPage,
-                        project: this.variablesForm.project
+                        project: this.variablesForm.project,
+                        search: this.search
                     }
                 }).then(resp => {
                     this.variablesData = resp;

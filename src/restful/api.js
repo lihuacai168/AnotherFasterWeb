@@ -4,7 +4,7 @@ import router from '../router'
 import {Message} from 'element-ui';
 
 
-export const baseUrl = "http://127.0.0.1:8000";
+export const baseUrl = "http://localhost:8000";
 
 axios.defaults.withCredentials = true;
 axios.defaults.baseURL = baseUrl;
@@ -172,6 +172,10 @@ export const coptTest = (url, params) => {
     return axios.post('/api/fastrunner/test/' + url + '/', params).then(res => res.data)
 };
 
+export const copyAPI = (url, params) => {
+    return axios.post('/api/fastrunner/api/' + url + '/', params).then(res => res.data)
+};
+
 export const editTest = url => {
     return axios.get('/api/fastrunner/teststep/' + url + '/').then(res => res.data)
 };
@@ -217,8 +221,8 @@ export const runSingleAPI = params => {
     return axios.post('/api/fastrunner/run_api/', params).then(res => res.data)
 };
 
-export const runAPIByPk = url => {
-    return axios.get('/api/fastrunner/run_api_pk/' + url + '/').then(res => res.data)
+export const runAPIByPk = (url, params) => {
+    return axios.get('/api/fastrunner/run_api_pk/' + url + '/', params).then(res => res.data)
 };
 
 export const runAPITree = params => {

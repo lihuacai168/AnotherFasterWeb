@@ -3,7 +3,7 @@
         <el-header style="padding-top: 10px; height: 50px;">
             <div>
                 <el-row :gutter="50">
-                    <el-col :span="6">
+                    <el-col :span="6" v-if="configData.count > 11">
                         <el-input placeholder="请输入配置名称" clearable v-model="search">
                             <el-button slot="append" icon="el-icon-search" @click="getConfigList"></el-button>
                         </el-input>
@@ -38,12 +38,13 @@
                     >
                         <el-table-column
                             type="selection"
-                            width="55">
+                            width="55"
+                        >
                         </el-table-column>
 
                         <el-table-column
                             label="配置名称"
-                            width="350"
+
                         >
                             <template slot-scope="scope">
                                 <div>{{scope.row.name}}</div>
@@ -51,7 +52,7 @@
                         </el-table-column>
 
                         <el-table-column
-                            width="300"
+
                             label="配置请求地址"
                         >
                             <template slot-scope="scope">
@@ -61,7 +62,7 @@
                         </el-table-column>
 
                         <el-table-column
-                            width="300"
+
                             label="更新时间"
                         >
                             <template slot-scope="scope">
@@ -71,7 +72,7 @@
                         </el-table-column>
 
                         <el-table-column
-                            width="300"
+
                         >
                             <template slot-scope="scope">
                                 <el-row v-show="currentRow === scope.row">
@@ -166,7 +167,8 @@
                 this.$api.getConfigPaginationBypage({
                     params: {
                         page: this.currentPage,
-                        project: this.project
+                        project: this.project,
+                        search: this.search
                     }
                 }).then(resp => {
                     this.configData = resp;
