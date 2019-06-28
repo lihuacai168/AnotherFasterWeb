@@ -249,7 +249,8 @@
             project: {
                 require: true
             },
-            del: Boolean
+            del: Boolean,
+            listCurrentPage: Number
         },
         data() {
             return {
@@ -266,7 +267,7 @@
                 summary: {},
                 selectAPI: [],
                 currentRow: '',
-                currentPage: 1,
+                currentPage: this.listCurrentPage,
                 apiData: {
                     count: 0,
                     results: []
@@ -395,6 +396,7 @@
             getAPIList() {
                 this.$api.apiList({
                     params: {
+                        page: this.currentPage,
                         node: this.node,
                         project: this.project,
                         search: this.search
@@ -415,6 +417,7 @@
                     }
                 }).then(res => {
                     this.apiData = res;
+                    this.$emit("click-pager", val)
                 })
             },
 

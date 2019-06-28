@@ -181,6 +181,8 @@
                     :del="del"
                     :back="back"
                     :run="run"
+                    :listCurrentPage="listCurrentPage"
+                    @click-pager="handleChangePage"
                 >
                 </api-list>
 
@@ -294,7 +296,7 @@
                 filterText: '',
                 expand: '&#xe65f;',
                 dataTree: [],
-
+                listCurrentPage: 1
             }
         },
         methods: {
@@ -309,6 +311,10 @@
             handleAPI(response) {
                 this.addAPIFlag = true;
                 this.response = response;
+            },
+
+            handleChangePage(val) {
+                this.listCurrentPage = val;
             },
 
             getTree() {
