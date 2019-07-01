@@ -126,6 +126,10 @@ export const delAPI = url => {
     return axios.delete('/api/fastrunner/api/' + url + '/').then(res => res.data)
 };
 
+export const tagAPI = url => {
+    return axios.patch('/api/fastrunner/api/tag/' + url + '/').then(res => res.data)
+};
+
 export const delAllAPI = params => {
     return axios.delete('/api/fastrunner/api/', params).then(res => res.data)
 };

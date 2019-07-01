@@ -134,7 +134,7 @@
                         </el-table-column>
 
                         <el-table-column
-                            min-width="450"
+                            min-width="400"
                             align="center"
                         >
                             <template slot-scope="scope">
@@ -212,6 +212,13 @@
                                         icon="el-icon-delete"
                                         circle size="mini"
                                         @click="handleDelApi(scope.row.id)"
+                                    >
+                                    </el-button>
+                                    <el-button
+                                        type="success"
+                                        icon="el-icon-check"
+                                        circle size="mini"
+                                        @click="handleTagApi(scope.row.id)"
                                     >
                                     </el-button>
                                 </el-row>
@@ -423,12 +430,27 @@
 
             //删除api
             handleDelApi(index) {
-                this.$confirm('此操作将永久删除该API，是否继续?', '提示', {
+                this.$confirm('此操作将永久删除该API，是否继续???', '提示', {
                     confirmButtonText: '确定',
                     cancelButtonText: '取消',
                     type: 'warning',
                 }).then(() => {
                     this.$api.delAPI(index).then(resp => {
+                        if (resp.success) {
+                            this.getAPIList();
+                        } else {
+                            this.$message.error(resp.msg);
+                        }
+                    })
+                })
+            },
+            handleTagApi(index) {
+                this.$confirm('是否确定已经调试成功', '提示', {
+                    confirmButtonText: '确定',
+                    cancelButtonText: '取消',
+                    type: 'warning',
+                }).then(() => {
+                    this.$api.tagAPI(index).then(resp => {
                         if (resp.success) {
                             this.getAPIList();
                         } else {
