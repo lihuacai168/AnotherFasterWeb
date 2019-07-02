@@ -182,6 +182,7 @@
                     :back="back"
                     :run="run"
                     :listCurrentPage="listCurrentPage"
+                    :visibleTag="visibleTag"
                     @click-pager="handleChangePage"
                 >
                 </api-list>
@@ -203,6 +204,7 @@
             }
         },
         components: {
+            // 子组件
             ApiBody,
             ApiList
         },
@@ -405,6 +407,9 @@
             },
 
             handleNodeClick(node, data) {
+                // 点击分分组之前,先把页码设置为1.2019年7月2日,并且传给子组件.
+                this.listCurrentPage = 1;
+                this.visibleTag = '';
                 this.addAPIFlag = false;
                 this.currentNode = node;
                 this.data = data;

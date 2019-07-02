@@ -18,6 +18,20 @@
                         </el-input>
                     </el-col>
 
+                    <el-col :span="3">
+                        <el-dropdown @command="tagChangeHandle">
+                            <el-button type="primary">
+                                接口状态
+                                <i class="el-icon-arrow-down el-icon--right"></i>
+                            </el-button>
+                            <el-dropdown-menu slot="dropdown">
+                                <el-dropdown-item command="1">已调试</el-dropdown-item>
+                                <el-dropdown-item command="0">未调试</el-dropdown-item>
+                                <el-dropdown-item command="">所有</el-dropdown-item>
+                            </el-dropdown-menu>
+                        </el-dropdown>
+                    </el-col>
+
                     <el-col :span="7">
                         <el-pagination
                             style="margin-top: 5px"
@@ -134,7 +148,7 @@
                         </el-table-column>
 
                         <el-table-column
-                            min-width="400"
+                            min-width="380"
                             align="center"
                         >
                             <template slot-scope="scope">
@@ -179,10 +193,23 @@
                                     <span class="block-method block_url">{{scope.row.url}}</span>
                                     <span class="block-summary-description">{{scope.row.name}}</span>
                                 </div>
-
                             </template>
                         </el-table-column>
 
+                        <el-table-column
+                              prop="tag"
+                              label="标签"
+                              width="90"
+                              filter-placement="bottom-end">
+                              <template slot-scope="scope">
+                                <el-tag
+                                  :type="scope.row.tag === 1 ? 'success' : 'info'"
+                                  effect="light"
+                                >
+                                    {{scope.row.tag_name}}
+                                </el-tag>
+                              </template>
+                        </el-table-column>
                         <el-table-column>
                             <template slot-scope="scope">
                                 <el-row v-show="currentRow === scope.row">
@@ -224,7 +251,6 @@
                                 </el-row>
                             </template>
                         </el-table-column>
-
                     </el-table>
                 </div>
 
@@ -257,7 +283,8 @@
                 require: true
             },
             del: Boolean,
-            listCurrentPage: Number
+            listCurrentPage: Number,
+            visibleTag: [Number, String]
         },
         data() {
             return {
@@ -278,7 +305,8 @@
                 apiData: {
                     count: 0,
                     results: []
-                }
+                },
+                tag: this.visibleTag
             }
         },
         watch: {
@@ -324,10 +352,19 @@
                         duration: 1000
                     })
                 }
+            },
+            // 监听listCurrentPage的变化,修改原本currentPage的值
+            // 因为原本有些函数用到的值是currentPage,所以不能直接修改currentPage的值.
+            listCurrentPage(newValue) {
+                this.currentPage = newValue
             }
         },
 
         methods: {
+            tagChangeHandle(command) {
+                this.tag = command;
+                this.getAPIList();
+            },
             handleCopyAPI(id) {
                 this.$prompt('请输入接口名称', '提示', {
                     confirmButtonText: '确定',
@@ -403,10 +440,11 @@
             getAPIList() {
                 this.$api.apiList({
                     params: {
-                        page: this.currentPage,
+                        page: this.listCurrentPage,
                         node: this.node,
                         project: this.project,
-                        search: this.search
+                        search: this.search,
+                        tag: this.tag
                     }
                 }).then(res => {
                     this.apiData = res;
