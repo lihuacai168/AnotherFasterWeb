@@ -37,6 +37,19 @@
         <el-main>
             <div v-show="!editTestStepActivate">
                 <el-row :gutter="20">
+                    <el-col :span="1">
+                        <el-dropdown @command="tagChangeHandle">
+                            <el-button type="primary">
+                                接口状态
+                                <i class="el-icon-arrow-down el-icon--right"></i>
+                            </el-button>
+                            <el-dropdown-menu slot="dropdown">
+                                <el-dropdown-item command="1">已调试</el-dropdown-item>
+                                <el-dropdown-item command="0">未调试</el-dropdown-item>
+                                <el-dropdown-item command="">所有</el-dropdown-item>
+                            </el-dropdown-menu>
+                        </el-dropdown>
+                    </el-col>
                     <el-col :span="12">
                         <el-pagination
                             :page-size="11"
@@ -50,7 +63,7 @@
                         >
                         </el-pagination>
                     </el-col>
-                    <el-col :span="12">
+                    <el-col :span="11">
                         <el-input
                             style="width: 540px; text-align: center"
                             placeholder="请输入测试用例名称"
@@ -370,6 +383,7 @@
         },
         methods: {
 
+
             handleNewBody(body, newBody) {
                 this.editTestStepActivate = false;
                 const step = this.testData[this.currentTest].case;
@@ -526,6 +540,21 @@
                 })
             },
 
+            //  接口状态搜索
+            tagChangeHandle(command) {
+                this.tag = command
+                this.$api.apiList({
+                    params: {
+                        node: this.currentNode,
+                        project: this.project,
+                        tag: this.tag,
+                        search: ''
+                    }
+                }).then(res => {
+                    this.apiData = res;
+                })
+            },
+
             getAPIList() {
                 this.$api.apiList({
                     params: {
@@ -603,7 +632,13 @@
     }
 
     .block-test-name {
-        width: 350px;
+        /*修改用例中API名字显示不全*/
+        width: 450px;
+        /*超过宽度自动变成...*/
+        text-overflow: ellipsis;
+        overflow: hidden;
+        white-space: nowrap;
+
         padding-left: 10px;
         -webkit-box-flex: 1;
         -ms-flex: 1;

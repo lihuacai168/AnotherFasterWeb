@@ -298,7 +298,8 @@
                 filterText: '',
                 expand: '&#xe65f;',
                 dataTree: [],
-                listCurrentPage: 1
+                listCurrentPage: 1,
+                visibleTag: ''
             }
         },
         methods: {
