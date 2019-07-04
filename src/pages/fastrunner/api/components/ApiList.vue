@@ -458,7 +458,8 @@
                         page: this.currentPage,
                         node: this.node,
                         project: this.project,
-                        search: this.search
+                        search: this.search,
+                        tag: this.tag
                     }
                 }).then(res => {
                     this.apiData = res;

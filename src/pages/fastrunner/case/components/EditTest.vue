@@ -533,6 +533,7 @@
                         page: this.currentPage,
                         node: this.currentNode,
                         project: this.project,
+                        tag: this.tag,
                         search: ''
                     }
                 }).then(res => {
