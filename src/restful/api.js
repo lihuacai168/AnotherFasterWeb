@@ -42,6 +42,12 @@ axios.interceptors.response.use(function (response) {
                 duration: 1000
             })
         }
+        if (error.response.status === 403) {
+            Message.error({
+                message: error.response.data.msg,
+                duration: 1000
+            })
+        }
     }
     catch (e) {
         Message.error({
