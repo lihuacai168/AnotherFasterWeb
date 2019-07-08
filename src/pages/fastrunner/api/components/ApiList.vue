@@ -25,8 +25,10 @@
                                 <i class="el-icon-arrow-down el-icon--right"></i>
                             </el-button>
                             <el-dropdown-menu slot="dropdown">
-                                <el-dropdown-item command="1">已调试</el-dropdown-item>
-                                <el-dropdown-item command="0">未调试</el-dropdown-item>
+                                <el-dropdown-item command="1">手动成功</el-dropdown-item>
+                                <el-dropdown-item command="0">还未调试</el-dropdown-item>
+                                <el-dropdown-item command="2">调试失败</el-dropdown-item>
+                                <el-dropdown-item command="3">自动成功</el-dropdown-item>
                                 <el-dropdown-item command="">所有</el-dropdown-item>
                             </el-dropdown-menu>
                         </el-dropdown>
@@ -203,7 +205,7 @@
                               filter-placement="bottom-end">
                               <template slot-scope="scope">
                                 <el-tag
-                                  :type="scope.row.tag === 1 ? 'success' : 'info'"
+                                  :type="scope.row.tag === 0 ? 'info' : scope.row.tag === 2 ? 'danger' : 'success' "
                                   effect="light"
                                 >
                                     {{scope.row.tag_name}}
