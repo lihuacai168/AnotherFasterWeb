@@ -69,6 +69,7 @@
                                 <el-button
                                     type="info"
                                     icon="el-icon-edit"
+                                    title="编辑"
                                     circle size="mini"
                                     @click="handleEditConfig(scope.row)"
                                 ></el-button>

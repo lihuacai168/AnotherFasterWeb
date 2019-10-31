@@ -147,6 +147,7 @@
                                         <el-button
                                             type="info"
                                             icon="el-icon-edit"
+                                            title="编辑"
                                             circle size="mini"
                                             @click="handleEditHostIP(scope.row)"
                                         ></el-button>
@@ -156,6 +157,7 @@
                                             v-show="hostIPData.count !== 0"
                                             type="danger"
                                             icon="el-icon-delete"
+                                            title="删除"
                                             circle size="mini"
                                             @click="handleDelHost(scope.row.id)"
                                         >

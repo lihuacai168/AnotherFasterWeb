@@ -181,6 +181,7 @@
                                     <el-button
                                         type="danger"
                                         icon="el-icon-delete"
+                                        title="删除"
                                         circle size="mini"
                                         @click="handleDelReports(scope.row.id)"
                                     >

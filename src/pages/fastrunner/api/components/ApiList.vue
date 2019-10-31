@@ -218,6 +218,7 @@
                                     <el-button
                                         type="info"
                                         icon="el-icon-edit"
+                                        title="编辑"
                                         circle size="mini"
                                         @click="handleRowClick(scope.row)"
                                     ></el-button>
@@ -239,6 +240,7 @@
                                     <el-button
                                         type="danger"
                                         icon="el-icon-delete"
+                                        title="删除"
                                         circle size="mini"
                                         @click="handleDelApi(scope.row.id)"
                                     >

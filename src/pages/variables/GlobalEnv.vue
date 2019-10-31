@@ -152,6 +152,7 @@
                                         <el-button
                                             type="info"
                                             icon="el-icon-edit"
+                                            title="编辑"
                                             circle size="mini"
                                             @click="handleEditVariables(scope.row)"
                                         ></el-button>
@@ -161,6 +162,7 @@
                                             v-show="variablesData.count !== 0"
                                             type="danger"
                                             icon="el-icon-delete"
+                                            title="删除"
                                             circle size="mini"
                                             @click="handleDelVariables(scope.row.id)"
                                         >

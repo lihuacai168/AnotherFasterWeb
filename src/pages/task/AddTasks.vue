@@ -159,6 +159,7 @@
                                                 v-show="currentTest === index"
                                                 type="danger"
                                                 icon="el-icon-delete"
+                                                title="删除"
                                                 circle size="mini"
                                                 @click="testData.splice(index, 1)"
                                             >
