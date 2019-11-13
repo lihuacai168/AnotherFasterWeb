@@ -3,11 +3,20 @@
         <el-header style="padding-top: 10px; height: 50px;">
             <div style="overflow: hidden">
                 <el-row :gutter="50">
-                    <el-col :span="6" v-if="testData.count > 11">
+                    <el-col :span="6" v-if="testData.count >= 0">
                         <el-input placeholder="请输入用例名称" clearable v-model="search">
                             <el-button slot="append" icon="el-icon-search" @click="getTestList"></el-button>
                         </el-input>
                     </el-col>
+                    <el-col :span="2">
+                           <el-button
+                           type="primary"
+                           @click="resetSearch"
+                           >重置
+                           </el-button>
+                    </el-col>
+
+
                     <el-col :span="7">
                         <el-pagination
                             @current-change="handleCurrentChange"
@@ -399,6 +408,11 @@
                         }
                     })
                 })
+            },
+            resetSearch(){
+                this.search = "",
+                this.node = "",
+                this.getTestList()
             },
             getTestList() {
                 this.$api.testList({
