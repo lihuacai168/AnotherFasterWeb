@@ -12,16 +12,26 @@
                         </el-checkbox>
                     </el-col>
 
-                    <el-col :span="6" v-if="apiData.count > 11">
+                    <!-- <el-col :span="6" v-if="apiData.count >= 0"> -->
+                    <el-col :span="6">
                         <el-input placeholder="请输入接口名称" clearable v-model="search">
                             <el-button slot="append" icon="el-icon-search" @click="getAPIList"></el-button>
                         </el-input>
                     </el-col>
+                    <el-col :span="2">
+                           <el-button
+                           type="primary"
+                           @click="resetSearch"
+                           >重置
+                           </el-button> 
+                    </el-col>
+
+
 
                     <el-col :span="3">
                         <el-dropdown @command="tagChangeHandle">
                             <el-button type="primary">
-                                接口状态
+                                状态
                                 <i class="el-icon-arrow-down el-icon--right"></i>
                             </el-button>
                             <el-dropdown-menu slot="dropdown">
@@ -367,7 +377,13 @@
         methods: {
             tagChangeHandle(command) {
                 this.tag = command;
+                this.search = "";
                 this.getAPIList();
+            },
+            resetSearch(){
+                this.node = "";
+                this.tag = "";
+                this.tagChangeHandle();
             },
             handleCopyAPI(id) {
                 this.$prompt('请输入接口名称', '提示', {
