@@ -14,16 +14,16 @@
 
                     <!-- <el-col :span="6" v-if="apiData.count >= 0"> -->
                     <el-col :span="6">
-                        <el-input placeholder="请输入接口名称" clearable v-model="search">
+                        <el-input placeholder="请输入接口名称" clearable v-model="search"  @keyup.enter.native="getAPIList">
                             <el-button slot="append" icon="el-icon-search" @click="getAPIList"></el-button>
-                        </el-input>
+                        </el-input >
                     </el-col>
                     <el-col :span="2">
                            <el-button
                            type="primary"
                            @click="resetSearch"
                            >重置
-                           </el-button> 
+                           </el-button>
                     </el-col>
 
 
