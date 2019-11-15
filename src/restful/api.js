@@ -266,6 +266,10 @@ export const updateVariables = (url, params) => {
     return axios.patch('/api/fastrunner/variables/' + url + '/', params).then(res => res.data)
 };
 
+
+export const updateTask = (url, params, data) => {
+    return axios({url:'/api/fastrunner/schedule/' + url + '/', method: 'PATCH', params:params, data:data})
+};
 export const deleteVariables = url => {
     return axios.delete('/api/fastrunner/variables/' + url + '/').then(res => res.data)
 };
@@ -297,6 +301,8 @@ export const watchSingleReports = url => {
 export const addTask = params => {
     return axios.post('/api/fastrunner/schedule/', params).then(res => res.data)
 };
+
+
 export const taskList = params => {
     return axios.get('/api/fastrunner/schedule/', params).then(res => res.data)
 };

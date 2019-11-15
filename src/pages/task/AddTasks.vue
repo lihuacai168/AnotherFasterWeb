@@ -14,8 +14,8 @@
                                 <el-input v-model="ruleForm.name" placeholder="请输入任务名称" clearable=""></el-input>
                             </el-form-item>
 
-                            <el-form-item label="时间配置" prop="corntab">
-                                <el-input clearable v-model="ruleForm.corntab" placeholder="请输入cortab表达式，例如 2 12 * * *"></el-input>
+                            <el-form-item label="时间配置" prop="crontab">
+                                <el-input clearable v-model="ruleForm.crontab" placeholder="请输入cortab表达式，例如 2 12 * * *"></el-input>
                             </el-form-item>
 
                             <el-form-item label="任务状态" prop="switch">
@@ -35,8 +35,8 @@
                                           placeholder="多个接收人以;分隔" clearable></el-input>
                             </el-form-item>
 
-                            <el-form-item label="邮件抄送人列表" prop="copy">
-                                <el-input type="textarea" v-model="ruleForm.copy"
+                            <el-form-item label="邮件抄送人列表" prop="mail_cc">
+                                <el-input type="textarea" v-model="ruleForm.mail_cc"
                                           placeholder="多个抄送人以;分隔" clearable></el-input>
                             </el-form-item>
 
@@ -51,6 +51,7 @@
                 </div>
             </el-main>
         </template>
+
         <template v-if="next">
             <el-aside style="margin-top: 10px;">
                 <div class="nav-api-side">
@@ -63,6 +64,7 @@
                             prefix-icon="el-icon-search"
                         >
                         </el-input>
+
                         <el-tree
                             @node-click="handleNodeClick"
                             :data="dataTree"
@@ -150,10 +152,20 @@
                                             class="block block_test"
                                             @mousemove="currentTest = index"
                                         >
+                                        <!--编辑用例列表-->
                                         <span
-                                            class="block-method block_method_test block_method_color">Tasks</span>
+                                            class="block-method block_method_test block_method_color">Task</span>
                                             <span class="block-test-name">{{test.name}}</span>
-
+                                            <!--<el-button-->
+                                                <!--style="position: absolute; right: 48px; top: 8px"-->
+                                                <!--v-show="currentTest === index"-->
+                                                <!--type="info"-->
+                                                <!--icon="el-icon-edit"-->
+                                                <!--circle size="mini"-->
+                                                <!--@click="handleEditTestCase"-->
+                                                <!--title="编辑"-->
+                                            <!--&gt;-->
+                                            <!--</el-button>-->
                                             <el-button
                                                 style="position: absolute; right: 12px; top: 8px"
                                                 v-show="currentTest === index"
@@ -185,6 +197,17 @@
     export default {
 
         name: "AddTasks",
+        props: {
+            ruleForm: {
+                require: true
+            },
+            args: {
+                require: true
+            },
+            scheduleId:{
+                require: true
+            }
+        },
         watch: {
             filterText(val) {
                 this.$refs.tree2.filter(val);
@@ -211,35 +234,35 @@
                     count: 0,
                     results: []
                 },
-                ruleForm: {
-                    name: '',
-                    switch: true,
-                    corntab: '',
-                    strategy: '始终发送',
-                    receiver: '',
-                    copy: ''
-                },
                 rules: {
                     name: [
                         {required: true, message: '请输入任务名称', trigger: 'blur'},
                         {min: 1, max: 50, message: '长度在 1 到 50 个字符', trigger: 'blur'}
                     ],
-                    corntab: [
-                        {required: true, message: '请输入正确的corntab表达式', trigger: 'blur'}
+                    crontab: [
+                        {required: true, message: '请输入正确的crontab表达式', trigger: 'blur'}
                     ]
 
-                }
+                },
+                editTestCaseActivate: false,
             }
         },
         methods: {
+            handleNewTestCase(kwargsForm){
+                this.editTestCaseActivate = false;
+                this.next = true;
+                this.testData[this.currentTest]["kwargs"] = kwargsForm;
+            },
             saveTask(){
                 var task = [];
                 for(let value of this.testData){
                     task.push(value.id);
                 }
+                debugger
                 var form = this.ruleForm;
                 form["data"] = task ;
                 form["project"] = this.$route.params.id;
+                if (this.scheduleId === ''){
                 this.$api.addTask(form).then(resp => {
                     if(!resp.success){
                         this.$message.error(resp.msg)
@@ -247,7 +270,16 @@
                         this.$emit("changeStatus", false);
                     }
                 })
+                }else{
+                    this.$api.updateTask(this.scheduleId,{project:this.$route.params.id},form).then( resp => {
+                        if (resp.status === 200) {
+                            this.$notify.success('更新定时任务成功');
+                            this.$emit("changeStatus", false);
+                        }
+                    })
+                }
             },
+
             dragEnd(event) {
                 if (this.testData.length > this.length) {
                     this.testData.splice(this.length, 1)
@@ -292,6 +324,10 @@
                         return false;
                     }
                 });
+                // this.testData = this.args
+                // 用map遍历args的所有caseId,如果和用例集中的id相等,就返回该用例的全部信息
+                this.testData = this.args.map(caseId=> this.suiteData.results.filter(testCase=> testCase.id === caseId)[0]);
+                debugger
             },
             resetForm(formName) {
                 this.$refs[formName].resetFields();
