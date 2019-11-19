@@ -95,7 +95,7 @@
 
                 <el-table-column
                     label="描述"
-                    width="200">
+                    width="400">
                     <template slot-scope="scope">
                         <el-input clearable v-model="scope.row.desc" placeholder="参数简要描述"></el-input>
                     </template>

@@ -37,9 +37,15 @@
                             <el-form-item label="变量名" prop="key">
                                 <el-input v-model="variablesForm.key" clearable placeholder="请输入变量名"></el-input>
                             </el-form-item>
+
                             <el-form-item label="变量值" prop="value">
                                 <el-input v-model="variablesForm.value" clearable placeholder="请输入变量值"></el-input>
                             </el-form-item>
+
+                            <el-form-item label="变量描述" prop="description">
+                                <el-input v-model="variablesForm.description" clearable placeholder="请输入变量描述"></el-input>
+                            </el-form-item>
+
                         </el-form>
                         <span slot="footer" class="dialog-footer">
                         <el-button @click="dialogVisible = false">取 消</el-button>
@@ -65,6 +71,9 @@
                             <el-form-item label="变量值" prop="value">
                                 <el-input v-model="editVariablesForm.value" clearable placeholder="请输入变量值"></el-input>
                             </el-form-item>
+                            <el-form-item label="变量描述" prop="description">
+                                <el-input v-model="editVariablesForm.description" clearable placeholder="请输入变量描述"></el-input>
+                            </el-form-item>
                         </el-form>
                         <span slot="footer" class="dialog-footer">
                         <el-button @click="editdialogVisible = false">取 消</el-button>
@@ -81,10 +90,17 @@
                 <div style="padding-top: 8px; padding-left: 30px; overflow: hidden">
                     <el-row :gutter="50">
                         <el-col :span="6">
-                            <el-input placeholder="请输入变量名称" v-if="variablesData.count > 11" clearable v-model="search">
+                            <el-input placeholder="请输入变量名称" v-if="variablesData.count >= 0" clearable v-model="search">
                                 <el-button slot="append" icon="el-icon-search" @click="getVariablesList"></el-button>
                             </el-input>
                         </el-col>
+                        <el-col :span="2">
+                           <el-button
+                           type="primary"
+                           @click="resetSearch"
+                           >重置
+                           </el-button>
+                    </el-col>
                         <el-col :span="7">
                             <el-pagination
                                 :page-size="11"
@@ -133,6 +149,15 @@
                             >
                                 <template slot-scope="scope">
                                     <div>{{scope.row.value}}</div>
+
+                                </template>
+                            </el-table-column>
+
+                            <el-table-column
+                                label="变量描述"
+                            >
+                                <template slot-scope="scope">
+                                    <div>{{scope.row.description}}</div>
 
                                 </template>
                             </el-table-column>
@@ -207,7 +232,8 @@
                 editVariablesForm: {
                     key: '',
                     value: '',
-                    id: ''
+                    id: '',
+                    description:''
                 },
 
                 rules: {
@@ -218,6 +244,10 @@
                     value: [
                         {required: true, message: '请输入变量值', trigger: 'blur'},
                         {min: 1, max: 1024, message: '最多不超过1024个字符', trigger: 'blur'}
+                    ],
+                    description: [
+                        {required: false, message: '请输入变量描述', trigger: 'blur'},
+                        {min: 0, max: 100, message: '最多不超过100个字符', trigger: 'blur'}
                     ]
                 }
             }
@@ -235,7 +265,8 @@
                 this.editVariablesForm = {
                     key: row.key,
                     value: row.value,
-                    id: row.id
+                    id: row.id,
+                    description:row.description
                 };
 
                 this.editdialogVisible = true;
@@ -342,6 +373,10 @@
                     this.variablesData = resp;
                 })
             },
+            resetSearch(){
+                this.search = '',
+                this.getVariablesList()
+            }
         },
         name: "GlobalEnv",
         mounted() {
