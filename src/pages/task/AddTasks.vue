@@ -324,9 +324,10 @@
                         return false;
                     }
                 });
-                // this.testData = this.args
+                this.testData = this.args
                 // 用map遍历args的所有caseId,如果和用例集中的id相等,就返回该用例的全部信息
-                this.testData = this.args.map(caseId=> this.suiteData.results.filter(testCase=> testCase.id === caseId)[0]);
+                // 用map,filter过滤,case的数据在第二页时,会导致name=undefined
+                // this.testData = this.args.map(caseId=> this.suiteData.results.filter(testCase=> testCase.id === caseId)[0]);
                 debugger
             },
             resetForm(formName) {
