@@ -43,14 +43,16 @@
             </li>
 
             <li class="pull-left">
+                <p class="title-p"><i class="iconfont">&#xe61f;</i> &nbsp;{{projectInfo.case_step_count}} 个监控接口</p>
+                <p class="desc-p">监控接口个数</p>
+            </li>
+
+            <li class="pull-left">
                 <p class="title-p"><i class="iconfont">&#xe66e;</i> &nbsp;{{projectInfo.report_count}} 个报告</p>
                 <p class="desc-p">测试报告总数</p>
             </li>
 
-            <li class="pull-left">
-                <p class="title-p"><i class="iconfont">&#xe61f;</i> &nbsp;{{projectInfo.plan_count}} 个计划</p>
-                <p class="desc-p">集成计划个数</p>
-            </li>
+
         </ul>
 
 
