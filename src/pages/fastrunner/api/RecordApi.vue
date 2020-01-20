@@ -273,7 +273,8 @@
             return {
                 configOptions: [],
                 hostOptions: [],
-                currentConfig: '请选择',
+                // currentConfig: '请选择',
+                currentConfig: '',
                 currentHost: '请选择',
                 back: false,
                 del: false,
@@ -330,10 +331,17 @@
             getConfig() {
                 this.$api.getAllConfig(this.$route.params.id).then(resp => {
                     this.configOptions = resp;
-                    this.configOptions.push({
+                    this.configOptions.unshift({
                         name: '请选择'
-                    })
-                })
+                    });
+                    const _config = this.configOptions.filter(item=> item.is_default === true);
+                    if(_config.length) {
+                        this.currentConfig = _config[0].name
+                    } else {
+                        this.currentConfig = '请选择'
+                    }
+                });
+
             },
 
             getHost() {

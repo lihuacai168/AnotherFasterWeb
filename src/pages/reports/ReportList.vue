@@ -83,7 +83,7 @@
                             <template slot-scope="scope">
                                 <div
                                     :class="{'pass': scope.row.success, 'fail':!scope.row.success}"
-                                    v-text="scope.row.success === true ? 'Pass' :'Fail'"
+                                    v-text="scope.row.success === true ? '通过' :'失败'"
                                 ></div>
                             </template>
                         </el-table-column>
