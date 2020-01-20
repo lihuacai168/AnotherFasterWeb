@@ -63,6 +63,20 @@
                         </el-table-column>
 
                         <el-table-column
+                            width="90"
+                            label="是否为默认"
+                        >
+                            <template slot-scope="scope">
+                                <el-switch
+                                    disabled
+                                    v-model="scope.row.is_default"
+                                    active-color="#13ce66"
+                                    inactive-color="#ff4949">
+                                </el-switch>
+                            </template>
+                        </el-table-column>
+
+                        <el-table-column
 
                             label="更新时间"
                         >
