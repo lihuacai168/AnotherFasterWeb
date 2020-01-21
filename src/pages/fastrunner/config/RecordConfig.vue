@@ -8,7 +8,7 @@
                         type="primary"
                         size="small"
                         icon="el-icon-circle-plus-outline"
-                        @click="initResponse = true"
+                        @click="addConfig"
                     >新增配置
                     </el-button>
 
@@ -54,6 +54,7 @@
                     v-show="addConfigActivate"
                     :project="$route.params.id"
                     :response="respConfig"
+                    :type="type"
                     v-on:addSuccess="handleAddSuccess"
                 >
                 </config-body>
@@ -90,6 +91,7 @@
                 set(value) {
                     this.addConfigActivate = value;
                     this.respConfig = {
+                        is_default: false,
                         id: '',
                         body: {
                             name: '',
@@ -140,7 +142,8 @@
                 back: false,
                 del: false,
                 addConfigActivate: false,
-                respConfig: ''
+                respConfig: '',
+                type: ''
             }
         },
         methods: {
@@ -148,9 +151,13 @@
                 this.back = !this.back;
                 this.addConfigActivate = false;
             },
-
+            addConfig() {
+                this.initResponse = true;
+                this.type = 'add'
+            },
             handleRespConfig(row) {
                 this.respConfig = row;
+                this.type = 'edit';
                 this.addConfigActivate = true;
             }
         },

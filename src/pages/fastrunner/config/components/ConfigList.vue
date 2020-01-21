@@ -71,7 +71,7 @@
                                     disabled
                                     v-model="scope.row.is_default"
                                     active-color="#13ce66"
-                                    inactive-color="#ff4949">
+                                    >
                                 </el-switch>
                             </template>
                         </el-table-column>

@@ -28,7 +28,16 @@
                 <template slot="prepend">配置请求地址</template>
             </el-input>
         </div>
-
+        <div>
+            <el-switch
+                style="display: block"
+                v-model="is_default"
+                active-color="#13ce66"
+                :disabled="isAddConfig"
+                active-text="默认配置"
+            >
+            </el-switch>
+        </div>
         <div class="request">
             <el-tabs
                 v-model="activeTag"
@@ -107,17 +116,28 @@
             },
             response: {
                 require: false
+            },
+            type: {
+                type: String,
+                default: ''
             }
         },
-
+        computed: {
+            isAddConfig() {
+                return this.type === 'add'
+            }
+        },
         watch: {
-            response: function () {
-                this.name = this.response.body.name;
-                this.baseUrl = this.response.body.base_url;
-                this.id = this.response.id;
+            response: {
+                deep: true,
+                handler (val) {
+                    this.name = val.body.name;
+                    this.baseUrl = val.body.base_url;
+                    this.id = val.id;
+                    this.is_default = val.is_default
+                }
             }
         },
-
         methods: {
             handleHeader(header) {
                 this.header = header;
@@ -143,6 +163,7 @@
 
             addConfig() {
                 if (this.validateData()) {
+                    debugger
                     this.$api.addConfig({
                         parameters: this.parameters,
                         header: this.header,
@@ -152,7 +173,7 @@
                         base_url: this.baseUrl,
                         name: this.name,
                         project: this.project,
-
+                        is_default: this.is_default,
                     }).then(resp => {
                         if (resp.success) {
                             this.$emit("addSuccess");
@@ -176,6 +197,7 @@
                         hooks: this.hooks,
                         base_url: this.baseUrl,
                         name: this.name,
+                        is_default: this.is_default
                     }).then(resp => {
                         if (resp.success) {
                             this.$emit("addSuccess");
@@ -207,6 +229,7 @@
             return {
                 name: '',
                 baseUrl: '',
+                is_default: false,
                 id: '',
                 header: [],
                 request: [],
