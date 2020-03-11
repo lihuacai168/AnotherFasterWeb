@@ -194,6 +194,8 @@
                     :testStepResp="testStepResp"
                     :config="currentConfig"
                     :host="currentHost"
+                    :rigEnv="rigEnv"
+                    :tag="tag"
                     v-on:addSuccess="handleBackList"
                 >
                 </edit-test>
@@ -257,7 +259,9 @@
                 filterText: '',
                 expand: '&#xe65f;',
                 dataTree: [],
-                configOptions: []
+                configOptions: [],
+                rigEnv: "",
+                tag: ""
             }
         },
         methods: {

@@ -312,7 +312,7 @@
                 require: false
             },
             back: Boolean,
-            env: [String,Number],
+            rigEnv: [String,Number],
             tag: [String,Number]
         },
 
@@ -386,7 +386,7 @@
                 },
 
                 testData: [],
-                // env: ''
+                // rigEnv: ''
             }
         },
         methods: {
@@ -557,7 +557,7 @@
                         node: this.currentNode,
                         project: this.project,
                         tag: this.tag,
-                        env: this.env,
+                        rigEnv: this.rigEnv,
                         search: ''
                     }
                 }).then(res => {
@@ -571,7 +571,7 @@
                         node: this.currentNode,
                         project: this.project,
                         search: '',
-                        env: this.env,
+                        rigEnv: this.rigEnv,
                         tag: this.tag
                     }
                 }).then(res => {
