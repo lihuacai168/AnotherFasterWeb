@@ -195,7 +195,7 @@
                     :config="currentConfig"
                     :host="currentHost"
                     :rigEnv="rigEnv"
-                    :tag="tag"
+                    :tag.sync="tag"
                     v-on:addSuccess="handleBackList"
                 >
                 </edit-test>

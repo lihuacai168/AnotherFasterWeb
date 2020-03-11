@@ -551,31 +551,36 @@
 
             //  接口状态搜索
             tagChangeHandle(command) {
-                this.tag = command
-                this.$api.apiList({
-                    params: {
-                        node: this.currentNode,
-                        project: this.project,
-                        tag: this.tag,
-                        rigEnv: this.rigEnv,
-                        search: ''
-                    }
-                }).then(res => {
-                    this.apiData = res;
+                // this.tag = command
+                this.$emit('update:tag', command);
+                this.$nextTick(()=> {
+                    this.$api.apiList({
+                        params: {
+                            node: this.currentNode,
+                            project: this.project,
+                            tag: this.tag,
+                            rigEnv: this.rigEnv,
+                            search: ''
+                        }
+                    }).then(res => {
+                        this.apiData = res;
+                    })
                 })
             },
 
             getAPIList() {
-                this.$api.apiList({
-                    params: {
-                        node: this.currentNode,
-                        project: this.project,
-                        search: '',
-                        rigEnv: this.rigEnv,
-                        tag: this.tag
-                    }
-                }).then(res => {
-                    this.apiData = res;
+                this.$nextTick(()=> {
+                    this.$api.apiList({
+                        params: {
+                            node: this.currentNode,
+                            project: this.project,
+                            search: '',
+                            rigEnv: this.rigEnv,
+                            tag: this.tag
+                        }
+                    }).then(res => {
+                        this.apiData = res;
+                    })
                 })
             },
 
