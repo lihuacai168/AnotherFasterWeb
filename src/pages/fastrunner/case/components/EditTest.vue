@@ -311,7 +311,9 @@
             testStepResp: {
                 require: false
             },
-            back: Boolean
+            back: Boolean,
+            env: [String,Number],
+            tag: [String,Number]
         },
 
         name: "EditTest",
@@ -383,7 +385,8 @@
                     results: []
                 },
 
-                testData: []
+                testData: [],
+                // env: ''
             }
         },
         methods: {
@@ -554,6 +557,7 @@
                         node: this.currentNode,
                         project: this.project,
                         tag: this.tag,
+                        env: this.env,
                         search: ''
                     }
                 }).then(res => {
@@ -566,7 +570,9 @@
                     params: {
                         node: this.currentNode,
                         project: this.project,
-                        search: ''
+                        search: '',
+                        env: this.env,
+                        tag: this.tag
                     }
                 }).then(res => {
                     this.apiData = res;
