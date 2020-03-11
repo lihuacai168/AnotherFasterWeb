@@ -170,7 +170,6 @@
                     :host="currentHost"
                 >
                 </api-body>
-
                 <api-list
                     v-show="!addAPIFlag"
                     v-on:api="handleAPI"
@@ -183,7 +182,7 @@
                     :run="run"
                     :listCurrentPage="listCurrentPage"
                     :visibleTag="visibleTag"
-                    :rigEnv="rigEnv"
+                    :rigEnv.sync="rigEnv"
                     @click-pager="handleChangePage"
                 >
                 </api-list>

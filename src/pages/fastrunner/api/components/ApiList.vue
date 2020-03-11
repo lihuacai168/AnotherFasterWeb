@@ -388,7 +388,8 @@
                 this.getAPIList();
             },
             rigEnvChangeHandle(command) {
-                this.rigEnv = command;
+                // this.rigEnv = command;
+                this.$emit('update:rigEnv', command);
                 this.search = "";
                 this.getAPIList();
             },
@@ -473,18 +474,20 @@
             // 查询api列表
             getAPIList() {
                 // debugger
-                this.$api.apiList({
-                    params: {
-                        page: this.listCurrentPage,
-                        node: this.node,
-                        project: this.project,
-                        search: this.search,
-                        tag: this.tag,
-                        rigEnv: this.rigEnv
-                    }
-                }).then(res => {
-                    this.apiData = res;
-                })
+               this.$nextTick(()=> {
+                   this.$api.apiList({
+                       params: {
+                           page: this.listCurrentPage,
+                           node: this.node,
+                           project: this.project,
+                           search: this.search,
+                           tag: this.tag,
+                           rigEnv: this.rigEnv
+                       }
+                   }).then(res => {
+                       this.apiData = res;
+                   })
+               })
             },
 
 
