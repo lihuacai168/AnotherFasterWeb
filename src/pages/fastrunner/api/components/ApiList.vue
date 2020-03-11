@@ -1,64 +1,69 @@
 <template>
     <el-container>
         <el-header style="padding: 0; height: 50px;">
-            <div style=" padding-left: 10px;">
-                <el-row :gutter="50">
-                    <el-col :span="1">
-                        <el-checkbox
-                            v-if="apiData.count > 0"
-                            v-model="checked"
-                            style="padding-top: 14px; padding-left: 2px"
-                        >
-                        </el-checkbox>
-                    </el-col>
+            <div class="recordapi__header">
+                <div class="recordapi__header--item" :style="{paddingLeft: '2px'}">
+                    <el-checkbox
+                        v-if="apiData.count > 0"
+                        v-model="checked"
+                        style="padding-top: 14px; padding-left: 2px"
+                    >
+                    </el-checkbox>
+                </div>
+                <div class="recordapi__header--item">
+                    <el-input placeholder="请输入接口名称" clearable v-model="search"  @keyup.enter.native="getAPIList">
+                        <el-button slot="append" icon="el-icon-search" @click="getAPIList"></el-button>
+                    </el-input >
+                </div>
+                <div class="recordapi__header--item">
+                    <el-button
+                        type="primary"
+                        @click="resetSearch"
+                    >重置
+                    </el-button>
+                </div>
+                <div class="recordapi__header--item">
+                    <el-dropdown @command="tagChangeHandle">
+                        <el-button type="primary">
+                            状态
+                            <i class="el-icon-arrow-down el-icon--right"></i>
+                        </el-button>
+                        <el-dropdown-menu slot="dropdown">
+                            <el-dropdown-item command="1">手动成功</el-dropdown-item>
+                            <el-dropdown-item command="0">还未调试</el-dropdown-item>
+                            <el-dropdown-item command="2">调试失败</el-dropdown-item>
+                            <el-dropdown-item command="3">自动成功</el-dropdown-item>
+                            <el-dropdown-item command="">所有</el-dropdown-item>
+                        </el-dropdown-menu>
+                    </el-dropdown>
+                </div>
+                <div class="recordapi__header--item is-strench">
+                    <el-dropdown @command="rigEnvChangeHandle">
+                        <el-button type="primary">
+                            环境
+                            <i class="el-icon-arrow-down el-icon--right"></i>
+                        </el-button>
+                        <el-dropdown-menu slot="dropdown">
+                            <el-dropdown-item command="0">测试</el-dropdown-item>
+                            <el-dropdown-item command="1">生产</el-dropdown-item>
+                            <el-dropdown-item command="">所有</el-dropdown-item>
+                        </el-dropdown-menu>
+                    </el-dropdown>
+                </div>
 
-                    <!-- <el-col :span="6" v-if="apiData.count >= 0"> -->
-                    <el-col :span="6">
-                        <el-input placeholder="请输入接口名称" clearable v-model="search"  @keyup.enter.native="getAPIList">
-                            <el-button slot="append" icon="el-icon-search" @click="getAPIList"></el-button>
-                        </el-input >
-                    </el-col>
-                    <el-col :span="2">
-                           <el-button
-                           type="primary"
-                           @click="resetSearch"
-                           >重置
-                           </el-button>
-                    </el-col>
-
-
-
-                    <el-col :span="3">
-                        <el-dropdown @command="tagChangeHandle">
-                            <el-button type="primary">
-                                状态
-                                <i class="el-icon-arrow-down el-icon--right"></i>
-                            </el-button>
-                            <el-dropdown-menu slot="dropdown">
-                                <el-dropdown-item command="1">手动成功</el-dropdown-item>
-                                <el-dropdown-item command="0">还未调试</el-dropdown-item>
-                                <el-dropdown-item command="2">调试失败</el-dropdown-item>
-                                <el-dropdown-item command="3">自动成功</el-dropdown-item>
-                                <el-dropdown-item command="">所有</el-dropdown-item>
-                            </el-dropdown-menu>
-                        </el-dropdown>
-                    </el-col>
-
-                    <el-col :span="7">
-                        <el-pagination
-                            style="margin-top: 5px"
-                            :page-size="11"
-                            v-show="apiData.count !== 0 "
-                            background
-                            @current-change="handleCurrentChange"
-                            :current-page.sync="currentPage"
-                            layout="total, prev, pager, next, jumper"
-                            :total="apiData.count"
-                        >
-                        </el-pagination>
-                    </el-col>
-
-                </el-row>
+                <div class="recordapi__header--item">
+                    <el-pagination
+                        style="margin-top: 5px"
+                        :page-size="11"
+                        v-show="apiData.count !== 0 "
+                        background
+                        @current-change="handleCurrentChange"
+                        :current-page.sync="currentPage"
+                        layout="total, prev, pager, next, jumper"
+                        :total="apiData.count"
+                    >
+                    </el-pagination>
+                </div>
             </div>
         </el-header>
 
@@ -139,7 +144,7 @@
                 </el-dialog>
 
 
-                <div style="position: fixed; bottom: 0; right:0; left: 500px; top: 160px">
+                <div style="position: fixed; bottom: 0; right:0; left: 460px; top: 160px">
                     <el-table
                         highlight-current-row
                         height="calc(100%)"
@@ -298,7 +303,8 @@
             },
             del: Boolean,
             listCurrentPage: Number,
-            visibleTag: [Number, String]
+            visibleTag: [Number, String],
+            rigEnv: [Number, String]
         },
         data() {
             return {
@@ -320,7 +326,8 @@
                     count: 0,
                     results: []
                 },
-                tag: this.visibleTag
+                tag: this.visibleTag,
+                // rigEnv: this.rigEnv,
             }
         },
         watch: {
@@ -380,10 +387,17 @@
                 this.search = "";
                 this.getAPIList();
             },
+            rigEnvChangeHandle(command) {
+                this.rigEnv = command;
+                this.search = "";
+                this.getAPIList();
+            },
             resetSearch(){
+                this.search = "";
                 this.node = "";
                 this.tag = "";
-                this.tagChangeHandle();
+                this.env = "";
+                this.getAPIList();
             },
             handleCopyAPI(id) {
                 this.$prompt('请输入接口名称', '提示', {
@@ -458,13 +472,15 @@
             },
             // 查询api列表
             getAPIList() {
+                // debugger
                 this.$api.apiList({
                     params: {
                         page: this.listCurrentPage,
                         node: this.node,
                         project: this.project,
                         search: this.search,
-                        tag: this.tag
+                        tag: this.tag,
+                        rigEnv: this.rigEnv
                     }
                 }).then(res => {
                     this.apiData = res;
@@ -561,6 +577,14 @@
 </script>
 
 <style scoped>
-
-
+.recordapi__header {
+    display: flex;
+    align-items: center;
+}
+.recordapi__header--item.is-strench {
+    flex:1;
+}
+.recordapi__header--item {
+    margin:0 8px;
+}
 </style>

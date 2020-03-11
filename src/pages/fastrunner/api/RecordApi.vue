@@ -124,7 +124,7 @@
         </el-header>
 
         <el-container>
-            <el-aside style="margin-top: 10px;">
+            <el-aside style="width:260px;margin-top: 10px;">
                 <div class="nav-api-side">
                     <div class="api-tree">
                         <el-input
@@ -183,6 +183,7 @@
                     :run="run"
                     :listCurrentPage="listCurrentPage"
                     :visibleTag="visibleTag"
+                    :rigEnv="rigEnv"
                     @click-pager="handleChangePage"
                 >
                 </api-list>
@@ -300,7 +301,8 @@
                 expand: '&#xe65f;',
                 dataTree: [],
                 listCurrentPage: 1,
-                visibleTag: ''
+                visibleTag: '',
+                rigEnv: ''
             }
         },
         methods: {
@@ -422,6 +424,7 @@
                 this.addAPIFlag = false;
                 this.currentNode = node;
                 this.data = data;
+                this.rigEnv = '';
             },
 
             filterNode(value, data) {
