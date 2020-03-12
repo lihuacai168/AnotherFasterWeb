@@ -181,7 +181,7 @@
                     :back="back"
                     :run="run"
                     :listCurrentPage="listCurrentPage"
-                    :visibleTag="visibleTag"
+                    :visibleTag.sync="visibleTag"
                     :rigEnv.sync="rigEnv"
                     @click-pager="handleChangePage"
                 >
@@ -309,6 +309,8 @@
                 this.updateTree(false);
             },
             handleAddSuccess() {
+                this.rigEnv = '';
+                this.visibleTag = '';
                 this.back = !this.back;
                 this.addAPIFlag = false;
             },

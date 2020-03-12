@@ -326,7 +326,7 @@
                     count: 0,
                     results: []
                 },
-                tag: this.visibleTag,
+                // tag: this.visibleTag,
                 // rigEnv: this.rigEnv,
             }
         },
@@ -383,7 +383,8 @@
 
         methods: {
             tagChangeHandle(command) {
-                this.tag = command;
+                // this.tag = command;
+                this.$emit('update:visibleTag', command);
                 this.search = "";
                 this.getAPIList();
             },
@@ -396,7 +397,9 @@
             resetSearch(){
                 this.search = "";
                 this.node = "";
-                this.tag = "";
+                // this.tag = "";
+                // this.$emit('update:tag', '');
+                this.$emit('update:visibleTag', '');
                 this.rigEnv = "";
                 this.getAPIList();
             },
@@ -481,7 +484,7 @@
                            node: this.node,
                            project: this.project,
                            search: this.search,
-                           tag: this.tag,
+                           tag: this.visibleTag,
                            rigEnv: this.rigEnv
                        }
                    }).then(res => {
@@ -498,7 +501,7 @@
                         node: this.node,
                         project: this.project,
                         search: this.search,
-                        tag: this.tag
+                        tag: this.visibleTag
                     }
                 }).then(res => {
                     this.apiData = res;
