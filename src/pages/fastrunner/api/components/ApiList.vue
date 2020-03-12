@@ -397,7 +397,7 @@
                 this.search = "";
                 this.node = "";
                 this.tag = "";
-                this.env = "";
+                this.rigEnv = "";
                 this.getAPIList();
             },
             handleCopyAPI(id) {
