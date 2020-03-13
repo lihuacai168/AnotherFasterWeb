@@ -169,10 +169,20 @@
                             align="center"
                         >
                             <template slot-scope="scope">
+<!--                                <div class="block" :class="`block_${scope.row.method.toLowerCase()}`" >-->
+<!--                                    <span class="block-method block_method_post block_method_color">-->
+<!--                                        {{scope.row.method.toUpperCase()}}-->
+<!--                                    </span>-->
+
+<!--                                        <span class="block-method block_url">{{scope.row.url}}</span>-->
+<!--                                        <span class="block-summary-description">{{scope.row.name}}</span>-->
+
+<!--                                </div>-->
                                 <div class="block block_post" v-if="scope.row.method.toUpperCase() === 'POST' ">
                                     <span class="block-method block_method_post block_method_color">POST</span>
                                     <span class="block-method block_url">{{scope.row.url}}</span>
                                     <span class="block-summary-description">{{scope.row.name}}</span>
+
                                 </div>
 
                                 <div class="block block_get" v-if="scope.row.method.toUpperCase() === 'GET' ">

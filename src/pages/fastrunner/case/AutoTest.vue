@@ -194,8 +194,9 @@
                     :testStepResp="testStepResp"
                     :config="currentConfig"
                     :host="currentHost"
-                    :rigEnv="rigEnv"
+                    :rigEnv.sync="rigEnv"
                     :tag.sync="tag"
+                    :search.sync="search"
                     v-on:addSuccess="handleBackList"
                 >
                 </edit-test>
@@ -261,7 +262,8 @@
                 dataTree: [],
                 configOptions: [],
                 rigEnv: "",
-                tag: ""
+                tag: "",
+                search: ""
             }
         },
         methods: {

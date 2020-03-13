@@ -35,72 +35,86 @@
         </el-aside>
 
         <el-main>
-            <div v-show="!editTestStepActivate">
-                <el-row :gutter="20">
-                    <el-col :span="1">
-                        <el-dropdown @command="tagChangeHandle">
-                            <el-button type="primary">
-                                接口状态
-                                <i class="el-icon-arrow-down el-icon--right"></i>
-                            </el-button>
-                            <el-dropdown-menu slot="dropdown">
-                                <el-dropdown-item command="1">手动成功</el-dropdown-item>
-                                <el-dropdown-item command="0">还未调试</el-dropdown-item>
-                                <el-dropdown-item command="2">调试失败</el-dropdown-item>
-                                <el-dropdown-item command="3">自动成功</el-dropdown-item>
-                                <el-dropdown-item command="">所有</el-dropdown-item>
-                            </el-dropdown-menu>
-                        </el-dropdown>
-                    </el-col>
-                    <el-col :span="12">
-                        <el-pagination
-                            :page-size="11"
-                            v-show="apiData.count !== 0"
-                            background
-                            @current-change="handlePageChange"
-                            :current-page.sync="currentPage"
-                            layout="total, prev, pager, next, jumper"
-                            :total="apiData.count"
-                            style="margin-top: 5px; text-align: center"
-                        >
-                        </el-pagination>
-                    </el-col>
-                    <el-col :span="11">
-                        <el-input
-                            style="width: 540px; text-align: center"
-                            placeholder="请输入测试用例名称"
-                            v-model="testName"
-                            clearable
-                            v-if="testData.length > 0"
-                        >
-                            <el-select v-model="testTag" slot="prepend" placeholder="请选择" style="width: 105px">
-
-                                <el-option
-                                    v-for="value in tagOptions" :key="value"
-                                    :label="value"
-                                    :value="value"
-                                ></el-option>
-
-                            </el-select>
-
+            <div v-show="!editTestStepActivate" class="recordapi__header">
+                    <div class="recordapi__header" :style="{flex:1}">
+                        <div class="recordapi__header--item">
+                            <el-input placeholder="请输入接口名称" style="width: 340px; text-align: center" clearable  @input="inputVal" :value="search"  @keyup.enter.native="getAPIList">
+                                <el-button slot="append" icon="el-icon-search" @click="getAPIList"></el-button>
+                            </el-input >
+                        </div>
+                        <div class="recordapi__header--item">
                             <el-button
-                                slot="append"
-                                type="success"
-                                plain
-                                @click="handleClickSave"
-                            >Save
+                                type="primary"
+                                @click="resetSearch"
+                            >重置
                             </el-button>
+                        </div>
+                        <div class="recordapi__header--item">
+                            <el-dropdown @command="rigEnvChangeHandle">
+                                <el-button type="primary">
+                                    环境
+                                    <i class="el-icon-arrow-down el-icon--right"></i>
+                                </el-button>
+                                <el-dropdown-menu slot="dropdown">
+                                    <el-dropdown-item command="0">测试</el-dropdown-item>
+                                    <el-dropdown-item command="1">生产</el-dropdown-item>
+                                    <el-dropdown-item command="">所有</el-dropdown-item>
+                                </el-dropdown-menu>
+                            </el-dropdown>
+                        </div>
+                        <div class="recordapi__header--item">
+                            <el-dropdown @command="tagChangeHandle">
+                                <el-button type="primary">
+                                    接口状态
+                                    <i class="el-icon-arrow-down el-icon--right"></i>
+                                </el-button>
+                                <el-dropdown-menu slot="dropdown">
+                                    <el-dropdown-item command="1">手动成功</el-dropdown-item>
+                                    <el-dropdown-item command="0">还未调试</el-dropdown-item>
+                                    <el-dropdown-item command="2">调试失败</el-dropdown-item>
+                                    <el-dropdown-item command="3">自动成功</el-dropdown-item>
+                                    <el-dropdown-item command="">所有</el-dropdown-item>
+                                </el-dropdown-menu>
+                            </el-dropdown>
+                        </div>
 
-                        </el-input>
+                    </div>
+                    <div class="recordapi__header" :style="{flex:1}">
+                        <div class="recordapi__header--item">
+                            <el-input
+                                style="width: 540px; text-align: center"
+                                placeholder="请输入测试用例名称"
+                                v-model="testName"
+                                clearable
+                                v-if="testData.length > 0"
+                            >
+                                <el-select v-model="testTag" slot="prepend" placeholder="请选择" style="width: 105px">
 
-                        <el-button
-                            type="primary"
-                            v-loading="suite_loading"
-                            @click="handleClickRun"
-                        >Send
-                        </el-button>
-                    </el-col>
-                </el-row>
+                                    <el-option
+                                        v-for="value in tagOptions" :key="value"
+                                        :label="value"
+                                        :value="value"
+                                    ></el-option>
+
+                                </el-select>
+                                <el-button
+                                    slot="append"
+                                    type="success"
+                                    plain
+                                    @click="handleClickSave"
+                                >Save
+                                </el-button>
+                            </el-input>
+                        </div>
+                        <div class="recordapi__header--item">
+                            <el-button
+                                type="primary"
+                                v-loading="suite_loading"
+                                @click="handleClickRun"
+                            >Send
+                            </el-button>
+                        </div>
+                    </div>
             </div>
 
             <div v-show="!editTestStepActivate" style="margin-top: 10px; ">
@@ -114,49 +128,61 @@
                             :key="index"
 
                         >
-                            <div class="block block_post" v-if="item.method.toUpperCase() === 'POST' ">
-                                <span class="block-method block_method_post block_method_color">POST</span>
-                                <span class="block-method block_url">{{item.url}}</span>
-                                <span class="block-summary-description">{{item.name}}</span>
+                            <div class="block edit__block" :class="`block_${item.method.toLowerCase()}`" >
+                                    <span class="block-method block_method_post block_method_color">
+                                        {{item.method.toUpperCase()}}
+                                    </span>
+
+                                <div class="edit__block--inner">
+                                    <span class="block-method block_url">{{item.url}}</span>
+                                    <span class="block-summary-description">{{item.name}}</span>
+                                </div>
 
                             </div>
 
-                            <div class="block block_get" v-if="item.method.toUpperCase() === 'GET' ">
-                                <span class="block-method block_method_get block_method_color">GET</span>
-                                <span class="block-method block_url">{{item.url}}</span>
-                                <span class="block-summary-description">{{item.name}}</span>
-                            </div>
+<!--                            <div class="block block_post" v-if="item.method.toUpperCase() === 'POST' ">-->
+<!--                                <span class="block-method block_method_post block_method_color">POST</span>-->
+<!--                                <span class="block-method block_url">{{item.url}}</span>-->
+<!--                                <span class="block-summary-description">{{item.name}}</span>-->
 
-                            <div class="block block_put" v-if="item.method.toUpperCase() === 'PUT' ">
-                                <span class="block-method block_method_put block_method_color">PUT</span>
-                                <span class="block-method block_url">{{item.url}}</span>
-                                <span class="block-summary-description">{{item.name}}</span>
-                            </div>
+<!--                            </div>-->
 
-                            <div class="block block_delete" v-if="item.method.toUpperCase() === 'DELETE' ">
-                                <span class="block-method block_method_delete block_method_color">DELETE</span>
-                                <span class="block-method block_url">{{item.url}}</span>
-                                <span class="block-summary-description">{{item.name}}</span>
-                            </div>
+<!--                            <div class="block block_get" v-if="item.method.toUpperCase() === 'GET' ">-->
+<!--                                <span class="block-method block_method_get block_method_color">GET</span>-->
+<!--                                <span class="block-method block_url">{{item.url}}</span>-->
+<!--                                <span class="block-summary-description">{{item.name}}</span>-->
+<!--                            </div>-->
 
-                            <div class="block block_patch" v-if="item.method.toUpperCase() === 'PATCH' ">
-                                <span class="block-method block_method_patch block_method_color">PATCH</span>
-                                <span class="block-method block_url">{{item.url}}</span>
-                                <span class="block-summary-description">{{item.name}}</span>
-                            </div>
+<!--                            <div class="block block_put" v-if="item.method.toUpperCase() === 'PUT' ">-->
+<!--                                <span class="block-method block_method_put block_method_color">PUT</span>-->
+<!--                                <span class="block-method block_url">{{item.url}}</span>-->
+<!--                                <span class="block-summary-description">{{item.name}}</span>-->
+<!--                            </div>-->
 
-                            <div class="block block_head" v-if="item.method.toUpperCase() === 'HEAD' ">
-                                <span class="block-method block_method_head block_method_color">HEAD</span>
-                                <span class="block-method block_url">{{item.url}}</span>
-                                <span class="block-summary-description">{{item.name}}</span>
-                            </div>
+<!--                            <div class="block block_delete" v-if="item.method.toUpperCase() === 'DELETE' ">-->
+<!--                                <span class="block-method block_method_delete block_method_color">DELETE</span>-->
+<!--                                <span class="block-method block_url">{{item.url}}</span>-->
+<!--                                <span class="block-summary-description">{{item.name}}</span>-->
+<!--                            </div>-->
 
-                            <div class="block block_options"
-                                 v-if="item.method.toUpperCase()=== 'OPTIONS' ">
-                                <span class="block-method block_method_options block_method_color">OPTIONS</span>
-                                <span class="block-method block_url">{{item.url}}</span>
-                                <span class="block-summary-description">{{item.name}}</span>
-                            </div>
+<!--                            <div class="block block_patch" v-if="item.method.toUpperCase() === 'PATCH' ">-->
+<!--                                <span class="block-method block_method_patch block_method_color">PATCH</span>-->
+<!--                                <span class="block-method block_url">{{item.url}}</span>-->
+<!--                                <span class="block-summary-description">{{item.name}}</span>-->
+<!--                            </div>-->
+
+<!--                            <div class="block block_head" v-if="item.method.toUpperCase() === 'HEAD' ">-->
+<!--                                <span class="block-method block_method_head block_method_color">HEAD</span>-->
+<!--                                <span class="block-method block_url">{{item.url}}</span>-->
+<!--                                <span class="block-summary-description">{{item.name}}</span>-->
+<!--                            </div>-->
+
+<!--                            <div class="block block_options"-->
+<!--                                 v-if="item.method.toUpperCase()=== 'OPTIONS' ">-->
+<!--                                <span class="block-method block_method_options block_method_color">OPTIONS</span>-->
+<!--                                <span class="block-method block_url">{{item.url}}</span>-->
+<!--                                <span class="block-summary-description">{{item.name}}</span>-->
+<!--                            </div>-->
 
                         </div>
 
@@ -256,6 +282,19 @@
                         </div>
                     </el-col>
                 </el-row>
+                <div class="recordapi__header--item">
+                    <el-pagination
+                        :page-size="11"
+                        v-show="apiData.count !== 0"
+                        background
+                        @current-change="handlePageChange"
+                        :current-page.sync="currentPage"
+                        layout="total, prev, pager, next, jumper"
+                        :total="apiData.count"
+                        style="margin-top: 5px"
+                    >
+                    </el-pagination>
+                </div>
             </div>
 
             <http-runner
@@ -313,7 +352,8 @@
             },
             back: Boolean,
             rigEnv: [String,Number],
-            tag: [String,Number]
+            tag: [String,Number],
+            search: [String,Number]
         },
 
         name: "EditTest",
@@ -390,7 +430,9 @@
             }
         },
         methods: {
-
+            inputVal(val) {
+                this.$emit('update:search', val)
+            },
 
             handleNewBody(body, newBody) {
                 this.editTestStepActivate = false;
@@ -403,7 +445,10 @@
                     id: id
                 };
             },
-
+            rigEnvChangeHandle(command) {
+                this.$emit('update:rigEnv', command);
+                this.getAPIList();
+            },
             validateData() {
                 if (this.testName === '' || this.testName.length > 100) {
                     this.$notify.warning({
@@ -542,7 +587,8 @@
                         node: this.currentNode,
                         project: this.project,
                         tag: this.tag,
-                        search: ''
+                        rigEnv: this.rigEnv,
+                        search: this.search
                     }
                 }).then(res => {
                     this.apiData = res;
@@ -560,21 +606,27 @@
                             project: this.project,
                             tag: this.tag,
                             rigEnv: this.rigEnv,
-                            search: ''
+                            search: this.search
                         }
                     }).then(res => {
                         this.apiData = res;
                     })
                 })
             },
-
+            resetSearch(){
+                this.node = "";
+                this.$emit('update:search', '');
+                this.$emit('update:tag', '');
+                this.$emit('update:rigEnv', '');
+                this.getAPIList();
+            },
             getAPIList() {
                 this.$nextTick(()=> {
                     this.$api.apiList({
                         params: {
                             node: this.currentNode,
                             project: this.project,
-                            search: '',
+                            search: this.search,
                             rigEnv: this.rigEnv,
                             tag: this.tag
                         }
@@ -667,5 +719,27 @@
 
     }
 
-
+    .recordapi__header {
+        display: flex;
+        align-items: center;
+    }
+    .recordapi__header--item.is-strench {
+        flex:1;
+    }
+    .recordapi__header--item {
+        margin:0 8px;
+    }
+    .edit__block {
+        height: auto;
+        padding: 0 5px;
+        line-height: 1;
+    }
+    .edit__block--inner {
+        padding: 10px 0 10px 15px;
+    }
+    .edit__block--inner .block-method {
+        padding:0;
+        text-align: left;
+        margin-bottom: 4px;
+    }
 </style>
