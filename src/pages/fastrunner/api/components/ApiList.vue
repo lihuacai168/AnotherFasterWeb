@@ -169,57 +169,57 @@
                             align="center"
                         >
                             <template slot-scope="scope">
-<!--                                <div class="block" :class="`block_${scope.row.method.toLowerCase()}`" >-->
-<!--                                    <span class="block-method block_method_post block_method_color">-->
-<!--                                        {{scope.row.method.toUpperCase()}}-->
-<!--                                    </span>-->
+                                <div class="block" :class="`block_${scope.row.method.toLowerCase()}`" >
+                                    <span class="block-method block_method_color" :class="`block_method_${scope.row.method.toLowerCase()}`">
+                                        {{scope.row.method.toUpperCase()}}
+                                    </span>
 
-<!--                                        <span class="block-method block_url">{{scope.row.url}}</span>-->
-<!--                                        <span class="block-summary-description">{{scope.row.name}}</span>-->
+                                        <span class="block-method block_url">{{scope.row.url}}</span>
+                                        <span class="block-summary-description">{{scope.row.name}}</span>
+
+                                </div>
+<!--                                <div class="block block_post" v-if="scope.row.method.toUpperCase() === 'POST' ">-->
+<!--                                    <span class="block-method block_method_post block_method_color">POST</span>-->
+<!--                                    <span class="block-method block_url">{{scope.row.url}}</span>-->
+<!--                                    <span class="block-summary-description">{{scope.row.name}}</span>-->
 
 <!--                                </div>-->
-                                <div class="block block_post" v-if="scope.row.method.toUpperCase() === 'POST' ">
-                                    <span class="block-method block_method_post block_method_color">POST</span>
-                                    <span class="block-method block_url">{{scope.row.url}}</span>
-                                    <span class="block-summary-description">{{scope.row.name}}</span>
 
-                                </div>
+<!--                                <div class="block block_get" v-if="scope.row.method.toUpperCase() === 'GET' ">-->
+<!--                                    <span class="block-method block_method_get block_method_color">GET</span>-->
+<!--                                    <span class="block-method block_url">{{scope.row.url}}</span>-->
+<!--                                    <span class="block-summary-description">{{scope.row.name}}</span>-->
+<!--                                </div>-->
 
-                                <div class="block block_get" v-if="scope.row.method.toUpperCase() === 'GET' ">
-                                    <span class="block-method block_method_get block_method_color">GET</span>
-                                    <span class="block-method block_url">{{scope.row.url}}</span>
-                                    <span class="block-summary-description">{{scope.row.name}}</span>
-                                </div>
+<!--                                <div class="block block_put" v-if="scope.row.method.toUpperCase() === 'PUT' ">-->
+<!--                                    <span class="block-method block_method_put block_method_color">PUT</span>-->
+<!--                                    <span class="block-method block_url">{{scope.row.url}}</span>-->
+<!--                                    <span class="block-summary-description">{{scope.row.name}}</span>-->
+<!--                                </div>-->
 
-                                <div class="block block_put" v-if="scope.row.method.toUpperCase() === 'PUT' ">
-                                    <span class="block-method block_method_put block_method_color">PUT</span>
-                                    <span class="block-method block_url">{{scope.row.url}}</span>
-                                    <span class="block-summary-description">{{scope.row.name}}</span>
-                                </div>
+<!--                                <div class="block block_delete" v-if="scope.row.method.toUpperCase() === 'DELETE' ">-->
+<!--                                    <span class="block-method block_method_delete block_method_color">DELETE</span>-->
+<!--                                    <span class="block-method block_url">{{scope.row.url}}</span>-->
+<!--                                    <span class="block-summary-description">{{scope.row.name}}</span>-->
+<!--                                </div>-->
 
-                                <div class="block block_delete" v-if="scope.row.method.toUpperCase() === 'DELETE' ">
-                                    <span class="block-method block_method_delete block_method_color">DELETE</span>
-                                    <span class="block-method block_url">{{scope.row.url}}</span>
-                                    <span class="block-summary-description">{{scope.row.name}}</span>
-                                </div>
+<!--                                <div class="block block_patch" v-if="scope.row.method.toUpperCase() === 'PATCH' ">-->
+<!--                                    <span class="block-method block_method_patch block_method_color">PATCH</span>-->
+<!--                                    <span class="block-method block_url">{{scope.row.url}}</span>-->
+<!--                                    <span class="block-summary-description">{{scope.row.name}}</span>-->
+<!--                                </div>-->
 
-                                <div class="block block_patch" v-if="scope.row.method.toUpperCase() === 'PATCH' ">
-                                    <span class="block-method block_method_patch block_method_color">PATCH</span>
-                                    <span class="block-method block_url">{{scope.row.url}}</span>
-                                    <span class="block-summary-description">{{scope.row.name}}</span>
-                                </div>
+<!--                                <div class="block block_head" v-if="scope.row.method.toUpperCase() === 'HEAD' ">-->
+<!--                                    <span class="block-method block_method_head block_method_color">HEAD</span>-->
+<!--                                    <span class="block-method block_url">{{scope.row.url}}</span>-->
+<!--                                    <span class="block-summary-description">{{scope.row.name}}</span>-->
+<!--                                </div>-->
 
-                                <div class="block block_head" v-if="scope.row.method.toUpperCase() === 'HEAD' ">
-                                    <span class="block-method block_method_head block_method_color">HEAD</span>
-                                    <span class="block-method block_url">{{scope.row.url}}</span>
-                                    <span class="block-summary-description">{{scope.row.name}}</span>
-                                </div>
-
-                                <div class="block block_options" v-if="scope.row.method.toUpperCase()=== 'OPTIONS' ">
-                                    <span class="block-method block_method_options block_method_color">OPTIONS</span>
-                                    <span class="block-method block_url">{{scope.row.url}}</span>
-                                    <span class="block-summary-description">{{scope.row.name}}</span>
-                                </div>
+<!--                                <div class="block block_options" v-if="scope.row.method.toUpperCase()=== 'OPTIONS' ">-->
+<!--                                    <span class="block-method block_method_options block_method_color">OPTIONS</span>-->
+<!--                                    <span class="block-method block_url">{{scope.row.url}}</span>-->
+<!--                                    <span class="block-summary-description">{{scope.row.name}}</span>-->
+<!--                                </div>-->
                             </template>
                         </el-table-column>
 

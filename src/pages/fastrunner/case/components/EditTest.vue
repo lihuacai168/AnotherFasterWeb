@@ -129,7 +129,7 @@
 
                         >
                             <div class="block edit__block" :class="`block_${item.method.toLowerCase()}`" >
-                                    <span class="block-method block_method_post block_method_color">
+                                    <span class="block-method block_method_color" :class="`block_method_${item.method.toLowerCase()}`">
                                         {{item.method.toUpperCase()}}
                                     </span>
 
