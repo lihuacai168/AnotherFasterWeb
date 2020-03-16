@@ -511,7 +511,8 @@
                         node: this.node,
                         project: this.project,
                         search: this.search,
-                        tag: this.visibleTag
+                        tag: this.visibleTag,
+                        rigEnv: this.rigEnv
                     }
                 }).then(res => {
                     this.apiData = res;
