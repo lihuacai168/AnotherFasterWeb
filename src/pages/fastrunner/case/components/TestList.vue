@@ -3,11 +3,18 @@
         <el-header style="padding-top: 10px; height: 50px;">
             <div style="overflow: hidden">
                 <el-row :gutter="50">
-                    <el-col :span="6" v-if="testData.count >= 0">
+                    <el-col :span="5" v-if="testData.count >= 0">
                         <el-input placeholder="请输入用例名称" clearable v-model="search" @keyup.enter.native="getTestList">
                             <el-button slot="append" icon="el-icon-search" @click="getTestList"></el-button>
                         </el-input>
                     </el-col>
+
+                    <el-col :span="5" v-if="testData.count >= 0">
+                        <el-input placeholder="api名称或者url" clearable v-model="caseNameOrUrl" @keyup.enter.native="getTestList">
+                            <el-button slot="append" icon="el-icon-search" @click="getTestList"></el-button>
+                        </el-input>
+                    </el-col>
+
                     <el-col :span="2">
                            <el-button
                            type="primary"
@@ -249,6 +256,7 @@
             },
             node() {
                 this.search = '';
+                this.caseNameOrUrl = '';
                 this.getTestList();
             },
 
@@ -279,6 +287,7 @@
         data() {
             return {
                 search: '',
+                caseNameOrUrl: '',
                 reportName: '',
                 asyncs: false,
                 filterText: '',
@@ -357,7 +366,8 @@
                         page: this.currentPage,
                         project: this.project,
                         node: this.node,
-                        search: this.search
+                        search: this.search,
+                        caseNameOrUrl: this.caseNameOrUrl,
                     }
                 }).then(resp => {
                     this.testData = resp;
@@ -410,6 +420,7 @@
                 })
             },
             resetSearch(){
+                this.caseNameOrUrl = "",
                 this.search = "",
                 this.node = "",
                 this.getTestList()
@@ -419,7 +430,9 @@
                     params: {
                         project: this.project,
                         node: this.node,
-                        search: this.search
+                        search: this.search,
+                        caseNameOrUrl: this.caseNameOrUrl,
+
                     }
                 }).then(resp => {
                     this.testData = resp;
