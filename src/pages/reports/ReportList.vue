@@ -27,12 +27,12 @@
                 <div class="report__header--item">
                     <el-dropdown @command="reportStatusChangeHandle">
                         <el-button type="primary">
-                            类型
+                             状态
                             <i class="el-icon-arrow-down el-icon--right"></i>
                         </el-button>
                         <el-dropdown-menu slot="dropdown">
-                            <el-dropdown-item command="fail">失败</el-dropdown-item>
-                            <el-dropdown-item command="success">成功</el-dropdown-item>
+                            <el-dropdown-item command=0>失败</el-dropdown-item>
+                            <el-dropdown-item command=1>成功</el-dropdown-item>
                             <el-dropdown-item command="">全部</el-dropdown-item>
                         </el-dropdown-menu>
                     </el-dropdown>
