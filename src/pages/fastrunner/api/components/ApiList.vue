@@ -395,13 +395,11 @@
             tagChangeHandle(command) {
                 // this.tag = command;
                 this.$emit('update:visibleTag', command);
-                this.search = "";
                 this.getAPIList();
             },
             rigEnvChangeHandle(command) {
                 // this.rigEnv = command;
                 this.$emit('update:rigEnv', command);
-                this.search = "";
                 this.getAPIList();
             },
             resetSearch(){
@@ -410,7 +408,7 @@
                 // this.tag = "";
                 // this.$emit('update:tag', '');
                 this.$emit('update:visibleTag', '');
-                this.rigEnv = "";
+                this.$emit('update:rigEnv', '');
                 this.getAPIList();
             },
             handleCopyAPI(id) {
