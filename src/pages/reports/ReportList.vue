@@ -1,16 +1,52 @@
 <template>
     <el-container>
-        <el-header style="padding: 0; height: 50px; margin-top: 10px">
-            <div style="padding-top: 8px; padding-left: 30px;">
+        <el-header style="padding: 0; height: 50px; ">
+            <div class="report__header">
 
-                <el-row>
-                    <el-col :span="6" v-if="reportData.count > 11">
+
+                <div class="report__header--item">
                         <el-input placeholder="请输入报告名称" clearable v-model="search">
                             <el-button slot="append" icon="el-icon-search" @click="getReportList"></el-button>
                         </el-input>
-                    </el-col>
+                </div>
+                <div class="report__header--item">
+                        <el-dropdown @command="reportTypeChangeHandle">
+                            <el-button type="primary">
+                                类型
+                                <i class="el-icon-arrow-down el-icon--right"></i>
+                            </el-button>
+                            <el-dropdown-menu slot="dropdown">
+                                <el-dropdown-item command="1">调试</el-dropdown-item>
+                                <el-dropdown-item command="3">定时</el-dropdown-item>
+                                <el-dropdown-item command="4">部署</el-dropdown-item>
+                                <el-dropdown-item command="2">异步</el-dropdown-item>
+                                <el-dropdown-item command="">全部</el-dropdown-item>
+                            </el-dropdown-menu>
+                        </el-dropdown>
+                </div>
+                <div class="report__header--item">
+                    <el-dropdown @command="reportStatusChangeHandle">
+                        <el-button type="primary">
+                            类型
+                            <i class="el-icon-arrow-down el-icon--right"></i>
+                        </el-button>
+                        <el-dropdown-menu slot="dropdown">
+                            <el-dropdown-item command="fail">失败</el-dropdown-item>
+                            <el-dropdown-item command="success">成功</el-dropdown-item>
+                            <el-dropdown-item command="">全部</el-dropdown-item>
+                        </el-dropdown-menu>
+                    </el-dropdown>
+                </div>
 
-                    <el-col :span="1">
+                <div class="report__header--item">
+                    <el-button
+                        type="primary"
+                        @click="resetSearch"
+                    >重置
+                    </el-button>
+                </div>
+
+                <div class="report__header--item">
                         <el-button
                             v-show="reportData.count !== 0"
                             style="margin-left: 20px"
@@ -20,9 +56,9 @@
                             size="mini"
                             @click="delSelectionReports"
                         ></el-button>
-                    </el-col>
+                </div>
 
-                    <el-col :span="7">
+                <div class="report__header--item">
                         <el-pagination
                             :page-size="11"
                             v-show="reportData.count !== 0 "
@@ -33,10 +69,10 @@
                             :total="reportData.count"
                         >
                         </el-pagination>
-                    </el-col>
+                </div>
 
 
-                </el-row>
+
 
             </div>
         </el-header>
@@ -210,6 +246,13 @@
                 selectReports: [],
                 currentRow: '',
                 currentPage: 1,
+            // (1, "调试"),
+            //     (2, "异步"),
+            //     (3, "定时"),
+            //     (4, "部署"),
+            //     ("", "全部"),
+                reportType:'',
+                reportStatus:'',
                 reportData: {
                     count: 0,
                     results: []
@@ -234,8 +277,22 @@
             handleSelectionChange(val) {
                 this.selectReports = val;
             },
-
-
+            reportTypeChangeHandle(command) {
+                this.reportType = command;
+                // this.$emit('update:reportType', command);
+                // this.search = "";
+                this.getReportList()
+            },
+            reportStatusChangeHandle(command) {
+                this.reportStatus = command;
+                this.getReportList()
+            },
+            resetSearch(){
+                this.search = "";
+                this.reportType = "";
+                this.reportStatus = "";
+                this.getReportList();
+            },
             handleCurrentChange(val) {
                 this.$api.getReportsPaginationBypage({
                     params: {
@@ -287,7 +344,9 @@
                 this.$api.reportList({
                     params: {
                         project: this.$route.params.id,
-                        search: this.search
+                        search: this.search,
+                        reportType: this.reportType,
+                        reportStatus: this.reportStatus,
                     }
                 }).then(resp => {
                     this.reportData = resp;
@@ -309,6 +368,17 @@
     .fail {
         font-weight: bold;
         color: red;
+    }
+
+     .report__header {
+         display: flex;
+         align-items: center;
+     }
+    .report__header--item.is-stench {
+        flex:1;
+    }
+    .report__header--item {
+        margin:0 8px;
     }
 
 
