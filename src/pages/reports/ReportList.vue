@@ -1,11 +1,11 @@
 <template>
     <el-container>
-        <el-header style="padding: 0; height: 50px; ">
+        <el-header style="padding: 10px 20px; height: 50px; ">
             <div class="report__header">
 
 
                 <div class="report__header--item">
-                        <el-input placeholder="请输入报告名称" clearable v-model="search">
+                        <el-input placeholder="请输入报告名称" clearable v-model="search" style="width: 400px">
                             <el-button slot="append" icon="el-icon-search" @click="getReportList"></el-button>
                         </el-input>
                 </div>

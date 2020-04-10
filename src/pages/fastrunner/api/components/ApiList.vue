@@ -11,7 +11,7 @@
                     </el-checkbox>
                 </div>
                 <div class="recordapi__header--item">
-                    <el-input placeholder="请输入接口名称" clearable v-model="search"  @keyup.enter.native="getAPIList">
+                    <el-input placeholder="请输入接口名称" clearable v-model="search"  @keyup.enter.native="getAPIList" style="width: 400px">
                         <el-button slot="append" icon="el-icon-search" @click="getAPIList"></el-button>
                     </el-input >
                 </div>

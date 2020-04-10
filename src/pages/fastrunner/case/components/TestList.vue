@@ -4,7 +4,7 @@
             <div style="overflow: hidden">
                 <el-row :gutter="50">
                     <el-col :span="5" v-if="testData.count >= 0">
-                        <el-input placeholder="请输入用例名称" clearable v-model="search" @keyup.enter.native="getTestList">
+                        <el-input placeholder="请输入用例名称" clearable v-model="search" @keyup.enter.native="getTestList" style="width: 280px">
                             <el-button slot="append" icon="el-icon-search" @click="getTestList"></el-button>
                         </el-input>
                     </el-col>
