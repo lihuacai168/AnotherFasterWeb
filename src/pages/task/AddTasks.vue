@@ -353,7 +353,8 @@
                     params: {
                         project: this.$route.params.id,
                         node: this.node,
-                        search: this.search
+                        search: this.search,
+                        caseNameOrUrl: ""
                     }
                 }).then(resp => {
                     this.suiteData = resp;
