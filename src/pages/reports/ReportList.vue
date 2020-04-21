@@ -291,6 +291,7 @@
                 this.search = "";
                 this.reportType = "";
                 this.reportStatus = "";
+                this.currentPage = 1;
                 this.getReportList();
             },
             handleCurrentChange(val) {
