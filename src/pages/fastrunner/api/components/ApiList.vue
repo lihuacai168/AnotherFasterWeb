@@ -412,7 +412,7 @@
                 this.getAPIList();
             },
             handleCopyAPI(id, name) {
-                this.$prompt('请输入接口名称', '提示11', {
+                this.$prompt('请输入接口名称', '提示', {
                     confirmButtonText: '确定',
                     inputPattern: /^[\s\S]*.*[^\s][\s\S]*$/,
                     inputErrorMessage: '接口名称不能为空',
