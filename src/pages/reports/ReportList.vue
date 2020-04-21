@@ -296,9 +296,11 @@
             handleCurrentChange(val) {
                 this.$api.getReportsPaginationBypage({
                     params: {
-                        page: this.currentPage,
                         project: this.$route.params.id,
-                        search: this.search
+                        search: this.search,
+                        reportType: this.reportType,
+                        reportStatus: this.reportStatus,
+                        page: this.currentPage,
                     }
                 }).then(resp => {
                     this.reportData = resp;
@@ -347,6 +349,7 @@
                         search: this.search,
                         reportType: this.reportType,
                         reportStatus: this.reportStatus,
+                        page: this.currentPage,
                     }
                 }).then(resp => {
                     this.reportData = resp;
