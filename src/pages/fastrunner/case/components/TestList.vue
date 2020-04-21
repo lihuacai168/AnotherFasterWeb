@@ -195,7 +195,7 @@
                                         type="success"
                                         icon="el-icon-document"
                                         circle size="mini"
-                                        @click="handleCopyTest(scope.row.id)"
+                                        @click="handleCopyTest(scope.row.id, scope.row.name)"
                                     >
                                     </el-button>
 
@@ -380,11 +380,12 @@
                 })
             },
 
-            handleCopyTest(id) {
+            handleCopyTest(id, name) {
                 this.$prompt('请输入用例集名称', '提示', {
                     confirmButtonText: '确定',
                     inputPattern: /^[\s\S]*.*[^\s][\s\S]*$/,
-                    inputErrorMessage: '用例集不能为空'
+                    inputErrorMessage: '用例集不能为空',
+                    inputValue: name,
                 }).then(({value}) => {
                     this.$api.coptTest(id, {
                         'name': value,

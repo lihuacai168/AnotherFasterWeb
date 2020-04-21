@@ -252,7 +252,7 @@
                                         type="success"
                                         icon="el-icon-document"
                                         circle size="mini"
-                                        @click="handleCopyAPI(scope.row.id)"
+                                        @click="handleCopyAPI(scope.row.id, scope.row.name)"
                                     >
                                     </el-button>
 
@@ -411,11 +411,12 @@
                 this.$emit('update:rigEnv', '');
                 this.getAPIList();
             },
-            handleCopyAPI(id) {
-                this.$prompt('请输入接口名称', '提示', {
+            handleCopyAPI(id, name) {
+                this.$prompt('请输入接口名称', '提示11', {
                     confirmButtonText: '确定',
                     inputPattern: /^[\s\S]*.*[^\s][\s\S]*$/,
-                    inputErrorMessage: '接口名称不能为空'
+                    inputErrorMessage: '接口名称不能为空',
+                    inputValue: name,
                 }).then(({value}) => {
                     this.$api.copyAPI(id, {
                         'name': value

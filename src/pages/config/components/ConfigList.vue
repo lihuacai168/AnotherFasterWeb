@@ -78,7 +78,7 @@
                                     type="success"
                                     icon="el-icon-document"
                                     circle size="mini"
-                                    @click="handleCopyConfig(scope.row.id)"
+                                    @click="handleCopyConfig(scope.row.id, scope.row.name)"
                                 >
                                 </el-button>
 
@@ -186,11 +186,12 @@
                 this.$emit('respConfig', row);
             },
 
-            handleCopyConfig(id) {
+            handleCopyConfig(id,name) {
                 this.$prompt('请输入配置名称', '提示', {
                     confirmButtonText: '确定',
                     inputPattern: /^[\s\S]*.*[^\s][\s\S]*$/,
-                    inputErrorMessage: '配置名称不能为空'
+                    inputErrorMessage: '配置名称不能为空',
+                    inputValue: name,
                 }).then(({ value }) => {
                     this.$api.copyConfig(id, {
                         'name': value
