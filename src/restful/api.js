@@ -7,7 +7,7 @@ import {Message} from 'element-ui';
 
 export let baseUrl = "http://localhost:8000";
 if( process.env.NODE_ENV === "production" ){
-    baseUrl = "http://10.0.3.57:8000";
+    baseUrl = "http://192.168.17.107:8000";
 }
 
 // export const baseUrl = "http://10.0.3.57:8000";
