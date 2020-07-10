@@ -11,9 +11,10 @@
                     </el-checkbox>
                 </div>
                 <div class="recordapi__header--item">
-                    <el-input placeholder="请输入接口名称" clearable v-model="search"  @keyup.enter.native="getAPIList" style="width: 400px">
+                    <el-input placeholder="请输入接口名称" clearable v-model="search" @keyup.enter.native="getAPIList"
+                              style="width: 400px">
                         <el-button slot="append" icon="el-icon-search" @click="getAPIList"></el-button>
-                    </el-input >
+                    </el-input>
                 </div>
                 <div class="recordapi__header--item">
                     <el-button
@@ -169,73 +170,74 @@
                             align="center"
                         >
                             <template slot-scope="scope">
-                                <div class="block" :class="`block_${scope.row.method.toLowerCase()}`" >
-                                    <span class="block-method block_method_color" :class="`block_method_${scope.row.method.toLowerCase()}`">
+                                <div class="block" :class="`block_${scope.row.method.toLowerCase()}`">
+                                    <span class="block-method block_method_color"
+                                          :class="`block_method_${scope.row.method.toLowerCase()}`">
                                         {{scope.row.method.toUpperCase()}}
                                     </span>
 
-                                        <span class="block-method block_url">{{scope.row.url}}</span>
-                                        <span class="block-summary-description">{{scope.row.name}}</span>
+                                    <span class="block-method block_url">{{scope.row.url}}</span>
+                                    <span class="block-summary-description">{{scope.row.name}}</span>
 
                                 </div>
-<!--                                <div class="block block_post" v-if="scope.row.method.toUpperCase() === 'POST' ">-->
-<!--                                    <span class="block-method block_method_post block_method_color">POST</span>-->
-<!--                                    <span class="block-method block_url">{{scope.row.url}}</span>-->
-<!--                                    <span class="block-summary-description">{{scope.row.name}}</span>-->
+                                <!--                                <div class="block block_post" v-if="scope.row.method.toUpperCase() === 'POST' ">-->
+                                <!--                                    <span class="block-method block_method_post block_method_color">POST</span>-->
+                                <!--                                    <span class="block-method block_url">{{scope.row.url}}</span>-->
+                                <!--                                    <span class="block-summary-description">{{scope.row.name}}</span>-->
 
-<!--                                </div>-->
+                                <!--                                </div>-->
 
-<!--                                <div class="block block_get" v-if="scope.row.method.toUpperCase() === 'GET' ">-->
-<!--                                    <span class="block-method block_method_get block_method_color">GET</span>-->
-<!--                                    <span class="block-method block_url">{{scope.row.url}}</span>-->
-<!--                                    <span class="block-summary-description">{{scope.row.name}}</span>-->
-<!--                                </div>-->
+                                <!--                                <div class="block block_get" v-if="scope.row.method.toUpperCase() === 'GET' ">-->
+                                <!--                                    <span class="block-method block_method_get block_method_color">GET</span>-->
+                                <!--                                    <span class="block-method block_url">{{scope.row.url}}</span>-->
+                                <!--                                    <span class="block-summary-description">{{scope.row.name}}</span>-->
+                                <!--                                </div>-->
 
-<!--                                <div class="block block_put" v-if="scope.row.method.toUpperCase() === 'PUT' ">-->
-<!--                                    <span class="block-method block_method_put block_method_color">PUT</span>-->
-<!--                                    <span class="block-method block_url">{{scope.row.url}}</span>-->
-<!--                                    <span class="block-summary-description">{{scope.row.name}}</span>-->
-<!--                                </div>-->
+                                <!--                                <div class="block block_put" v-if="scope.row.method.toUpperCase() === 'PUT' ">-->
+                                <!--                                    <span class="block-method block_method_put block_method_color">PUT</span>-->
+                                <!--                                    <span class="block-method block_url">{{scope.row.url}}</span>-->
+                                <!--                                    <span class="block-summary-description">{{scope.row.name}}</span>-->
+                                <!--                                </div>-->
 
-<!--                                <div class="block block_delete" v-if="scope.row.method.toUpperCase() === 'DELETE' ">-->
-<!--                                    <span class="block-method block_method_delete block_method_color">DELETE</span>-->
-<!--                                    <span class="block-method block_url">{{scope.row.url}}</span>-->
-<!--                                    <span class="block-summary-description">{{scope.row.name}}</span>-->
-<!--                                </div>-->
+                                <!--                                <div class="block block_delete" v-if="scope.row.method.toUpperCase() === 'DELETE' ">-->
+                                <!--                                    <span class="block-method block_method_delete block_method_color">DELETE</span>-->
+                                <!--                                    <span class="block-method block_url">{{scope.row.url}}</span>-->
+                                <!--                                    <span class="block-summary-description">{{scope.row.name}}</span>-->
+                                <!--                                </div>-->
 
-<!--                                <div class="block block_patch" v-if="scope.row.method.toUpperCase() === 'PATCH' ">-->
-<!--                                    <span class="block-method block_method_patch block_method_color">PATCH</span>-->
-<!--                                    <span class="block-method block_url">{{scope.row.url}}</span>-->
-<!--                                    <span class="block-summary-description">{{scope.row.name}}</span>-->
-<!--                                </div>-->
+                                <!--                                <div class="block block_patch" v-if="scope.row.method.toUpperCase() === 'PATCH' ">-->
+                                <!--                                    <span class="block-method block_method_patch block_method_color">PATCH</span>-->
+                                <!--                                    <span class="block-method block_url">{{scope.row.url}}</span>-->
+                                <!--                                    <span class="block-summary-description">{{scope.row.name}}</span>-->
+                                <!--                                </div>-->
 
-<!--                                <div class="block block_head" v-if="scope.row.method.toUpperCase() === 'HEAD' ">-->
-<!--                                    <span class="block-method block_method_head block_method_color">HEAD</span>-->
-<!--                                    <span class="block-method block_url">{{scope.row.url}}</span>-->
-<!--                                    <span class="block-summary-description">{{scope.row.name}}</span>-->
-<!--                                </div>-->
+                                <!--                                <div class="block block_head" v-if="scope.row.method.toUpperCase() === 'HEAD' ">-->
+                                <!--                                    <span class="block-method block_method_head block_method_color">HEAD</span>-->
+                                <!--                                    <span class="block-method block_url">{{scope.row.url}}</span>-->
+                                <!--                                    <span class="block-summary-description">{{scope.row.name}}</span>-->
+                                <!--                                </div>-->
 
-<!--                                <div class="block block_options" v-if="scope.row.method.toUpperCase()=== 'OPTIONS' ">-->
-<!--                                    <span class="block-method block_method_options block_method_color">OPTIONS</span>-->
-<!--                                    <span class="block-method block_url">{{scope.row.url}}</span>-->
-<!--                                    <span class="block-summary-description">{{scope.row.name}}</span>-->
-<!--                                </div>-->
+                                <!--                                <div class="block block_options" v-if="scope.row.method.toUpperCase()=== 'OPTIONS' ">-->
+                                <!--                                    <span class="block-method block_method_options block_method_color">OPTIONS</span>-->
+                                <!--                                    <span class="block-method block_url">{{scope.row.url}}</span>-->
+                                <!--                                    <span class="block-summary-description">{{scope.row.name}}</span>-->
+                                <!--                                </div>-->
                             </template>
                         </el-table-column>
 
                         <el-table-column
-                              prop="tag"
-                              label="标签"
-                              width="90"
-                              filter-placement="bottom-end">
-                              <template slot-scope="scope">
+                            prop="tag"
+                            label="标签"
+                            width="90"
+                            filter-placement="bottom-end">
+                            <template slot-scope="scope">
                                 <el-tag
-                                  :type="scope.row.tag === 0 ? 'info' : scope.row.tag === 2 ? 'danger' : 'success' "
-                                  effect="light"
+                                    :type="scope.row.tag === 0 ? 'info' : scope.row.tag === 2 ? 'danger' : 'success' "
+                                    effect="light"
                                 >
                                     {{scope.row.tag_name}}
                                 </el-tag>
-                              </template>
+                            </template>
                         </el-table-column>
                         <el-table-column>
                             <template slot-scope="scope">
@@ -264,14 +266,14 @@
                                         circle size="mini"
                                         @click="handleRunAPI(scope.row.id)"
                                     ></el-button>
-<!--                                    <el-button-->
-<!--                                        type="danger"-->
-<!--                                        icon="el-icon-delete"-->
-<!--                                        title="删除"-->
-<!--                                        circle size="mini"-->
-<!--                                        @click="handleDelApi(scope.row.id)"-->
-<!--                                    >-->
-<!--                                    </el-button>-->
+                                    <!--                                    <el-button-->
+                                    <!--                                        type="danger"-->
+                                    <!--                                        icon="el-icon-delete"-->
+                                    <!--                                        title="删除"-->
+                                    <!--                                        circle size="mini"-->
+                                    <!--                                        @click="handleDelApi(scope.row.id)"-->
+                                    <!--                                    >-->
+                                    <!--                                    </el-button>-->
                                     <el-button
                                         type="danger"
                                         icon="el-icon-error"
@@ -329,7 +331,7 @@
         },
         data() {
             return {
-                checked:false,
+                checked: false,
                 search: '',
                 reportName: '',
                 asyncs: false,
@@ -413,7 +415,7 @@
                 this.$emit('update:rigEnv', command);
                 this.getAPIList();
             },
-            resetSearch(){
+            resetSearch() {
                 this.search = "";
                 this.node = "";
                 // this.tag = "";
@@ -497,20 +499,20 @@
             // 查询api列表
             getAPIList() {
                 // debugger
-               this.$nextTick(()=> {
-                   this.$api.apiList({
-                       params: {
-                           page: this.listCurrentPage,
-                           node: this.node,
-                           project: this.project,
-                           search: this.search,
-                           tag: this.visibleTag,
-                           rigEnv: this.rigEnv
-                       }
-                   }).then(res => {
-                       this.apiData = res;
-                   })
-               })
+                this.$nextTick(() => {
+                    this.$api.apiList({
+                        params: {
+                            page: this.listCurrentPage,
+                            node: this.node,
+                            project: this.project,
+                            search: this.search,
+                            tag: this.visibleTag,
+                            rigEnv: this.rigEnv
+                        }
+                    }).then(res => {
+                        this.apiData = res;
+                    })
+                })
             },
 
 
@@ -546,35 +548,29 @@
                     })
                 })
             },
-            handleTagApi(index,tag) {
-                if (tag == "success"){
-                    this.$confirm('是否确定已经调试成功', '提示', {
-                    confirmButtonText: '确定',
-                    cancelButtonText: '取消',
-                    type: 'warning',
-                }).then(() => {
-                    this.$api.tagAPI(index, {
-                        tag: 1
-                    }).then(resp => {
-                        if (resp.success) {
-                            this.getAPIList();
-                        } else {
-                            this.$message.error(resp.msg);
+            handleTagApi(index, tag) {
+                if (tag == "success" || tag == "bug") {
+                    let confirmPromise = Promise.resolve()
+                    if (tag == "success") {
+                        this.$confirm('是否确定已经调试成功', '提示', {
+                            confirmButtonText: '确定',
+                            cancelButtonText: '取消',
+                            type: 'warning',
+                        })
+                    }
+                    confirmPromise.then(() => {
+                            this.$api.tagAPI(index, {
+                                tag: tag === "success" ? 1 : 2
+                            }).then(resp => {
+                                if (resp.success) {
+                                    this.getAPIList();
+                                } else {
+                                    this.$message.error(resp.msg);
+                                }
+                            })
                         }
-                    })
-                })}
-                else if (tag == "bug"){
-                    this.$api.tagAPI(index, {
-                        tag: 2
-                    }).then(resp => {
-                        if (resp.success) {
-                            this.getAPIList();
-                        } else {
-                            this.$message.error(resp.msg);
-                        }
-                    })
+                    )
                 }
-
             },
 
             // 编辑API
@@ -592,7 +588,7 @@
                 this.loading = true;
                 this.$api.runAPIByPk(id, {
                     params: {
-                        host:this.host,
+                        host: this.host,
                         config: this.config
                     }
                 }).then(resp => {
@@ -619,14 +615,16 @@
 </script>
 
 <style scoped>
-.recordapi__header {
-    display: flex;
-    align-items: center;
-}
-.recordapi__header--item.is-strench {
-    flex:1;
-}
-.recordapi__header--item {
-    margin:0 8px;
-}
+    .recordapi__header {
+        display: flex;
+        align-items: center;
+    }
+
+    .recordapi__header--item.is-strench {
+        flex: 1;
+    }
+
+    .recordapi__header--item {
+        margin: 0 8px;
+    }
 </style>
