@@ -30,7 +30,7 @@
                             <i class="el-icon-arrow-down el-icon--right"></i>
                         </el-button>
                         <el-dropdown-menu slot="dropdown">
-                            <el-dropdown-item command="1">手动成功</el-dropdown-item>
+                            <el-dropdown-item command="1">调试成功</el-dropdown-item>
                             <el-dropdown-item command="0">还未调试</el-dropdown-item>
                             <el-dropdown-item command="2">调试失败</el-dropdown-item>
                             <el-dropdown-item command="3">自动成功</el-dropdown-item>
