@@ -243,7 +243,7 @@
                                     <el-button
                                         type="info"
                                         icon="el-icon-edit"
-                                        title="编辑"
+                                        title="编辑API"
                                         circle size="mini"
                                         @click="handleRowClick(scope.row)"
                                     ></el-button>
@@ -251,6 +251,7 @@
                                     <el-button
                                         type="success"
                                         icon="el-icon-document"
+                                        title="复制API"
                                         circle size="mini"
                                         @click="handleCopyAPI(scope.row.id, scope.row.name)"
                                     >
@@ -259,22 +260,32 @@
                                     <el-button
                                         type="primary"
                                         icon="el-icon-caret-right"
+                                        title="运行API"
                                         circle size="mini"
                                         @click="handleRunAPI(scope.row.id)"
                                     ></el-button>
+<!--                                    <el-button-->
+<!--                                        type="danger"-->
+<!--                                        icon="el-icon-delete"-->
+<!--                                        title="删除"-->
+<!--                                        circle size="mini"-->
+<!--                                        @click="handleDelApi(scope.row.id)"-->
+<!--                                    >-->
+<!--                                    </el-button>-->
                                     <el-button
                                         type="danger"
-                                        icon="el-icon-delete"
-                                        title="删除"
+                                        icon="el-icon-error"
+                                        title="调试失败"
                                         circle size="mini"
-                                        @click="handleDelApi(scope.row.id)"
+                                        @click="handleTagApi(scope.row.id, 'bug')"
                                     >
                                     </el-button>
                                     <el-button
                                         type="success"
                                         icon="el-icon-check"
+                                        title="调试成功"
                                         circle size="mini"
-                                        @click="handleTagApi(scope.row.id)"
+                                        @click="handleTagApi(scope.row.id, 'success')"
                                     >
                                     </el-button>
                                 </el-row>
@@ -535,20 +546,35 @@
                     })
                 })
             },
-            handleTagApi(index) {
-                this.$confirm('是否确定已经调试成功', '提示', {
+            handleTagApi(index,tag) {
+                if (tag == "success"){
+                    this.$confirm('是否确定已经调试成功', '提示', {
                     confirmButtonText: '确定',
                     cancelButtonText: '取消',
                     type: 'warning',
                 }).then(() => {
-                    this.$api.tagAPI(index).then(resp => {
+                    this.$api.tagAPI(index, {
+                        tag: 1
+                    }).then(resp => {
                         if (resp.success) {
                             this.getAPIList();
                         } else {
                             this.$message.error(resp.msg);
                         }
                     })
-                })
+                })}
+                else if (tag == "bug"){
+                    this.$api.tagAPI(index, {
+                        tag: 2
+                    }).then(resp => {
+                        if (resp.success) {
+                            this.getAPIList();
+                        } else {
+                            this.$message.error(resp.msg);
+                        }
+                    })
+                }
+
             },
 
             // 编辑API
