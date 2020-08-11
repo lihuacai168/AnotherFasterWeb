@@ -178,7 +178,8 @@
                     name: '',
                     sensitive_keys: '',
                     self_error: '',
-                    fail_count: 1
+                    fail_count: 1,
+                    webhook: ''
                 },
             }
         },
@@ -234,6 +235,7 @@
                 this.ruleForm["fail_count"] = index_data.kwargs.fail_count;
                 this.ruleForm["self_error"] = index_data.kwargs.self_error;
                 this.ruleForm["sensitive_keys"] = index_data.kwargs.sensitive_keys;
+                this.ruleForm["webhook"] = index_data.kwargs.webhook;
                 this.ruleForm["name"] = index_data.name;
                 this.ruleForm["switch"] = index_data.enabled;
                 this.args = index_data.args;
