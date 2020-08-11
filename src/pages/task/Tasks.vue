@@ -144,7 +144,7 @@
                 v-if="addTasks"
                 v-on:changeStatus="changeStatus"
                 :ruleForm="ruleForm"
-                :args = "args"
+                :args="args"
                 :scheduleId="scheduleId"
             >
             </add-tasks>
@@ -184,7 +184,7 @@
             }
         },
         methods: {
-            handleAddTask(){
+            handleAddTask() {
                 this.addTasks = true;
                 this.scheduleId = '';
                 this.ruleForm = {
@@ -196,7 +196,8 @@
                     name: '',
                     sensitive_keys: '',
                     self_error: '',
-                    fail_count: 1
+                    fail_count: 1,
+                    webhook: ''
                 };
                 this.args = [];
             },
@@ -223,7 +224,7 @@
                     this.tasksData = resp;
                 })
             },
-            handleEditSchedule(id, index_data){
+            handleEditSchedule(id, index_data) {
                 // debugger;
                 // 激活addTasks组件
                 this.addTasks = true;
@@ -257,7 +258,8 @@
                     name: '',
                     self_error: '',
                     fail_count: '',
-                    sensitive_keys: ''
+                    sensitive_keys: '',
+                    webhook: ''
                 }
             },
             getTaskList() {
