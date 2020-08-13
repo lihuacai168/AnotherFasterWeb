@@ -4,23 +4,25 @@
             <div style="overflow: hidden">
                 <el-row :gutter="50">
                     <el-col :span="5" v-if="testData.count >= 0">
-                        <el-input placeholder="请输入用例名称" clearable v-model="search" @keyup.enter.native="getTestList" style="width: 280px">
+                        <el-input placeholder="请输入用例名称" clearable v-model="search" @keyup.enter.native="getTestList"
+                                  style="width: 280px">
                             <el-button slot="append" icon="el-icon-search" @click="getTestList"></el-button>
                         </el-input>
                     </el-col>
 
                     <el-col :span="5" v-if="testData.count >= 0">
-                        <el-input placeholder="api名称或者url" clearable v-model="caseNameOrUrl" @keyup.enter.native="getTestList">
+                        <el-input placeholder="api名称或者url" clearable v-model="caseNameOrUrl"
+                                  @keyup.enter.native="getTestList">
                             <el-button slot="append" icon="el-icon-search" @click="getTestList"></el-button>
                         </el-input>
                     </el-col>
 
                     <el-col :span="2">
-                           <el-button
-                           type="primary"
-                           @click="resetSearch"
-                           >重置
-                           </el-button>
+                        <el-button
+                            type="primary"
+                            @click="resetSearch"
+                        >重置
+                        </el-button>
                     </el-col>
 
 
@@ -207,6 +209,15 @@
                                         @click="handleDelTest(scope.row.id)"
                                     >
                                     </el-button>
+
+                                    <el-button
+                                        type="warning"
+                                        icon="el-icon-refresh"
+                                        title="同步用例步骤"
+                                        circle size="mini"
+                                        @click="handleSyncCaseStep(scope.row.id)"
+                                    >
+                                    </el-button>
                                 </el-row>
                             </template>
                         </el-table-column>
@@ -331,7 +342,7 @@
                     });
                 } else {
                     this.$api.runSuiteTree({
-                        "host":this.host,
+                        "host": this.host,
                         "project": this.project,
                         "relation": relation,
                         "async": this.asyncs,
@@ -352,7 +363,7 @@
 
             handleRunTest(id, name) {
                 this.loading = true;
-                this.$api.runTestByPk(id, {params: {project: this.project, name: name,host:this.host}}).then(resp => {
+                this.$api.runTestByPk(id, {params: {project: this.project, name: name, host: this.host}}).then(resp => {
                     this.summary = resp;
                     this.dialogTableVisible = true;
                     this.loading = false;
@@ -420,7 +431,23 @@
                     })
                 })
             },
-            resetSearch(){
+            handleSyncCaseStep(id) {
+                this.$confirm('同步测试用例中的用例步骤，是否继续?', '提示', {
+                    confirmButtonText: '确定',
+                    cancelButtonText: '取消',
+                    type: 'warning',
+                }).then(() => {
+                    this.$api.syncTest(id).then(resp => {
+                        if (resp.success) {
+                            this.$notify.success("同步用例步骤成功")
+                            this.getTestList();
+                        } else {
+                            this.$message.error(resp.msg)
+                        }
+                    })
+                })
+            },
+            resetSearch() {
                 this.caseNameOrUrl = "",
                 this.search = "",
                 this.node = "",
@@ -448,7 +475,7 @@
             }
         },
         mounted() {
-           this.getTestList()
+            this.getTestList()
         }
     }
 </script>

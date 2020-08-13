@@ -170,6 +170,9 @@ export const deleteTest = url => {
     return axios.delete('/api/fastrunner/test/' + url + '/').then(res => res.data)
 };
 
+export const syncTest = url => {
+    return axios.put('/api/fastrunner/test/' + url + '/').then(res => res.data)
+};
 export const delAllTest = params => {
     return axios.delete('/api/fastrunner/test/', params).then(res => res.data)
 };
