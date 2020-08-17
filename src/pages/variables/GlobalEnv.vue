@@ -348,7 +348,7 @@
                 this.$refs[formName].validate((valid) => {
                     if (valid) {
                         this.editdialogVisible = false;
-                        this.$api.updateVariables(this.editVariablesForm.id, this.editVariablesForm).then(resp => {
+                        this.$api.updateVariables(this.$route.params.id, this.editVariablesForm ).then(resp => {
                             if (!resp.success) {
                                 this.$message.info({
                                     message: resp.msg,
