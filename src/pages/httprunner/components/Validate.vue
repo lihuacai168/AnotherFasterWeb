@@ -76,7 +76,13 @@
                         type="info"
                         @click="handleEdit(scope.$index, scope.row)">
                     </el-button>
-
+                    <el-button
+                        icon="el-icon-document-copy"
+                        size="mini"
+                        type="info"
+                        title="复制变量"
+                        @click="handleCopy(scope.$index, scope.row)">
+                    </el-button>
                     <el-button
                         icon="el-icon-delete"
                         size="mini"
@@ -100,7 +106,7 @@
                 require: false
             }
         },
-        computed:{
+        computed: {
             height() {
                 return window.screen.height - 440
             }
@@ -148,7 +154,14 @@
                     type: 1
                 });
             },
-
+            handleCopy(index, row) {
+                this.tableData.splice(index + 1, 0, {
+                    expect: row.expect,
+                    actual: row.actual,
+                    comparator: row.comparator,
+                    type: row.type,
+                });
+            },
             handleDelete(index, row) {
                 this.tableData.splice(index, 1);
             },
@@ -183,16 +196,15 @@
                             return 'exception'
                         }
                         break;
-                    case 5: case 6:
+                    case 5:
+                    case 6:
                         try {
                             tempValue = JSON.parse(value);
-                        }
-                        catch (err) {
+                        } catch (err) {
                             // 包含$是引用类型,可以任意类型
-                            if (value.indexOf("$") != -1){
+                            if (value.indexOf("$") != -1) {
                                 tempValue = value
-                            }
-                            else {
+                            } else {
                                 tempValue = false
                             }
                         }

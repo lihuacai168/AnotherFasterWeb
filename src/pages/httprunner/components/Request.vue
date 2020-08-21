@@ -111,7 +111,12 @@
                                 type="info"
                                 @click="handleEdit(scope.$index, scope.row)">
                             </el-button>
-
+                            <el-button
+                                icon="el-icon-document-copy"
+                                size="mini"
+                                type="info"
+                                @click="handleCopy(scope.$index, scope.row)">
+                            </el-button>
                             <el-button
                                 icon="el-icon-delete"
                                 size="mini"
@@ -151,7 +156,7 @@
                 require: false
             }
         },
-        computed:{
+        computed: {
             height() {
                 return window.screen.height - 464
             }
@@ -243,7 +248,15 @@
                     desc: ''
                 });
             },
-
+            handleCopy(index, row) {
+                const data = this.dataType === 'data' ? this.formData : this.paramsData;
+                data.splice(index + 1, 0, {
+                    key: row.key,
+                    value: row.value,
+                    type: row.type,
+                    desc: row.desc
+                });
+            },
             handleDelete(index, row) {
                 const data = this.dataType === 'data' ? this.formData : this.paramsData;
                 data.splice(index, 1);
@@ -307,8 +320,7 @@
                 if (this.jsonData !== '') {
                     try {
                         json = JSON.parse(this.jsonData);
-                    }
-                    catch (err) {
+                    } catch (err) {
                         this.$notify.error({
                             title: 'json错误',
                             message: '不是标准的json数据格式',
@@ -319,7 +331,7 @@
                 return json;
             },
 
-             // 类型转换
+            // 类型转换
             parseType(type, value) {
                 let tempValue;
                 const msg = value + ' => ' + this.dataTypeOptions[type - 1].label + ' 转换异常, 该数据自动剔除';
@@ -349,16 +361,15 @@
                             return 'exception'
                         }
                         break;
-                    case 5: case 6:
+                    case 5:
+                    case 6:
                         try {
                             tempValue = JSON.parse(value);
-                        }
-                        catch (err) {
+                        } catch (err) {
                             // 包含$是引用类型,可以任意类型
-                            if (value.indexOf("$") != -1){
+                            if (value.indexOf("$") != -1) {
                                 tempValue = value
-                            }
-                            else {
+                            } else {
                                 tempValue = false
                             }
                         }
@@ -374,7 +385,7 @@
                 }
                 return tempValue;
             },
-     },
+        },
 
         data() {
             return {

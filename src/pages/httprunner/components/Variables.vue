@@ -58,13 +58,21 @@
                         icon="el-icon-circle-plus-outline"
                         size="mini"
                         type="info"
+                        title="增加变量"
                         @click="handleEdit(scope.$index, scope.row)">
                     </el-button>
-
+                    <el-button
+                        icon="el-icon-document-copy"
+                        size="mini"
+                        type="info"
+                        title="复制变量"
+                        @click="handleCopy(scope.$index, scope.row)">
+                    </el-button>
                     <el-button
                         icon="el-icon-delete"
                         size="mini"
                         type="danger"
+                        title="删除变量"
                         v-show="scope.$index !== 0"
                         @click="handleDelete(scope.$index, scope.row)">
                     </el-button>
@@ -86,7 +94,7 @@
                 require: false
             }
         },
-        computed:{
+        computed: {
             height() {
                 return window.screen.height - 440
             }
@@ -114,14 +122,28 @@
             },
 
             handleEdit(index, row) {
-                this.tableData.push({
+                this.tableData.splice(index + 1, 0, {
                     key: '',
                     value: '',
                     type: 1,
                     desc: ''
+                })
+                //
+                // this.tableData.push({
+                //     key: '',
+                //     value: '',
+                //     type: 1,
+                //     desc: ''
+                // });
+            },
+            handleCopy(index, row) {
+                this.tableData.splice(index + 1, 0, {
+                    key: row.key,
+                    value: row.value,
+                    type: row.type,
+                    desc: row.desc
                 });
             },
-
             handleDelete(index, row) {
                 this.tableData.splice(index, 1);
             },
@@ -156,16 +178,15 @@
                             return 'exception'
                         }
                         break;
-                    case 5: case 6:
+                    case 5:
+                    case 6:
                         try {
                             tempValue = JSON.parse(value);
-                        }
-                        catch (err) {
+                        } catch (err) {
                             // 包含$是引用类型,可以任意类型
-                            if (value.indexOf("$") != -1){
+                            if (value.indexOf("$") != -1) {
                                 tempValue = value
-                            }
-                            else {
+                            } else {
                                 tempValue = false
                             }
                         }

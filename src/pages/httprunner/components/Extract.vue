@@ -42,7 +42,12 @@
                         type="info"
                         @click="handleEdit(scope.$index, scope.row)">
                     </el-button>
-
+                    <el-button
+                        icon="el-icon-document-copy"
+                        size="mini"
+                        type="info"
+                        @click="handleCopy(scope.$index, scope.row)">
+                    </el-button>
                     <el-button
                         icon="el-icon-delete"
                         size="mini"
@@ -66,7 +71,7 @@
                 require: false
             }
         },
-        computed:{
+        computed: {
             height() {
                 return window.screen.height - 440
             }
@@ -98,6 +103,13 @@
                     desc: ''
                 });
             },
+            handleCopy(index, row) {
+                this.tableData.splice(index + 1, 0, {
+                    key: row.key,
+                    value: row.value,
+                    desc: row.desc
+                });
+            },
 
             handleDelete(index, row) {
                 this.tableData.splice(index, 1);
@@ -109,7 +121,7 @@
                     desc: {}
                 };
                 for (let content of this.tableData) {
-                    const key = content['key'] ;
+                    const key = content['key'];
                     const value = content['value'];
                     if (key !== '' && value !== '') {
                         let obj = {};
