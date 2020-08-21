@@ -319,7 +319,7 @@
                 return json;
             },
 
-            // 类型转换
+             // 类型转换
             parseType(type, value) {
                 let tempValue;
                 const msg = value + ' => ' + this.dataTypeOptions[type - 1].label + ' 转换异常, 该数据自动剔除';
@@ -349,8 +349,21 @@
                             return 'exception'
                         }
                         break;
+                    case 5: case 6:
+                        try {
+                            tempValue = JSON.parse(value);
+                        }
+                        catch (err) {
+                            // 包含$是引用类型,可以任意类型
+                            if (value.indexOf("$") != -1){
+                                tempValue = value
+                            }
+                            else {
+                                tempValue = false
+                            }
+                        }
+                        break;
                 }
-
                 if (tempValue !== 0 && !tempValue && type !== 4 && type !== 1) {
                     this.$notify.error({
                         title: '类型转换错误',
@@ -359,10 +372,9 @@
                     });
                     return 'exception'
                 }
-
                 return tempValue;
-            }
-        },
+            },
+     },
 
         data() {
             return {

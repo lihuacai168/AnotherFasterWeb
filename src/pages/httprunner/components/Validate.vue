@@ -183,25 +183,21 @@
                             return 'exception'
                         }
                         break;
-                    case 5:
+                    case 5: case 6:
                         try {
                             tempValue = JSON.parse(value);
                         }
                         catch (err) {
-                            tempValue = false
+                            // 包含$是引用类型,可以任意类型
+                            if (value.indexOf("$") != -1){
+                                tempValue = value
+                            }
+                            else {
+                                tempValue = false
+                            }
                         }
                         break;
-                    case 6:
-                        try {
-                            tempValue = JSON.parse(value);
-                        }
-                        catch (err) {
-                            tempValue = false
-                        }
-                        break;
-
                 }
-
                 if (tempValue !== 0 && !tempValue && type !== 4 && type !== 1) {
                     this.$notify.error({
                         title: '类型转换错误',
