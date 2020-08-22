@@ -178,7 +178,9 @@
 
                                     <span class="block-method block_url">{{scope.row.url}}</span>
                                     <span class="block-summary-description">{{scope.row.name}}</span>
-
+                                   <div >
+                                       <span class="el-icon-s-flag"  v-if="scope.row.cases.length > 0 " title="API已经被用例引用"> </span>
+                                   </div>
                                 </div>
                                 <!--                                <div class="block block_post" v-if="scope.row.method.toUpperCase() === 'POST' ">-->
                                 <!--                                    <span class="block-method block_method_post block_method_color">POST</span>-->
