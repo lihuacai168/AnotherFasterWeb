@@ -244,8 +244,11 @@
                                                v-model="test.body.name"
                                         />
 
+
+
+
                                         <el-button
-                                            style="position: absolute; right: 84px; top: 8px"
+                                            style="position: absolute; right: 120px; top: 8px"
                                             v-show="currentTest === index"
                                             type="info"
                                             icon="el-icon-edit"
@@ -256,14 +259,27 @@
                                         </el-button>
 
                                         <el-button
-                                            style="position: absolute; right: 48px; top: 8px"
+                                            style="position: absolute; right: 84px; top: 8px"
                                             v-show="currentTest === index"
                                             type="success"
                                             icon="el-icon-caret-right"
                                             circle size="mini"
-                                            @click="handleSingleRun"
+                                            title="单个运行"
+                                            @click="handleSingleRun()"
                                         >
                                         </el-button>
+
+                                        <el-button
+                                            style="position: absolute; right: 48px; top: 8px"
+                                            v-show="currentTest === index"
+                                            type="primary"
+                                            icon="el-icon-caret-right"
+                                            circle size="mini"
+                                            title="运行开始到当前位置的所有api"
+                                            @click="handlePartialRun(index)"
+                                        >
+                                        </el-button>
+
 
                                         <el-button
                                             style="position: absolute; right: 12px; top: 8px"
@@ -541,7 +557,7 @@
                     }
                 }
             },
-
+            // 全部运行
             handleClickRun() {
                 if (this.validateData()) {
                     this.suite_loading = true;
@@ -559,13 +575,32 @@
                     })
                 }
             },
+            handlePartialRun(index){
+                if (this.validateData()) {
+                    this.suite_loading = true;
+                    this.$api.runSingleTestSuite({
+                        host: this.host,
+                        name: this.testName,
+                        body: this.testData.slice(0,index+1),
+                        project: this.project
+                    }).then(resp => {
+                        this.suite_loading = false;
+                        this.summary = resp;
+                        this.dialogTableVisible = true;
+                    }).catch(resp => {
+                        this.suite_loading = false;
+                    })
+                }
 
+            },
+            // 单个运行
             handleSingleRun() {
                 this.loading = true;
                 var config = null;
                 if (this.testData.length > 0 && this.testData[0].body.method === "config") {
                     config = this.testData[0].body;
                 }
+                debugger
                 this.$api.runSingleTest({
                     host: this.host,
                     config: config,
@@ -666,6 +701,8 @@
 
             drop(event) {
                 event.preventDefault();
+                console.log(this.testData.length)
+                debugger
                 this.testData.push(this.currentAPI);
             },
             allowDrop(event) {
