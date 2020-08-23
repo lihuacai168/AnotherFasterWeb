@@ -128,6 +128,7 @@
                             :key="index"
 
                         >
+                            <!--编辑用例时的API列表-->
                             <div class="block edit__block" :class="`block_${item.method.toLowerCase()}`" >
                                     <span class="block-method block_method_color" :class="`block_method_${item.method.toLowerCase()}`">
                                         {{item.method.toUpperCase()}}
@@ -137,7 +138,9 @@
                                     <span class="block-method block_url">{{item.url}}</span>
                                     <span class="block-summary-description">{{item.name}}</span>
                                 </div>
-
+                                   <div >
+                                       <span class="el-icon-s-flag"  v-if="item.cases.length > 0 " title="API已经被用例引用"> </span>
+                                   </div>
                             </div>
 
 <!--                            <div class="block block_post" v-if="item.method.toUpperCase() === 'POST' ">-->
