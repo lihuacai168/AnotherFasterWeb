@@ -181,7 +181,7 @@
                                     <el-button
                                         type="info"
                                         icon="el-icon-edit"
-                                        title="编辑"
+                                        title="编辑编辑"
                                         circle size="mini"
                                         @click="handleEditTest(scope.row.id)"
                                     ></el-button>
@@ -190,13 +190,15 @@
                                         type="primary"
                                         icon="el-icon-caret-right"
                                         circle size="mini"
+                                        title="运行用例"
                                         @click="handleRunTest(scope.row.id, scope.row.name)"
                                     ></el-button>
 
                                     <el-button
                                         type="success"
-                                        icon="el-icon-document"
+                                        icon="el-icon-document-copy"
                                         circle size="mini"
+                                        title="复制用例"
                                         @click="handleCopyTest(scope.row.id, scope.row.name)"
                                     >
                                     </el-button>
@@ -204,7 +206,7 @@
                                     <el-button
                                         type="danger"
                                         icon="el-icon-delete"
-                                        title="删除"
+                                        title="删除用例"
                                         circle size="mini"
                                         @click="handleDelTest(scope.row.id)"
                                     >
