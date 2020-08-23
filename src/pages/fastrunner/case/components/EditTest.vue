@@ -701,8 +701,10 @@
 
             drop(event) {
                 event.preventDefault();
-                console.log(this.testData.length)
-                debugger
+                // 创建用例时,默认加上config
+                if(this.testData.length === 0){
+                    this.testData.push({body: {name: this.config, method: 'config'}})
+                }
                 this.testData.push(this.currentAPI);
             },
             allowDrop(event) {
