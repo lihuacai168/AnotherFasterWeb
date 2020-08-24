@@ -139,7 +139,10 @@
                                     <span class="block-summary-description">{{item.name}}</span>
                                 </div>
                                    <div >
-                                       <span class="el-icon-s-flag"  v-if="item.cases.length > 0 " title="API已经被用例引用"> </span>
+                                       <span class="el-icon-s-flag"
+                                             v-if="item.cases.length > 0 "
+                                             :title="'API已经被用例引用,共计: ' + item.cases.length + '次'">
+                                       </span>
                                    </div>
                             </div>
 
