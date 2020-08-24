@@ -564,85 +564,78 @@
             },
             handleTagApi(index, tag) {
                 if (tag == "success" || tag == "bug") {
-                    if (tag == "success") {
-                        this.$confirm('是否确定已经调试成功', '提示', {
-                            confirmButtonText: '确定',
-                            cancelButtonText: '取消',
-                            type: 'warning',
-                        }).then(() => {
-                            this.$api.tagAPI(index, {
-                                tag: tag === "success" ? 1 : 2
-                            }).then(resp => {
-                                if (resp.success) {
-                                    this.getAPIList();
-
-                                } else {
-                                    this.$message.error(resp.msg);
-                                }
-                            })
-                        }).catch(e=>e)
-                    }
-                }
-            },
-            // api同步用例步骤
-            handleSyncCaseStep(id) {
-                this.$confirm('是否确定把当前api同步到用例步骤', '提示', {
-                    confirmButtonText: '确定',
-                    cancelButtonText: '取消',
-                    type: 'warning',
-                }).then(() => {
-                    this.$api.syncCaseStep(id).then(resp => {
+                    this.$api.tagAPI(index, {
+                        tag: tag === "success" ? 1 : 2
+                    }).then(resp => {
                         if (resp.success) {
                             this.getAPIList();
-                            this.$notify.success({
-                                title: '提示',
-                                message: '用例步骤同步成功',
-                                duration: 1500
-                            })
                         } else {
                             this.$message.error(resp.msg);
                         }
                     })
-                }).catch(e=>e)
-            },
-            // 编辑API
-            handleRowClick(row) {
-                this.$api.getAPISingle(row.id).then(resp => {
-                    if (resp.success) {
-                        this.$emit('api', resp);
-                    } else {
-                        this.$message.error(resp.msg)
-                    }
-                })
-            },
-            // 运行API
-            handleRunAPI(id) {
-                this.loading = true;
-                this.$api.runAPIByPk(id, {
-                    params: {
-                        host: this.host,
-                        config: this.config
-                    }
-                }).then(resp => {
-                    this.summary = resp;
-                    this.dialogTableVisible = true;
-                    this.loading = false;
-                }).catch(resp => {
-                    this.loading = false;
-                })
-            },
-
-            cellMouseEnter(row) {
-                this.currentRow = row;
-            },
-
-            cellMouseLeave(row) {
-                this.currentRow = '';
-            }
+                }
         },
-        mounted() {
-            this.getAPIList();
+        // api同步用例步骤
+        handleSyncCaseStep(id) {
+            this.$confirm('是否确定把当前api同步到用例步骤', '提示', {
+                confirmButtonText: '确定',
+                cancelButtonText: '取消',
+                type: 'warning',
+            }).then(() => {
+                this.$api.syncCaseStep(id).then(resp => {
+                    if (resp.success) {
+                        this.getAPIList();
+                        this.$notify.success({
+                            title: '提示',
+                            message: '用例步骤同步成功',
+                            duration: 1500
+                        })
+                    } else {
+                        this.$message.error(resp.msg);
+                    }
+                })
+            }).catch(e => e)
+        },
+        // 编辑API
+        handleRowClick(row) {
+            this.$api.getAPISingle(row.id).then(resp => {
+                if (resp.success) {
+                    this.$emit('api', resp);
+                } else {
+                    this.$message.error(resp.msg)
+                }
+            })
+        },
+        // 运行API
+        handleRunAPI(id) {
+            this.loading = true;
+            this.$api.runAPIByPk(id, {
+                params: {
+                    host: this.host,
+                    config: this.config
+                }
+            }).then(resp => {
+                this.summary = resp;
+                this.dialogTableVisible = true;
+                this.loading = false;
+            }).catch(resp => {
+                this.loading = false;
+            })
+        },
+
+        cellMouseEnter(row) {
+            this.currentRow = row;
+        },
+
+        cellMouseLeave(row) {
+            this.currentRow = '';
         }
+    }
+    ,
+    mounted()
+    {
+        this.getAPIList();
+    }
     }
 </script>
 
