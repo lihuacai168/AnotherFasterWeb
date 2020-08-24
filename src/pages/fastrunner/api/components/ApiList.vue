@@ -166,7 +166,7 @@
                         </el-table-column>
 
                         <el-table-column
-                            min-width="380"
+                            min-width="325"
                             align="center"
                         >
                             <template slot-scope="scope">
@@ -178,9 +178,12 @@
 
                                     <span class="block-method block_url">{{scope.row.url}}</span>
                                     <span class="block-summary-description">{{scope.row.name}}</span>
-                                   <div >
-                                       <span class="el-icon-s-flag"  v-if="scope.row.cases.length > 0 " title="API已经被用例引用"> </span>
-                                   </div>
+                                    <div>
+                                       <span class="el-icon-s-flag"
+                                             v-if="scope.row.cases.length > 0 "
+                                             :title="'API已经被用例引用,共计: '+scope.row.cases.length + '次'">
+                                       </span>
+                                    </div>
                                 </div>
                                 <!--                                <div class="block block_post" v-if="scope.row.method.toUpperCase() === 'POST' ">-->
                                 <!--                                    <span class="block-method block_method_post block_method_color">POST</span>-->
@@ -290,6 +293,15 @@
                                         title="调试成功"
                                         circle size="mini"
                                         @click="handleTagApi(scope.row.id, 'success')"
+                                    >
+                                    </el-button>
+                                    <el-button
+                                        :disabled="scope.row.cases.length===0"
+                                        type="warning"
+                                        icon="el-icon-refresh"
+                                        :title="scope.row.cases.length>0 ? '同步用例步骤' : '没有被引用,不能同步'"
+                                        circle size="mini"
+                                        @click="handleSyncCaseStep(scope.row.id)"
                                     >
                                     </el-button>
                                 </el-row>
@@ -552,29 +564,47 @@
             },
             handleTagApi(index, tag) {
                 if (tag == "success" || tag == "bug") {
-                    let confirmPromise = Promise.resolve()
                     if (tag == "success") {
                         this.$confirm('是否确定已经调试成功', '提示', {
                             confirmButtonText: '确定',
                             cancelButtonText: '取消',
                             type: 'warning',
-                        })
-                    }
-                    confirmPromise.then(() => {
+                        }).then(() => {
                             this.$api.tagAPI(index, {
                                 tag: tag === "success" ? 1 : 2
                             }).then(resp => {
                                 if (resp.success) {
                                     this.getAPIList();
+
                                 } else {
                                     this.$message.error(resp.msg);
                                 }
                             })
-                        }
-                    )
+                        }).catch(e=>e)
+                    }
                 }
             },
-
+            // api同步用例步骤
+            handleSyncCaseStep(id) {
+                this.$confirm('是否确定把当前api同步到用例步骤', '提示', {
+                    confirmButtonText: '确定',
+                    cancelButtonText: '取消',
+                    type: 'warning',
+                }).then(() => {
+                    this.$api.syncCaseStep(id).then(resp => {
+                        if (resp.success) {
+                            this.getAPIList();
+                            this.$notify.success({
+                                title: '提示',
+                                message: '用例步骤同步成功',
+                                duration: 1500
+                            })
+                        } else {
+                            this.$message.error(resp.msg);
+                        }
+                    })
+                }).catch(e=>e)
+            },
             // 编辑API
             handleRowClick(row) {
                 this.$api.getAPISingle(row.id).then(resp => {
