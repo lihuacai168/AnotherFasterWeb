@@ -104,6 +104,7 @@
                     this.$router.push({name: 'ProjectList'});
                     this.$store.commit("isLogin", resp.token);
                     this.$store.commit("setUser", resp.user);
+                    this.$store.commit("setIsSuperuser",resp.is_superuser);
                     this.$store.commit("setRouterName",'ProjectList');
                     this.setLocalValue("token", resp.token);
                     this.setLocalValue("user", resp.user);

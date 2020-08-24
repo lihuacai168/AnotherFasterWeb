@@ -155,6 +155,7 @@
                             <el-button
                                 size="medium"
                                 type="danger"
+                                :disabled="!is_superuser"
                                 @click="handleDelete(scope.$index, scope.row)">删除
                             </el-button>
                         </template>
@@ -169,9 +170,11 @@
 </template>
 
 <script>
+
     export default {
         data() {
             return {
+                is_superuser: this.$store.state.is_superuser,
                 dialogVisible: false,
                 editVisible: false,
                 projectData: {
