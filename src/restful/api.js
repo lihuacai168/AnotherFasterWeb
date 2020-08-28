@@ -5,7 +5,9 @@ import {Message} from 'element-ui';
 
 
 
-export let baseUrl = "http://localhost:8000";
+// export let baseUrl = "http://localhost:8000";
+export let baseUrl = "http://192.168.17.107:8000";
+
 if( process.env.NODE_ENV === "production" ){
     baseUrl = "http://192.168.17.107:8000";
 }
