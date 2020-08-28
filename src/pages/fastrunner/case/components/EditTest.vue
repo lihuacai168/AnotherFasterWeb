@@ -341,6 +341,7 @@
     import Report from '../../../reports/DebugReport'
 
     export default {
+        name: "EditTest",
         components: {
             draggable,
             HttpRunner,
@@ -377,8 +378,6 @@
             tag: [String,Number],
             search: [String,Number]
         },
-
-        name: "EditTest",
         watch: {
             config() {
 
