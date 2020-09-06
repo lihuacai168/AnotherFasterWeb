@@ -332,7 +332,7 @@
             },
             run: Boolean,
             back: Boolean,
-            node: {
+            pNode: {
                 require: true
             },
             project: {
@@ -359,6 +359,7 @@
                 selectAPI: [],
                 currentRow: '',
                 currentPage: this.listCurrentPage,
+                node: '',
                 apiData: {
                     count: 0,
                     results: []
@@ -380,7 +381,8 @@
             back() {
                 this.getAPIList();
             },
-            node() {
+            pNode() {
+                this.node = this.pNode
                 this.search = '';
                 this.getAPIList();
             },
@@ -402,7 +404,7 @@
                         this.$api.delAllAPI({data: this.selectAPI}).then(resp => {
                             this.getAPIList();
                         })
-                    })
+                    }).catch(e => e)
                 } else {
                     this.$notify.warning({
                         title: '提示',
@@ -432,6 +434,7 @@
             resetSearch() {
                 this.search = "";
                 this.node = "";
+                this.$emit('update:listCurrentPage', 1)
                 // this.tag = "";
                 // this.$emit('update:tag', '');
                 this.$emit('update:visibleTag', '');
