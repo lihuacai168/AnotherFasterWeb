@@ -12,27 +12,26 @@
                     >
                     </el-input>
 
-                    <el-tree
-                        @node-click="handleNodeClick"
-                        :data="dataTree"
-                        node-key="id"
-                        :default-expand-all="false"
-                        :expand-on-click-node="false"
-                        highlight-current
-                        :filter-node-method="filterNode"
-                        ref="tree2"
-                    >
-                            <span class="custom-tree-node"
-                                  slot-scope="{ node, data }"
-                            >
-                                <span><i class="iconfont" v-html="expand"></i>&nbsp;&nbsp;{{ node.label }}</span>
-                            </span>
-                    </el-tree>
-                </div>
-
-            </div>
-
-        </el-aside>
+          <el-tree
+            @node-click="handleNodeClick"
+            :data="dataTree"
+            node-key="id"
+            :default-expand-all="false"
+            :expand-on-click-node="false"
+            highlight-current
+            :filter-node-method="filterNode"
+            ref="tree2"
+          >
+            <span class="custom-tree-node" slot-scope="{ node, data }">
+              <span>
+                <i class="iconfont" v-html="expand"></i>
+                &nbsp;&nbsp;{{ node.label }}
+              </span>
+            </span>
+          </el-tree>
+        </div>
+      </div>
+    </el-aside>
 
         <el-main>
             <div v-show="!editTestStepActivate" class="recordapi__header">
@@ -69,10 +68,10 @@
                                     <i class="el-icon-arrow-down el-icon--right"></i>
                                 </el-button>
                                 <el-dropdown-menu slot="dropdown">
-                                    <el-dropdown-item command="1">成功</el-dropdown-item>
-                                    <el-dropdown-item command="0">未知</el-dropdown-item>
-                                    <el-dropdown-item command="2">失败</el-dropdown-item>
-<!--                                    <el-dropdown-item command="3">自动成功</el-dropdown-item>-->
+                                    <el-dropdown-item command="1">调试成功</el-dropdown-item>
+                                    <el-dropdown-item command="0">还未调试</el-dropdown-item>
+                                    <el-dropdown-item command="2">调试失败</el-dropdown-item>
+                                    <el-dropdown-item command="3">自动成功</el-dropdown-item>
                                     <el-dropdown-item command="">所有</el-dropdown-item>
                                 </el-dropdown-menu>
                             </el-dropdown>
