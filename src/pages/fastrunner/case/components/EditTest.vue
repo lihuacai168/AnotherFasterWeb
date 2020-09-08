@@ -710,7 +710,7 @@
                 if(this.testData.length === 0){
                     this.testData.push({body: {name: this.config, method: 'config'}})
                 }
-                this.testData.push(this.currentAPI);
+                this.currentAPI&&this.testData.push(this.currentAPI);
             },
             allowDrop(event) {
                 event.preventDefault();
