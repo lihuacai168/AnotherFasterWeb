@@ -115,6 +115,7 @@
                         icon="el-icon-delete"
                         circle
                         size="mini"
+                        title="删除所选API"
                         @click="del = !del"
                     ></el-button>
 

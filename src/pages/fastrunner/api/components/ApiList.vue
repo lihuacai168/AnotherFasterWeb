@@ -250,7 +250,8 @@
                                     <el-button
                                         type="info"
                                         icon="el-icon-edit"
-                                        title="编辑API"
+                                        :title="userName === scope.row.creator || isSuperuser ? '编辑' : '只有API创建者才能编辑'"
+                                        :disabled="userName != scope.row.creator && !isSuperuser"
                                         circle size="mini"
                                         @click="handleRowClick(scope.row)"
                                     ></el-button>
@@ -282,7 +283,8 @@
                                     <el-button
                                         type="danger"
                                         icon="el-icon-error"
-                                        title="调试失败"
+                                        :title="userName === scope.row.creator || isSuperuser ? '调试失败' : '只有API创建者才修改状态'"
+                                        :disabled="userName != scope.row.creator && !isSuperuser"
                                         circle size="mini"
                                         @click="handleTagApi(scope.row.id, 'bug')"
                                     >
@@ -290,7 +292,8 @@
                                     <el-button
                                         type="success"
                                         icon="el-icon-check"
-                                        title="调试成功"
+                                        :title="userName === scope.row.creator || isSuperuser ? '调试成功' : '只有API创建者才能修改状态'"
+                                        :disabled="userName != scope.row.creator && !isSuperuser"
                                         circle size="mini"
                                         @click="handleTagApi(scope.row.id, 'success')"
                                     >
@@ -345,6 +348,8 @@
         },
         data() {
             return {
+                isSuperuser: this.$store.state.is_superuser,
+                userName: this.$store.state.user,
                 checked: false,
                 search: '',
                 reportName: '',
