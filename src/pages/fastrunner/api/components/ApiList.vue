@@ -272,14 +272,13 @@
                                         circle size="mini"
                                         @click="handleRunAPI(scope.row.id)"
                                     ></el-button>
-                                    <!--                                    <el-button-->
-                                    <!--                                        type="danger"-->
-                                    <!--                                        icon="el-icon-delete"-->
-                                    <!--                                        title="删除"-->
-                                    <!--                                        circle size="mini"-->
-                                    <!--                                        @click="handleDelApi(scope.row.id)"-->
-                                    <!--                                    >-->
-                                    <!--                                    </el-button>-->
+
+                                    <el-popover
+                                        style="margin-left: 10px"
+                                        trigger="hover"
+                                        >
+                                        <div style="text-align: center">
+
                                     <el-button
                                         type="danger"
                                         icon="el-icon-error"
@@ -299,14 +298,27 @@
                                     >
                                     </el-button>
                                     <el-button
-                                        :disabled="scope.row.cases.length===0"
+                                        type="danger"
+                                        icon="el-icon-delete"
+                                        :title="userName === scope.row.creator || isSuperuser ? '删除' : '只有API创建者才能删除'"
+                                        :disabled="userName != scope.row.creator && !isSuperuser"
+                                        circle size="mini"
+                                        @click="handleDelApi(scope.row.id)"
+                                    >
+                                    </el-button>
+                                    <el-button
+                                        v-show="(userName === scope.row.creator || isSuperuser ) && scope.row.cases.length>0"
+                                        :disabled="userName != scope.row.creator && !isSuperuser"
                                         type="warning"
                                         icon="el-icon-refresh"
-                                        :title="scope.row.cases.length>0 ? '同步用例步骤' : '没有被引用,不能同步'"
+                                        :title="userName === scope.row.creator || isSuperuser ? '同步用例步骤' : '同步用例权限不足'"
                                         circle size="mini"
                                         @click="handleSyncCaseStep(scope.row.id)"
                                     >
                                     </el-button>
+                                            </div>
+                                    <el-button icon="el-icon-more" title="更多" circle size="mini" slot="reference" ></el-button>
+                                    </el-popover>
                                 </el-row>
                             </template>
                         </el-table-column>

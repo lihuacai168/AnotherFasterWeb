@@ -42,7 +42,8 @@
                     </el-dialog>
 
                     <el-button
-                        :disabled="currentNode === '' "
+                        :disabled="currentNode === '' || !isSuperuser"
+                        :title="isSuperuser ? '删除所选分组' : '删除分组权限不足' "
                         type="danger"
                         size="small"
                         icon="el-icon-delete"
@@ -115,7 +116,8 @@
                         icon="el-icon-delete"
                         circle
                         size="mini"
-                        title="删除所选API"
+                        :title="isSuperuser === true ? '批量删除所选API' : '批量删除API权限不足'"
+                        :disabled="!isSuperuser"
                         @click="del = !del"
                     ></el-button>
 
@@ -272,6 +274,7 @@
         },
         data() {
             return {
+                isSuperuser: this.$store.state.is_superuser,
                 configOptions: [],
                 hostOptions: [],
                 // currentConfig: '请选择',
