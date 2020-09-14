@@ -37,7 +37,7 @@
 
         <el-table-column
             label="变量值"
-            width="400">
+            width="375">
             <template slot-scope="scope">
                 <el-input clearable v-model="scope.row.value" placeholder="Value"></el-input>
             </template>
@@ -45,7 +45,7 @@
 
         <el-table-column
             label="内容"
-            width="500">
+            width="375">
             <template slot-scope="scope">
                 <el-input clearable v-model="scope.row.desc" placeholder="变量简要描述"></el-input>
             </template>
