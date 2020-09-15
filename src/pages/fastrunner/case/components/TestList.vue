@@ -140,6 +140,7 @@
 
                         <el-table-column
                             label="用例名称"
+                            width="400"
                         >
                             <template slot-scope="scope">
                                 <div>{{scope.row.name}}</div>
@@ -148,6 +149,7 @@
 
                         <el-table-column
                             label="API个数"
+                            width="100"
                         >
                             <template slot-scope="scope">
                                 <div>{{scope.row.length}} 个</div>
@@ -156,6 +158,7 @@
 
                         <el-table-column
                             label="用例类型"
+                            width="100"
                         >
                             <template slot-scope="scope">
                                 <el-tag v-if="scope.row.tag==='冒烟用例'">{{scope.row.tag}}</el-tag>
@@ -164,9 +167,10 @@
                             </template>
                         </el-table-column>
 
-
                         <el-table-column
                             label="更新时间"
+                            width="200"
+
                         >
                             <template slot-scope="scope">
                                 <div>{{scope.row.update_time|datetimeFormat}}</div>
@@ -175,14 +179,38 @@
                         </el-table-column>
 
                         <el-table-column
+                            label="创建人"
+                            width="100"
+
+                        >
+                            <template slot-scope="scope">
+                                <div>{{scope.row.creator}}</div>
+
+                            </template>
+                        </el-table-column>
+
+                        <el-table-column
+                            label="更新人"
+                            width="100"
+
+                        >
+                            <template slot-scope="scope">
+                                <div>{{scope.row.updater}}</div>
+
+                            </template>
+                        </el-table-column>
+
+                        <el-table-column
+                            label="用例操作"
                         >
                             <template slot-scope="scope">
                                 <el-row v-show="currentRow === scope.row">
                                     <el-button
                                         type="info"
                                         icon="el-icon-edit"
-                                        title="编辑编辑"
                                         circle size="mini"
+                                        :title="userName === scope.row.creator || isSuperuser ? '编辑' : '只有用例创建者才能编辑'"
+                                        :disabled="userName != scope.row.creator && !isSuperuser"
                                         @click="handleEditTest(scope.row.id)"
                                     ></el-button>
 
@@ -206,7 +234,8 @@
                                     <el-button
                                         type="danger"
                                         icon="el-icon-delete"
-                                        title="删除用例"
+                                       :title="userName === scope.row.creator || isSuperuser ? '编辑' : '只有用例创建者才能删除'"
+                                        :disabled="userName != scope.row.creator && !isSuperuser"
                                         circle size="mini"
                                         @click="handleDelTest(scope.row.id)"
                                     >
@@ -215,7 +244,8 @@
                                     <el-button
                                         type="warning"
                                         icon="el-icon-refresh"
-                                        title="同步用例步骤"
+                                        :title="userName === scope.row.creator || isSuperuser ? '编辑' : '只有用例创建者才能同步'"
+                                        :disabled="userName != scope.row.creator && !isSuperuser"
                                         circle size="mini"
                                         @click="handleSyncCaseStep(scope.row.id)"
                                     >
@@ -299,6 +329,8 @@
         },
         data() {
             return {
+                isSuperuser: this.$store.state.is_superuser,
+                userName: this.$store.state.user,
                 search: '',
                 caseNameOrUrl: '',
                 reportName: '',

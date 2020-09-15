@@ -30,10 +30,10 @@
                             <i class="el-icon-arrow-down el-icon--right"></i>
                         </el-button>
                         <el-dropdown-menu slot="dropdown">
-                            <el-dropdown-item command="1">调试成功</el-dropdown-item>
-                            <el-dropdown-item command="0">还未调试</el-dropdown-item>
-                            <el-dropdown-item command="2">调试失败</el-dropdown-item>
-                            <el-dropdown-item command="3">自动成功</el-dropdown-item>
+                            <el-dropdown-item command="1">成功</el-dropdown-item>
+                            <el-dropdown-item command="0">未知</el-dropdown-item>
+                            <el-dropdown-item command="2">失败</el-dropdown-item>
+<!--                            <el-dropdown-item command="3">自动成功</el-dropdown-item>-->
                             <el-dropdown-item command="">所有</el-dropdown-item>
                         </el-dropdown-menu>
                     </el-dropdown>
@@ -250,7 +250,8 @@
                                     <el-button
                                         type="info"
                                         icon="el-icon-edit"
-                                        title="编辑API"
+                                        :title="userName === scope.row.creator || isSuperuser ? '编辑' : '只有API创建者才能编辑'"
+                                        :disabled="userName != scope.row.creator && !isSuperuser"
                                         circle size="mini"
                                         @click="handleRowClick(scope.row)"
                                     ></el-button>
@@ -271,18 +272,18 @@
                                         circle size="mini"
                                         @click="handleRunAPI(scope.row.id)"
                                     ></el-button>
-                                    <!--                                    <el-button-->
-                                    <!--                                        type="danger"-->
-                                    <!--                                        icon="el-icon-delete"-->
-                                    <!--                                        title="删除"-->
-                                    <!--                                        circle size="mini"-->
-                                    <!--                                        @click="handleDelApi(scope.row.id)"-->
-                                    <!--                                    >-->
-                                    <!--                                    </el-button>-->
+
+                                    <el-popover
+                                        style="margin-left: 10px"
+                                        trigger="hover"
+                                        >
+                                        <div style="text-align: center">
+
                                     <el-button
                                         type="danger"
                                         icon="el-icon-error"
-                                        title="调试失败"
+                                        :title="userName === scope.row.creator || isSuperuser ? '调试失败' : '只有API创建者才修改状态'"
+                                        :disabled="userName != scope.row.creator && !isSuperuser"
                                         circle size="mini"
                                         @click="handleTagApi(scope.row.id, 'bug')"
                                     >
@@ -290,20 +291,34 @@
                                     <el-button
                                         type="success"
                                         icon="el-icon-check"
-                                        title="调试成功"
+                                        :title="userName === scope.row.creator || isSuperuser ? '调试成功' : '只有API创建者才能修改状态'"
+                                        :disabled="userName != scope.row.creator && !isSuperuser"
                                         circle size="mini"
                                         @click="handleTagApi(scope.row.id, 'success')"
                                     >
                                     </el-button>
                                     <el-button
-                                        :disabled="scope.row.cases.length===0"
+                                        type="danger"
+                                        icon="el-icon-delete"
+                                        :title="userName === scope.row.creator || isSuperuser ? '删除' : '只有API创建者才能删除'"
+                                        :disabled="userName != scope.row.creator && !isSuperuser"
+                                        circle size="mini"
+                                        @click="handleDelApi(scope.row.id)"
+                                    >
+                                    </el-button>
+                                    <el-button
+                                        v-show="(userName === scope.row.creator || isSuperuser ) && scope.row.cases.length>0"
+                                        :disabled="userName != scope.row.creator && !isSuperuser"
                                         type="warning"
                                         icon="el-icon-refresh"
-                                        :title="scope.row.cases.length>0 ? '同步用例步骤' : '没有被引用,不能同步'"
+                                        :title="userName === scope.row.creator || isSuperuser ? '同步用例步骤' : '同步用例权限不足'"
                                         circle size="mini"
                                         @click="handleSyncCaseStep(scope.row.id)"
                                     >
                                     </el-button>
+                                            </div>
+                                    <el-button icon="el-icon-more" title="更多" circle size="mini" slot="reference" ></el-button>
+                                    </el-popover>
                                 </el-row>
                             </template>
                         </el-table-column>
@@ -332,7 +347,7 @@
             },
             run: Boolean,
             back: Boolean,
-            node: {
+            pNode: {
                 require: true
             },
             project: {
@@ -345,6 +360,8 @@
         },
         data() {
             return {
+                isSuperuser: this.$store.state.is_superuser,
+                userName: this.$store.state.user,
                 checked: false,
                 search: '',
                 reportName: '',
@@ -359,6 +376,7 @@
                 selectAPI: [],
                 currentRow: '',
                 currentPage: this.listCurrentPage,
+                node: '',
                 apiData: {
                     count: 0,
                     results: []
@@ -380,7 +398,8 @@
             back() {
                 this.getAPIList();
             },
-            node() {
+            pNode() {
+                this.node = this.pNode
                 this.search = '';
                 this.getAPIList();
             },
@@ -402,7 +421,7 @@
                         this.$api.delAllAPI({data: this.selectAPI}).then(resp => {
                             this.getAPIList();
                         })
-                    })
+                    }).catch(e => e)
                 } else {
                     this.$notify.warning({
                         title: '提示',
@@ -432,6 +451,7 @@
             resetSearch() {
                 this.search = "";
                 this.node = "";
+                this.$emit('update:listCurrentPage', 1)
                 // this.tag = "";
                 // this.$emit('update:tag', '');
                 this.$emit('update:visibleTag', '');
