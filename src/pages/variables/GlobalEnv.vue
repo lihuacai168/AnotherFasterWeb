@@ -187,6 +187,7 @@
 
 <script>
 export default {
+  name: "GlobalEnv",
   data() {
     return {
       search: "",
@@ -232,6 +233,9 @@ export default {
         ],
       },
     };
+  },
+  mounted() {
+    this.getVariablesList();
   },
   methods: {
     cellMouseEnter(row) {
@@ -370,10 +374,6 @@ export default {
     resetSearch() {
       (this.search = ""), this.getVariablesList();
     },
-  },
-  name: "GlobalEnv",
-  mounted() {
-    this.getVariablesList();
   },
 };
 </script>
