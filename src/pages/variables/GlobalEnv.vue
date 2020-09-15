@@ -7,7 +7,7 @@
             type="primary"
             size="small"
             icon="el-icon-circle-plus-outline"
-            @click="dialogVisible=true"
+            @click="openFormModal('variablesForm', 'dialogVisible')"
           >新增变量</el-button>
 
           <el-button
@@ -343,7 +343,22 @@ export default {
      */
     resetForm(formName, showFlag) {
       this[showFlag] = false;
+
       this.$refs[formName].resetFields();
+      Object.keys(this[formName]).forEach(key => {
+        this[formName][key] = "";
+      });
+    },
+
+    /**
+     * 唤起表单弹窗
+     */
+    openFormModal(formName, showFlag) {
+      Object.keys(this[formName]).forEach(key => {
+        this[formName][key] = "";
+      });
+
+      this[showFlag] = true;
     },
 
     handleEditConfirm(formName) {
