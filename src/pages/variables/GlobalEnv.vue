@@ -182,6 +182,14 @@
                                             @click="handleEditVariables(scope.row)"
                                         ></el-button>
 
+                                        <el-button
+                                            type="success"
+                                            icon="el-icon-document-copy"
+                                            title="复制"
+                                            circle size="mini"
+                                            @click="handleCopyVariables(scope.row)"
+                                        ></el-button>
+
 
                                         <el-button
                                             v-show="variablesData.count !== 0"
@@ -270,6 +278,14 @@
                 };
 
                 this.editdialogVisible = true;
+            },
+
+            handleCopyVariables(row){
+                this.dialogVisible = true
+                this.variablesForm.key = row.key
+                this.variablesForm.value = row.value
+                this.variablesForm.description = row.description
+                this.handleConfirm(this.variablesForm)
             },
 
             handleDelVariables(index) {
