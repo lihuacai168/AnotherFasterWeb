@@ -41,7 +41,7 @@
               </el-form-item>
             </el-form>
             <span slot="footer" class="dialog-footer">
-              <el-button @click="dialogVisible = false">取 消</el-button>
+              <el-button @click="resetForm('variablesForm', 'dialogVisible')">取 消</el-button>
               <el-button type="primary" @click="handleConfirm('variablesForm')">确 定</el-button>
             </span>
           </el-dialog>
@@ -65,7 +65,7 @@
               </el-form-item>
             </el-form>
             <span slot="footer" class="dialog-footer">
-              <el-button @click="editdialogVisible = false">取 消</el-button>
+              <el-button @click="resetForm('editVariablesForm', 'editdialogVisible')">取 消</el-button>
               <el-button type="primary" @click="handleEditConfirm('editVariablesForm')">确 定</el-button>
             </span>
           </el-dialog>
@@ -337,6 +337,14 @@ export default {
           });
         }
       });
+    },
+
+    /**
+     * 表单重置
+     */
+    resetForm(formName, showFlag) {
+      this[showFlag] = false;
+      this.$refs[formName].resetFields();
     },
 
     handleEditConfirm(formName) {
