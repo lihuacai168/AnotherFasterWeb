@@ -262,7 +262,6 @@ export default {
       this.variablesForm.key = row.key;
       this.variablesForm.value = row.value;
       this.variablesForm.description = row.description;
-      this.handleConfirm(this.variablesForm);
     },
 
     handleDelVariables(index) {
