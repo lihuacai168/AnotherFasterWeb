@@ -346,7 +346,9 @@ export default {
 
       this.$refs[formName].resetFields();
       Object.keys(this[formName]).forEach(key => {
-        this[formName][key] = "";
+        if (key !== "project"){
+            this[formName][key] = "";
+        }
       });
     },
 
@@ -355,7 +357,9 @@ export default {
      */
     openFormModal(formName, showFlag) {
       Object.keys(this[formName]).forEach(key => {
-        this[formName][key] = "";
+          if (key !== "project"){
+              this[formName][key] = "";
+        }
       });
 
       this[showFlag] = true;
