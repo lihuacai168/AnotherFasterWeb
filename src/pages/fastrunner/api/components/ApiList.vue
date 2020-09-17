@@ -38,19 +38,21 @@
                         </el-dropdown-menu>
                     </el-dropdown>
                 </div>
-                <div class="recordapi__header--item is-strench">
-                    <el-dropdown @command="rigEnvChangeHandle">
-                        <el-button type="primary">
-                            环境
-                            <i class="el-icon-arrow-down el-icon--right"></i>
-                        </el-button>
-                        <el-dropdown-menu slot="dropdown">
-                            <el-dropdown-item command="0">测试</el-dropdown-item>
-                            <el-dropdown-item command="1">生产</el-dropdown-item>
-                            <el-dropdown-item command="">所有</el-dropdown-item>
-                        </el-dropdown-menu>
-                    </el-dropdown>
-                </div>
+                <!--                            api环境字段暂时不使用-->
+
+<!--                <div class="recordapi__header&#45;&#45;item is-strench">-->
+<!--                    <el-dropdown @command="rigEnvChangeHandle">-->
+<!--                        <el-button type="primary">-->
+<!--                            环境-->
+<!--                            <i class="el-icon-arrow-down el-icon&#45;&#45;right"></i>-->
+<!--                        </el-button>-->
+<!--                        <el-dropdown-menu slot="dropdown">-->
+<!--                            <el-dropdown-item command="0">测试</el-dropdown-item>-->
+<!--                            <el-dropdown-item command="1">生产</el-dropdown-item>-->
+<!--                            <el-dropdown-item command="">所有</el-dropdown-item>-->
+<!--                        </el-dropdown-menu>-->
+<!--                    </el-dropdown>-->
+<!--                </div>-->
 
                 <div class="recordapi__header--item">
                     <el-pagination
