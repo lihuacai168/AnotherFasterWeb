@@ -19,10 +19,10 @@
         <template slot-scope="scope">
           <template v-if="col.key === 'path'">
             {{scope.row.path}}
-            <el-button 
-              type="success" 
-              size="mini" 
-              icon="el-icon-document-copy" 
+            <el-button
+              type="success"
+              size="mini"
+              icon="el-icon-document-copy"
               circle
               @click="handleCopy(scope.row.path)"
             >
@@ -106,7 +106,7 @@ export default {
 
       return escapeArray;
     },
-    
+
     /**
      * 递归转义
      */
@@ -117,7 +117,7 @@ export default {
         Object.keys(originData).forEach(key => {
           let subItem = this.escapeDataToArr({
             originData: originData[key],
-            ancestorPath: parentPath ? ancestorPath + '.' + parentPath : ancestorPath,
+            ancestorPath:  parentPath || parentPath === 0 ? ancestorPath + '.' + parentPath : ancestorPath,
             parentPath: key
           });
 
@@ -135,7 +135,7 @@ export default {
         for (let index = 0; index < originData.length; index += 1) {
           let subItem = this.escapeDataToArr({
             originData: originData[index],
-            ancestorPath: parentPath ? ancestorPath + '.' + parentPath : ancestorPath,
+            ancestorPath: parentPath || parentPath === 0 ? ancestorPath + '.' + parentPath : ancestorPath,
             parentPath: index
           });
 
