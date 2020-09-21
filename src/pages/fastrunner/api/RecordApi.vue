@@ -99,6 +99,8 @@
                         </el-option>
                     </el-select>
 
+
+
                     <el-button
                         v-if="!addAPIFlag"
                         style="margin-left: 20px"
@@ -121,6 +123,14 @@
                         @click="del = !del"
                     ></el-button>
 
+
+                    <el-switch
+                        style="margin-left: 20px"
+                        v-model="onlyMe"
+                        active-color="#13ce66"
+                        inactive-color="#ff4949"
+                        active-text="只看自己">
+                    </el-switch>
 
                 </div>
             </div>
@@ -186,6 +196,7 @@
                     :listCurrentPage.sync="listCurrentPage"
                     :visibleTag.sync="visibleTag"
                     :rigEnv.sync="rigEnv"
+                    :only-me.sync="onlyMe"
                     @click-pager="handleChangePage"
                 >
                 </api-list>
@@ -305,7 +316,8 @@
                 dataTree: [],
                 listCurrentPage: 1,
                 visibleTag: '',
-                rigEnv: ''
+                rigEnv: '',
+                onlyMe: false
             }
         },
         methods: {

@@ -358,7 +358,8 @@
             del: Boolean,
             listCurrentPage: Number,
             visibleTag: [Number, String],
-            rigEnv: [Number, String]
+            rigEnv: [Number, String],
+            onlyMe: Boolean
         },
         data() {
             return {
@@ -436,6 +437,14 @@
             // 因为原本有些函数用到的值是currentPage,所以不能直接修改currentPage的值.
             listCurrentPage(newValue) {
                 this.currentPage = newValue
+            },
+
+            // 监听只看自己按钮的状态
+            onlyMe(){
+                debugger
+                if ((this.currentPage === 1 && this.node === '' && this.search === '' && this.onlyMe === false) === false){
+                    this.getAPIList()
+                }
             }
         },
 
@@ -458,7 +467,12 @@
                 // this.$emit('update:tag', '');
                 this.$emit('update:visibleTag', '');
                 this.$emit('update:rigEnv', '');
+                this.$emit('update:onlyMe', false);
                 this.getAPIList();
+            },
+            handleOnlyMeChange(){
+                this.$emit('update:onlyMe', this.onlyMe);
+                this.getAPIList()
             },
             handleCopyAPI(id, name) {
                 this.$prompt('请输入接口名称', '提示', {
@@ -543,7 +557,8 @@
                             project: this.project,
                             search: this.search,
                             tag: this.visibleTag,
-                            rigEnv: this.rigEnv
+                            rigEnv: this.rigEnv,
+                            onlyMe: this.onlyMe
                         }
                     }).then(res => {
                         this.apiData = res;
@@ -560,7 +575,8 @@
                         project: this.project,
                         search: this.search,
                         tag: this.visibleTag,
-                        rigEnv: this.rigEnv
+                        rigEnv: this.rigEnv,
+                        onlyMe: this.onlyMe
                     }
                 }).then(res => {
                     this.apiData = res;
