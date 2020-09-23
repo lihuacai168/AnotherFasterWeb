@@ -17,6 +17,21 @@
                         </el-input>
                     </el-col>
 
+                    <el-col  :span="2">
+                        <el-dropdown @command="caseTypeChangeHandle">
+                        <el-button type="primary">
+                            类型
+                            <i class="el-icon-arrow-down el-icon--right"></i>
+                        </el-button>
+                        <el-dropdown-menu slot="dropdown">
+                            <el-dropdown-item command="1">冒烟用例</el-dropdown-item>
+                            <el-dropdown-item command="2">集成用例</el-dropdown-item>
+                            <el-dropdown-item command="3">监控脚本</el-dropdown-item>
+                            <el-dropdown-item command="">所有</el-dropdown-item>
+                        </el-dropdown-menu>
+                    </el-dropdown>
+                    </el-col>
+
                     <el-col :span="2">
                         <el-button
                             type="primary"
@@ -24,7 +39,6 @@
                         >重置
                         </el-button>
                     </el-col>
-
 
                     <el-col :span="7">
                         <el-pagination
@@ -357,6 +371,7 @@
                     results: []
                 },
                 currentPage: 1,
+                caseType: ''
             }
         },
 
@@ -493,8 +508,16 @@
                 this.caseNameOrUrl = "",
                 this.search = "",
                 this.node = "",
+                this.caseType = "",
                 this.getTestList()
             },
+
+            caseTypeChangeHandle(command){
+                this.caseType = command
+                debugger
+                this.getTestList()
+            },
+
             getTestList() {
                 this.$api.testList({
                     params: {
@@ -502,7 +525,7 @@
                         node: this.node,
                         search: this.search,
                         caseNameOrUrl: this.caseNameOrUrl,
-
+                        caseType: this.caseType
                     }
                 }).then(resp => {
                     this.testData = resp;
