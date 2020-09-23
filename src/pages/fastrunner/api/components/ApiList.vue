@@ -441,10 +441,13 @@
 
             // 监听只看自己按钮的状态
             onlyMe(){
-                debugger
                 if ((this.currentPage === 1 && this.node === '' && this.search === '' && this.onlyMe === false) === false){
                     this.getAPIList()
                 }
+            },
+
+            search(){
+                  this.getAPIList()
             }
         },
 

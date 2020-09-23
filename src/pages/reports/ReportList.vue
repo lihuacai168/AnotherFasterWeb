@@ -263,6 +263,13 @@
                 }
             }
         },
+
+        watch: {
+            search(){
+             this.getReportList()
+            }
+        },
+
         methods: {
             cellMouseEnter(row) {
                 this.currentRow = row;

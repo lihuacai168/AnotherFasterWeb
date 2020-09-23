@@ -325,6 +325,14 @@
                         duration: 1000
                     })
                 }
+            },
+
+            search(){
+                this.getTestList()
+            },
+
+            caseNameOrUrl(){
+                this.getTestList()
             }
         },
         data() {

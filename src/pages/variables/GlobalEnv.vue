@@ -237,7 +237,14 @@ export default {
   mounted() {
     this.getVariablesList();
   },
-  methods: {
+
+    watch: {
+      search() {
+          this.getVariablesList()
+      }
+    },
+
+    methods: {
     cellMouseEnter(row) {
       this.currentRow = row;
     },
