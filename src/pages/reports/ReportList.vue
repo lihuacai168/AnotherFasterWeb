@@ -27,7 +27,7 @@
                 <div class="report__header--item">
                     <el-dropdown @command="reportStatusChangeHandle">
                         <el-button type="primary">
-                             状态
+                             结果
                             <i class="el-icon-arrow-down el-icon--right"></i>
                         </el-button>
                         <el-dropdown-menu slot="dropdown">
@@ -114,7 +114,9 @@
                         </el-table-column>
 
                         <el-table-column
-                            label="通过状态"
+                            label="结果"
+                            width="60"
+
                         >
                             <template slot-scope="scope">
                                 <div
@@ -127,6 +129,7 @@
 
                         <el-table-column
                             label="测试时间"
+                            width="180"
                         >
                             <template slot-scope="scope">
                                 <div>{{scope.row.time.start_at|timestampToTime}}</div>
@@ -135,7 +138,8 @@
                         </el-table-column>
 
                         <el-table-column
-                            label="持续时间"
+                            label="耗时"
+                            width="100"
                         >
                             <template slot-scope="scope">
                                 <div v-text="scope.row.time.duration.toFixed(3)+' 秒'"></div>
@@ -154,7 +158,7 @@
 
                         <el-table-column
                             width="80"
-                            label="通过个数"
+                            label="通过"
                         >
                             <template slot-scope="scope">
                                 <el-tag type="success"> {{ scope.row.stat.successes }}</el-tag>
@@ -163,7 +167,7 @@
 
                         <el-table-column
                             width="80"
-                            label="失败个数"
+                            label="失败"
                         >
                             <template slot-scope="scope">
                                 <el-tag type="danger">{{ scope.row.stat.failures }}</el-tag>
@@ -172,7 +176,7 @@
 
                         <el-table-column
                             width="80"
-                            label="异常个数"
+                            label="异常"
                         >
                             <template slot-scope="scope">
                                 <el-tag type="warning">{{ scope.row.stat.errors }}</el-tag>
@@ -181,7 +185,7 @@
 
                         <el-table-column
                             width="80"
-                            label="跳过个数"
+                            label="跳过"
                         >
                             <template slot-scope="scope">
                                 <el-tag type="info">{{ scope.row.stat.skipped }}</el-tag>
