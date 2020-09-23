@@ -47,7 +47,7 @@
                                     </div>
                                 </div>
                                 <div class="form-foot">
-                                    <span>没有账户，<router-link to="/fastrunner/register">立即注册</router-link></span>
+                                    <span>注册功能已经关闭，创建用户请联系管理员</span>
                                 </div>
 
                             </div>
