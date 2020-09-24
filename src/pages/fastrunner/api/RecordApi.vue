@@ -132,6 +132,14 @@
                         active-text="只看自己">
                     </el-switch>
 
+                    <el-button
+                        :disabled="!addAPIFlag"
+                        type="text"
+                        style="position: absolute; right: 30px;"
+                        @click="handleBackList"
+                    >返回列表
+                    </el-button>
+
                 </div>
             </div>
         </el-header>
@@ -466,7 +474,11 @@
                     this.$set(data, 'children', []);
                 }
                 data.children.push(newChild);
-            }
+            },
+
+            handleBackList(){
+              this.addAPIFlag = false
+            },
 
         },
         name: "RecordApi",
