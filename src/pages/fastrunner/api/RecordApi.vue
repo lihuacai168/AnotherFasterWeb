@@ -127,6 +127,7 @@
                     <el-switch
                         style="margin-left: 20px"
                         v-model="onlyMe"
+                        v-if="!addAPIFlag"
                         active-color="#13ce66"
                         inactive-color="#ff4949"
                         active-text="只看自己">
