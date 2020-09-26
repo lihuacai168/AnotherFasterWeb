@@ -113,7 +113,7 @@
 
 
                     <el-button
-                        v-if="!addAPIFlag"
+                        v-if="isSuperuser"
                         type="danger"
                         icon="el-icon-delete"
                         circle
