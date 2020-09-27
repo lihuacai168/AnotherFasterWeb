@@ -415,6 +415,10 @@
                     this.testTag = '集成用例';
                     this.testData = JSON.parse(JSON.stringify(this.testStepResp))
                 }
+            },
+
+            search(){
+                this.getAPIList()
             }
         },
 
