@@ -3,21 +3,23 @@
         <el-header style="padding-top: 10px; height: 50px;">
             <div style="overflow: hidden">
                 <el-row :gutter="50">
-                    <el-col :span="5" v-if="testData.count >= 0">
+                    <el-col :span="8"  v-if="testData.count >= 0">
                         <el-input placeholder="请输入用例名称" clearable v-model="search" @keyup.enter.native="getTestList"
-                                  style="width: 280px">
+                                  class="input-with-select"
+                                  style="width: 500px">
                             <el-button slot="append" icon="el-icon-search" @click="getTestList"></el-button>
+
+
+                                <el-select v-model="searchType" slot="prepend" placeholder="用例" @change="searchTypeChangeHandle">
+                                     <el-option label="用例" value="1"></el-option>
+                                     <el-option label="API" value="2"></el-option>
+
+                                </el-select>
+
                         </el-input>
                     </el-col>
 
-                    <el-col :span="5" v-if="testData.count >= 0">
-                        <el-input placeholder="api名称或者url" clearable v-model="caseNameOrUrl"
-                                  @keyup.enter.native="getTestList">
-                            <el-button slot="append" icon="el-icon-search" @click="getTestList"></el-button>
-                        </el-input>
-                    </el-col>
-
-                    <el-col  :span="2">
+                    <el-col  :span="2" style="margin-left: 80px">
                         <el-dropdown @command="caseTypeChangeHandle">
                         <el-button type="primary">
                             类型
@@ -313,7 +315,7 @@
             },
             node() {
                 this.search = '';
-                this.caseNameOrUrl = '';
+                this.searchType = '1';
                 this.getTestList();
             },
 
@@ -345,16 +347,12 @@
                 this.getTestList()
             },
 
-            caseNameOrUrl(){
-                this.getTestList()
-            }
         },
         data() {
             return {
                 isSuperuser: this.$store.state.is_superuser,
                 userName: this.$store.state.user,
                 search: '',
-                caseNameOrUrl: '',
                 reportName: '',
                 asyncs: false,
                 filterText: '',
@@ -371,7 +369,8 @@
                     results: []
                 },
                 currentPage: 1,
-                caseType: ''
+                caseType: '',
+                searchType: '1' // 1：用例名称搜索 2：api名称或者api url
             }
         },
 
@@ -435,7 +434,7 @@
                         project: this.project,
                         node: this.node,
                         search: this.search,
-                        caseNameOrUrl: this.caseNameOrUrl,
+                        searchType: this.searchType,
                     }
                 }).then(resp => {
                     this.testData = resp;
@@ -505,7 +504,7 @@
                 })
             },
             resetSearch() {
-                this.caseNameOrUrl = "",
+                this.searchType = "1",
                 this.search = "",
                 this.node = "",
                 this.caseType = "",
@@ -518,13 +517,19 @@
                 this.getTestList()
             },
 
+            searchTypeChangeHandle(value){
+                this.searchType = value
+                this.getTestList()
+            },
+
+
             getTestList() {
                 this.$api.testList({
                     params: {
                         project: this.project,
                         node: this.node,
                         search: this.search,
-                        caseNameOrUrl: this.caseNameOrUrl,
+                        searchType: this.searchType,
                         caseType: this.caseType
                     }
                 }).then(resp => {
@@ -546,5 +551,8 @@
 </script>
 
 <style scoped>
+    .el-select {
+        width: 80px;
+    }
 
 </style>
