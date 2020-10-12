@@ -127,6 +127,8 @@
                             <el-button
                                 size="medium"
                                 type="primary"
+                                :title="(isSuperuser || userName === scope.row.responsible) ? '编辑项目' : '权限不足，请联系管理员'"
+                                :disabled="!(isSuperuser || userName === scope.row.responsible)"description="这个框不用管他会自动消失的"
                                 @click="handleEdit(scope.$index, scope.row)">编辑
                             </el-button>
 
@@ -155,7 +157,8 @@
                             <el-button
                                 size="medium"
                                 type="danger"
-                                :disabled="!is_superuser"
+                                :title="isSuperuser ? '删除项目' : '权限不足，请联系管理员'"
+                                :disabled="!isSuperuser"
                                 @click="handleDelete(scope.$index, scope.row)">删除
                             </el-button>
                         </template>
@@ -174,7 +177,8 @@
     export default {
         data() {
             return {
-                is_superuser: this.$store.state.is_superuser,
+                isSuperuser: this.$store.state.is_superuser,
+                userName: this.$store.state.user,
                 dialogVisible: false,
                 editVisible: false,
                 projectData: {
