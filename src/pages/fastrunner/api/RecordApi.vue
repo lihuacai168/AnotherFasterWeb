@@ -326,7 +326,7 @@
                 listCurrentPage: 1,
                 visibleTag: '',
                 rigEnv: '',
-                onlyMe: false
+                onlyMe: true
             }
         },
         methods: {

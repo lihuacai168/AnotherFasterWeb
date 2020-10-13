@@ -468,7 +468,7 @@
                 // this.$emit('update:tag', '');
                 this.$emit('update:visibleTag', '');
                 this.$emit('update:rigEnv', '');
-                this.$emit('update:onlyMe', false);
+                this.$emit('update:onlyMe', true);
                 this.getAPIList();
             },
             handleOnlyMeChange(){
