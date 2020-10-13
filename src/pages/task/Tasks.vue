@@ -57,7 +57,7 @@
                             width="240"
                         >
                             <template slot-scope="scope">
-                                <div>{{scope.row.name}}</div>
+                                <div>{{ scope.row.name }}</div>
                             </template>
                         </el-table-column>
 
@@ -67,7 +67,7 @@
                             label="时间配置"
                         >
                             <template slot-scope="scope">
-                                <div>{{scope.row.kwargs.crontab}}</div>
+                                <div>{{ scope.row.kwargs.crontab }}</div>
                             </template>
                         </el-table-column>
 
@@ -76,7 +76,7 @@
                             label="邮件策略"
                         >
                             <template slot-scope="scope">
-                                <div>{{scope.row.kwargs.strategy}}</div>
+                                <div>{{ scope.row.kwargs.strategy }}</div>
 
                             </template>
                         </el-table-column>
@@ -100,7 +100,7 @@
                             label="接收人"
                         >
                             <template slot-scope="scope">
-                                <div>{{scope.row.kwargs.receiver}}</div>
+                                <div>{{ scope.row.kwargs.receiver }}</div>
                             </template>
                         </el-table-column>
                         <el-table-column
@@ -108,7 +108,7 @@
                             label="抄送人"
                         >
                             <template slot-scope="scope">
-                                <div>{{scope.row.kwargs.mail_cc}}</div>
+                                <div>{{ scope.row.kwargs.mail_cc }}</div>
                             </template>
                         </el-table-column>
 
@@ -124,6 +124,14 @@
                                         circle size="mini"
                                         @click="handleEditSchedule(scope.row.id, scope.row)"
                                     ></el-button>
+                                    <el-button
+                                        type="primary"
+                                        icon="el-icon-caret-right"
+                                        title="手动触发任务"
+                                        circle size="mini"
+                                        @click="runTask(scope.row.id)"
+                                    >
+                                    </el-button>
                                     <el-button
                                         type="danger"
                                         icon="el-icon-delete"
@@ -154,132 +162,149 @@
 </template>
 
 <script>
-    import AddTasks from './AddTasks'
+import AddTasks from './AddTasks'
 
-    export default {
-        components: {
-            AddTasks
+export default {
+    components: {
+        AddTasks
+    },
+    data() {
+        return {
+            addTasks: false,
+            currentPage: 1,
+            currentRow: '',
+            tasksData: {
+                count: 0,
+                results: []
+            },
+            ruleForm: {
+                switch: true,
+                crontab: '',
+                strategy: '始终发送',
+                receiver: '',
+                mail_cc: '',
+                name: '',
+                sensitive_keys: '',
+                self_error: '',
+                fail_count: 1,
+                webhook: ''
+            },
+        }
+    },
+    methods: {
+        handleAddTask() {
+            this.addTasks = true;
+            this.scheduleId = '';
+            this.ruleForm = {
+                switch: true,
+                crontab: '',
+                strategy: '始终发送',
+                receiver: '',
+                mail_cc: '',
+                name: '',
+                sensitive_keys: '',
+                self_error: '',
+                fail_count: 1,
+                webhook: ''
+            };
+            this.args = [];
         },
-        data() {
-            return {
-                addTasks: false,
-                currentPage: 1,
-                currentRow: '',
-                tasksData: {
-                    count: 0,
-                    results: []
-                },
-                ruleForm: {
-                    switch: true,
-                    crontab: '',
-                    strategy: '始终发送',
-                    receiver: '',
-                    mail_cc: '',
-                    name: '',
-                    sensitive_keys: '',
-                    self_error: '',
-                    fail_count: 1,
-                    webhook: ''
-                },
+        delTasks(id) {
+            this.$confirm('此操作将永久删除该定时任务，是否继续?', '提示', {
+                confirmButtonText: '确定',
+                cancelButtonText: '取消',
+                type: 'warning',
+            }).then(() => {
+                this.$api.deleteTasks(id).then(resp => {
+                    if (resp.success) {
+                        this.getTaskList();
+                    }
+                })
+            })
+        },
+        runTask(id) {
+            this.$api.runTask(id).then(resp => {
+                if (resp.success) {
+                    this.$message.success({
+                        title: '提示',
+                        message: '任务运行成功',
+                        duration: 2000
+                    })
+                } else {
+                    this.$message.error({
+                        message: resp.msg,
+                        duration: 2000,
+                        center: true
+                    })
+                }
+            })
+        },
+        handleCurrentChange(val) {
+            this.$api.getTaskPaginationBypage({
+                params: {
+                    page: this.currentPage,
+                    project: this.$route.params.id
+                }
+            }).then(resp => {
+                this.tasksData = resp;
+            })
+        },
+        handleEditSchedule(id, index_data) {
+            // debugger;
+            // 激活addTasks组件
+            this.addTasks = true;
+            this.scheduleId = id;
+            this.ruleForm["crontab"] = index_data.kwargs.crontab;
+            this.ruleForm["strategy"] = index_data.kwargs.strategy;
+            this.ruleForm["receiver"] = index_data.kwargs.receiver;
+            this.ruleForm["mail_cc"] = index_data.kwargs.mail_cc;
+            this.ruleForm["fail_count"] = index_data.kwargs.fail_count;
+            this.ruleForm["self_error"] = index_data.kwargs.self_error;
+            this.ruleForm["sensitive_keys"] = index_data.kwargs.sensitive_keys;
+            this.ruleForm["webhook"] = index_data.kwargs.webhook;
+            this.ruleForm["name"] = index_data.name;
+            this.ruleForm["switch"] = index_data.enabled;
+            this.args = index_data.args;
+        },
+        // changeStatus(value) {
+        //     this.getTaskList();
+        //     this.addTasks = value;
+        // },
+        changeStatus(value) {
+            this.getTaskList();
+            this.addTasks = value;
+            this.args = [];
+            this.ruleForm = {
+                switch: true,
+                crontab: '',
+                strategy: '始终发送',
+                receiver: '',
+                mail_cc: '',
+                name: '',
+                self_error: '',
+                fail_count: '',
+                sensitive_keys: '',
+                webhook: ''
             }
         },
-        methods: {
-            handleAddTask() {
-                this.addTasks = true;
-                this.scheduleId = '';
-                this.ruleForm = {
-                    switch: true,
-                    crontab: '',
-                    strategy: '始终发送',
-                    receiver: '',
-                    mail_cc: '',
-                    name: '',
-                    sensitive_keys: '',
-                    self_error: '',
-                    fail_count: 1,
-                    webhook: ''
-                };
-                this.args = [];
-            },
-            delTasks(id) {
-                this.$confirm('此操作将永久删除该定时任务，是否继续?', '提示', {
-                    confirmButtonText: '确定',
-                    cancelButtonText: '取消',
-                    type: 'warning',
-                }).then(() => {
-                    this.$api.deleteTasks(id).then(resp => {
-                        if (resp.success) {
-                            this.getTaskList();
-                        }
-                    })
-                })
-            },
-            handleCurrentChange(val) {
-                this.$api.getTaskPaginationBypage({
-                    params: {
-                        page: this.currentPage,
-                        project: this.$route.params.id
-                    }
-                }).then(resp => {
-                    this.tasksData = resp;
-                })
-            },
-            handleEditSchedule(id, index_data) {
-                // debugger;
-                // 激活addTasks组件
-                this.addTasks = true;
-                this.scheduleId = id;
-                this.ruleForm["crontab"] = index_data.kwargs.crontab;
-                this.ruleForm["strategy"] = index_data.kwargs.strategy;
-                this.ruleForm["receiver"] = index_data.kwargs.receiver;
-                this.ruleForm["mail_cc"] = index_data.kwargs.mail_cc;
-                this.ruleForm["fail_count"] = index_data.kwargs.fail_count;
-                this.ruleForm["self_error"] = index_data.kwargs.self_error;
-                this.ruleForm["sensitive_keys"] = index_data.kwargs.sensitive_keys;
-                this.ruleForm["webhook"] = index_data.kwargs.webhook;
-                this.ruleForm["name"] = index_data.name;
-                this.ruleForm["switch"] = index_data.enabled;
-                this.args = index_data.args;
-            },
-            // changeStatus(value) {
-            //     this.getTaskList();
-            //     this.addTasks = value;
-            // },
-            changeStatus(value) {
-                this.getTaskList();
-                this.addTasks = value;
-                this.args = [];
-                this.ruleForm = {
-                    switch: true,
-                    crontab: '',
-                    strategy: '始终发送',
-                    receiver: '',
-                    mail_cc: '',
-                    name: '',
-                    self_error: '',
-                    fail_count: '',
-                    sensitive_keys: '',
-                    webhook: ''
-                }
-            },
-            getTaskList() {
-                this.$api.taskList({params: {project: this.$route.params.id}}).then(resp => {
-                    this.tasksData = resp
-                })
-            },
-            cellMouseEnter(row) {
-                this.currentRow = row;
-            },
-
-            cellMouseLeave(row) {
-                this.currentRow = '';
-            },
+        getTaskList() {
+            this.$api.taskList({params: {project: this.$route.params.id}}).then(resp => {
+                this.tasksData = resp
+            })
         },
-        name: "Tasks",
-        mounted() {
-            this.getTaskList();
-        }
+        cellMouseEnter(row) {
+            this.currentRow = row;
+        },
+
+        cellMouseLeave(row) {
+            this.currentRow = '';
+        },
+    },
+    name: "Tasks",
+    mounted() {
+        this.getTaskList();
     }
+}
 </script>
 
 <style>
