@@ -225,10 +225,11 @@ export default {
         runTask(id) {
             this.$api.runTask(id).then(resp => {
                 if (resp.success) {
-                    this.$message.success({
+                    this.$message.info({
                         title: '提示',
-                        message: '任务运行成功',
-                        duration: 2000
+                        message: resp.msg,
+                        duration: 2000,
+                        center: true
                     })
                 } else {
                     this.$message.error({
