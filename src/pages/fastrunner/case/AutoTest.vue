@@ -107,6 +107,7 @@
                         icon="el-icon-caret-right"
                         circle
                         size="mini"
+                        title="批量运行用例"
                         @click="run = !run"
                     ></el-button>
 
@@ -117,8 +118,18 @@
                         icon="el-icon-delete"
                         circle
                         size="mini"
+                        title="批量删除用例"
                         @click="del = !del"
                     ></el-button>
+
+                    <el-switch
+                        style="margin-left: 20px"
+                        v-model="onlyMe"
+                        v-if="addTestActivate"
+                        active-color="#13ce66"
+                        inactive-color="#ff4949"
+                        active-text="只看自己">
+                    </el-switch>
 
                     <el-button
                         :disabled="addTestActivate"
@@ -183,6 +194,7 @@
                     :back="back"
                     :run="run"
                     :host="currentHost"
+                    :only-me.sync="onlyMe"
                 >
                 </test-list>
 
@@ -263,7 +275,8 @@
                 configOptions: [],
                 rigEnv: "",
                 tag: "",
-                search: ""
+                search: "",
+                onlyMe: true
             }
         },
         methods: {

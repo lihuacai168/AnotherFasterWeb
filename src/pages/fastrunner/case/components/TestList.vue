@@ -300,7 +300,8 @@
             node: {
                 require: false
             },
-            del: Boolean
+            del: Boolean,
+            onlyMe: Boolean
         },
 
         watch: {
@@ -317,6 +318,11 @@
                 this.search = '';
                 this.searchType = '1';
                 this.getTestList();
+            },
+
+            // 监听只看自己按钮的状态
+            onlyMe(){
+                this.getTestList()
             },
 
             back() {
@@ -435,6 +441,8 @@
                         node: this.node,
                         search: this.search,
                         searchType: this.searchType,
+                        caseType: this.caseType,
+                        onlyMe: this.onlyMe
                     }
                 }).then(resp => {
                     this.testData = resp;
@@ -508,8 +516,10 @@
                 this.search = "",
                 this.node = "",
                 this.caseType = "",
+                this.$emit('update:onlyMe', true),
                 this.getTestList()
             },
+
 
             caseTypeChangeHandle(command){
                 this.caseType = command
@@ -530,7 +540,8 @@
                         node: this.node,
                         search: this.search,
                         searchType: this.searchType,
-                        caseType: this.caseType
+                        caseType: this.caseType,
+                        onlyMe: this.onlyMe
                     }
                 }).then(resp => {
                     this.testData = resp;
