@@ -12,7 +12,7 @@ const OptimizeCSSPlugin = require('optimize-css-assets-webpack-plugin')
 const UglifyJsPlugin = require('uglifyjs-webpack-plugin')
 
 const env = require('../config/prod.env')
-const ZipPlugin = require('zip-webpack-plugin');
+// const ZipPlugin = require('zip-webpack-plugin');
 
 const webpackConfig = merge(baseWebpackConfig, {
     module: {
@@ -29,10 +29,12 @@ const webpackConfig = merge(baseWebpackConfig, {
         chunkFilename: utils.assetsPath('js/[id].[chunkhash].js')
     },
     plugins: [
-        new ZipPlugin({
-            path: path.join(__dirname, '../'),
-            filename: 'dist.zip'
-        }),
+        // 打包时少了index.html和static下面的favicon.ico
+        // new ZipPlugin({
+        //     path: path.join(__dirname, '../'),
+        //     filename: 'dist.zip'
+        // }),
+
         // http://vuejs.github.io/vue-loader/en/workflow/production.html
         new webpack.DefinePlugin({
             'process.env': env
