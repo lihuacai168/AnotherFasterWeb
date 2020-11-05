@@ -93,8 +93,8 @@ export const getProjectDetail = pk => {
     return axios.get('/api/fastrunner/project/' + pk + '/').then(res => res.data)
 };
 
-export const getVisit = pk => {
-    return axios.get('/api/fastrunner/visit/').then(res => res.data)
+export const getVisit = params => {
+    return axios.get('/api/fastrunner/visit/',params).then(res => res.data)
 };
 
 export const getPagination = url => {
