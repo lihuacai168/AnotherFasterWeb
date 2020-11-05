@@ -23,6 +23,11 @@ axios.interceptors.request.use(function (config) {
         // config.url = config.url + "?token=" + store.token;
         // 在请求拦截中，每次请求，都会加上一个Authorization头
         config.headers.Authorization = store.token;
+
+        // 取url地址的第四位作为projectId，如果不存在，默认设置为0
+        let projectId = window.location.pathname.split("/")[3]
+        projectId = projectId ? projectId : 0
+        config.headers['Project'] = projectId
     }
     return config;
 }, function (error) {
@@ -86,6 +91,10 @@ export const getProjectList = params => {
 
 export const getProjectDetail = pk => {
     return axios.get('/api/fastrunner/project/' + pk + '/').then(res => res.data)
+};
+
+export const getVisit = pk => {
+    return axios.get('/api/fastrunner/visit/').then(res => res.data)
 };
 
 export const getPagination = url => {
