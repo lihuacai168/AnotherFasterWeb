@@ -175,7 +175,12 @@
                         tempValue = value;
                         break;
                     case 2:
-                        tempValue = parseInt(value);
+                        // 包含$是引用类型,可以任意类型
+                        if (value.indexOf("$") != -1) {
+                            tempValue = value
+                        } else {
+                            tempValue = parseInt(value);
+                        }
                         break;
                     case 3:
                         tempValue = parseFloat(value);
