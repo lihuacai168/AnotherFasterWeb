@@ -46,8 +46,18 @@
                     </el-button>
                 </div>
 
+                <el-switch
+                    style="margin-left: 20px"
+                    v-model="onlyMe"
+                    active-color="#13ce66"
+                    inactive-color="#ff4949"
+                    active-text="只看自己">
+                </el-switch>
+
                 <div class="report__header--item">
                         <el-button
+                            v-if="isSuperuser"
+                            :title="'删除'"
                             v-show="reportData.count !== 0"
                             style="margin-left: 20px"
                             type="danger"
@@ -250,6 +260,8 @@
                 selectReports: [],
                 currentRow: '',
                 currentPage: 1,
+                onlyMe: true,
+                isSuperuser: this.$store.state.is_superuser,
             // (1, "调试"),
             //     (2, "异步"),
             //     (3, "定时"),
@@ -267,6 +279,10 @@
         watch: {
             search(){
              this.getReportList()
+            },
+
+            onlyMe(){
+                this.getReportList()
             }
         },
 
@@ -303,6 +319,7 @@
                 this.reportType = "";
                 this.reportStatus = "";
                 this.currentPage = 1;
+                this.onlyMe = true;
                 this.getReportList();
             },
             handleCurrentChange(val) {
@@ -362,6 +379,7 @@
                         reportType: this.reportType,
                         reportStatus: this.reportStatus,
                         page: this.currentPage,
+                        onlyMe: this.onlyMe,
                     }
                 }).then(resp => {
                     this.reportData = resp;
