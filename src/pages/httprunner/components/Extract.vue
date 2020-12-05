@@ -27,7 +27,7 @@
 
         <el-table-column
             label="描述"
-            width="200">
+            width="375">
             <template slot-scope="scope">
                 <el-input clearable v-model="scope.row.desc" placeholder="抽取值简要描述"></el-input>
             </template>
