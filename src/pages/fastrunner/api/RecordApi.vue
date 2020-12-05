@@ -111,6 +111,17 @@
                         @click="run = !run"
                     ></el-button>
 
+                    <el-button
+                        v-if="!addAPIFlag && onlyMe && isSelectAPI"
+                        style="margin-left: 20px"
+                        type="success"
+                        icon="el-icon-caret-right"
+                        circle
+                        size="mini"
+                        @click="move = !move"
+                        :title="'移动API'"
+                    ></el-button>
+
 
                     <el-button
                         v-if="isSuperuser"
@@ -202,10 +213,12 @@
                     :del="del"
                     :back="back"
                     :run="run"
+                    :move="move"
                     :listCurrentPage.sync="listCurrentPage"
                     :visibleTag.sync="visibleTag"
                     :rigEnv.sync="rigEnv"
                     :only-me.sync="onlyMe"
+                    :isSelectAPI.sync="isSelectAPI"
                     @click-pager="handleChangePage"
                 >
                 </api-list>
@@ -303,6 +316,7 @@
                 back: false,
                 del: false,
                 run: false,
+                move: false,
                 response: '',
                 nodeForm: {
                     name: '',
@@ -326,7 +340,8 @@
                 listCurrentPage: 1,
                 visibleTag: '',
                 rigEnv: '',
-                onlyMe: true
+                onlyMe: true,
+                isSelectAPI: false
             }
         },
         methods: {

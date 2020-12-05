@@ -253,6 +253,10 @@ export const runAPITree = params => {
     return axios.post('/api/fastrunner/run_api_tree/', params).then(res => res.data)
 };
 
+export const moveAPI = params => {
+    return axios.patch('/api/fastrunner/api/move_api/', params).then(res => res.data)
+};
+
 export const runSingleTestSuite = params => {
     return axios.post('/api/fastrunner/run_testsuite/', params).then(res => res.data)
 };

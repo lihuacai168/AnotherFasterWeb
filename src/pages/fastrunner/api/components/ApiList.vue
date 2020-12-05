@@ -146,6 +146,48 @@
                   </span>
                 </el-dialog>
 
+                <el-dialog
+                    title="Move API"
+                    :visible.sync="dialogTreeMoveAPIVisible"
+                    width="45%"
+                >
+                    <div>
+                        <div style="margin-top: 20px">
+                            <el-input
+                                placeholder="输入节点名称进行过滤"
+                                v-model="filterText"
+                                size="medium"
+                                clearable
+                                prefix-icon="el-icon-search"
+                            >
+                            </el-input>
+
+                            <el-tree
+                                :filter-node-method="filterNode"
+                                :data="dataTree"
+                                show-checkbox
+                                node-key="id"
+                                :expand-on-click-node="false"
+                                check-on-click-node
+                                :check-strictly="true"
+                                :highlight-current="true"
+                                ref="tree"
+                            >
+                            <span class="custom-tree-node"
+                                  slot-scope="{ node, data }"
+                            >
+                                <span><i class="iconfont" v-html="expand"></i>&nbsp;&nbsp;{{ node.label }}</span>
+                            </span>
+                            </el-tree>
+                        </div>
+
+                    </div>
+                    <span slot="footer" class="dialog-footer">
+                    <el-button @click="dialogTreeMoveAPIVisible = false">取 消</el-button>
+                    <el-button type="primary" @click="moveAPI">确 定</el-button>
+                  </span>
+                </el-dialog>
+
 
                 <div style="position: fixed; bottom: 0; right:0; left: 460px; top: 160px">
                     <el-table
@@ -348,6 +390,7 @@
                 require: true
             },
             run: Boolean,
+            move: Boolean,
             back: Boolean,
             pNode: {
                 require: true
@@ -359,7 +402,8 @@
             listCurrentPage: Number,
             visibleTag: [Number, String],
             rigEnv: [Number, String],
-            onlyMe: Boolean
+            onlyMe: Boolean,
+            isSelectAPI: Boolean
         },
         data() {
             return {
@@ -374,6 +418,7 @@
                 expand: '&#xe65f;',
                 dataTree: {},
                 dialogTreeVisible: false,
+                dialogTreeMoveAPIVisible: false,
                 dialogTableVisible: false,
                 summary: {},
                 selectAPI: [],
@@ -396,8 +441,15 @@
             run() {
                 this.asyncs = false;
                 this.reportName = "";
-                this.getTree();
+                this.getTree('run');
             },
+
+            move() {
+                this.asyncs = false;
+                this.reportName = "";
+                this.getTree('move');
+            },
+
             back() {
                 this.getAPIList();
             },
@@ -529,15 +581,65 @@
                     })
                 }
             },
-            getTree() {
+            moveAPI() {
+                this.dialogTreeVisible = false;
+                const relation = this.$refs.tree.getCheckedKeys();
+                let length = relation.length;
+                if (length === 0) {
+                    this.$notify.error({
+                        title: '提示',
+                        message: '请至少选择一个节点',
+                        duration: 1500
+                    });
+                } else if ( length !== 1){
+                    this.$notify.error({
+                        title: '提示',
+                        message: 'API只能移动到一个节点, 现在选了' + length + '个节点',
+                        duration: 1500
+                    });
+                } else {
+                    this.$api.moveAPI({
+                        "project": this.project,
+                        "relation": relation[0],
+                        "api": this.selectAPI
+                    }).then(resp => {
+                        if (resp.success) {
+                            this.$message.success({
+                                message: '移动API成功',
+                                duration: 1500
+                            });
+                            this.dialogTreeMoveAPIVisible = false
+                            this.resetSearch()
+                        } else {
+                            this.$message.error({
+                                message: resp.msg,
+                                duration: 1500
+                            })
+                        }
+                    })
+                }
+            },
+            getTree(showType) {
                 this.$api.getTree(this.$route.params.id, {params: {type: 1}}).then(resp => {
                     this.dataTree = resp.tree;
-                    this.dialogTreeVisible = true;
+                    // run是批量运行api弹窗，其他是批量更新api relation弹窗
+                    if (showType === 'run'){
+                        this.dialogTreeVisible = true;
+                    }else {
+                        this.dialogTreeMoveAPIVisible = this;
+                    }
                 })
             },
 
             handleSelectionChange(val) {
                 this.selectAPI = val;
+                // 更新是否已经选择API, 父组件依赖这个属性来判断是否显示Move API按钮
+                if (this.selectAPI.length > 0){
+                    this.$emit('update:isSelectAPI', true);
+                }else {
+                    this.$emit('update:isSelectAPI', false);
+                }
+
             },
 
             toggleAll() {
