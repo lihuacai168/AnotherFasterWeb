@@ -330,6 +330,7 @@
                         reportType: this.reportType,
                         reportStatus: this.reportStatus,
                         page: this.currentPage,
+                        onlyMe: this.onlyMe,
                     }
                 }).then(resp => {
                     this.reportData = resp;
