@@ -10,6 +10,15 @@
         @cell-mouse-leave="cellMouseLeave"
     >
         <el-table-column
+            fixed
+            label="实际返回值"
+            width="300">
+            <template slot-scope="scope">
+                <el-input clearable v-model="scope.row.actual" placeholder="实际返回值"></el-input>
+            </template>
+        </el-table-column>
+
+        <el-table-column
             label="断言类型"
             width="250">
             <template slot-scope="scope">
@@ -32,14 +41,6 @@
             </template>
         </el-table-column>
 
-        <el-table-column
-            fixed
-            label="实际返回值"
-            width="300">
-            <template slot-scope="scope">
-                <el-input clearable v-model="scope.row.actual" placeholder="实际返回值"></el-input>
-            </template>
-        </el-table-column>
 
         <el-table-column
             label="期望类型"
