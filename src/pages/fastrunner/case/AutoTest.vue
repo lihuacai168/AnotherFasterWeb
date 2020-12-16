@@ -110,8 +110,16 @@
                     >运行用例</el-button>
 
                     <el-button
-                        v-if="addTestActivate"
-                        :disabled="!onlyMe"
+                        :disabled="!isSelectCase"
+                        style="margin-left: 20px"
+                        type="success"
+                        size="mini"
+                        title="移动用例到指定分组"
+                        @click="move = !move"
+                    >移动用例</el-button>
+
+                    <el-button
+                        :disabled="!(onlyMe && isSelectCase)"
                         style="margin-left: 20px"
                         type="danger"
                         icon="el-icon-delete"
@@ -191,8 +199,10 @@
                     v-on:testStep="handleTestStep"
                     :back="back"
                     :run="run"
+                    :move="move"
                     :host="currentHost"
                     :only-me.sync="onlyMe"
+                    :isSelectCase.sync="isSelectCase"
                 >
                 </test-list>
 
@@ -258,6 +268,7 @@
                 back: false,
                 del: false,
                 run: false,
+                move: false,
                 radio: '根节点',
                 addTestActivate: true,
                 currentConfig: '请选择',
@@ -274,7 +285,8 @@
                 rigEnv: "",
                 tag: "",
                 search: "",
-                onlyMe: true
+                onlyMe: true,
+                isSelectCase: false
             }
         },
         methods: {

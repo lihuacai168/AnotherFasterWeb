@@ -137,6 +137,48 @@
                     <el-button type="primary" @click="runTree">确 定</el-button>
                   </span>
                     </el-dialog>
+                    <el-dialog
+                        title="Move Case"
+                        :visible.sync="dialogTreeMoveCaseVisible"
+                        width="45%"
+                        :modal-append-to-body="false"
+                    >
+                        <div>
+                            <div style="margin-top: 20px">
+                                <el-input
+                                    placeholder="输入关键字进行过滤"
+                                    v-model="filterText"
+                                    size="medium"
+                                    clearable
+                                    prefix-icon="el-icon-search"
+                                >
+                                </el-input>
+
+                                <el-tree
+                                    :filter-node-method="filterNode"
+                                    :data="dataTree"
+                                    show-checkbox
+                                    node-key="id"
+                                    :expand-on-click-node="false"
+                                    check-on-click-node
+                                    :check-strictly="true"
+                                    :highlight-current="true"
+                                    ref="tree"
+                                >
+                            <span class="custom-tree-node"
+                                  slot-scope="{ node, data }"
+                            >
+                                <span><i class="iconfont" v-html="expand"></i>&nbsp;&nbsp;{{ node.label }}</span>
+                            </span>
+                                </el-tree>
+                            </div>
+
+                        </div>
+                        <span slot="footer" class="dialog-footer">
+                    <el-button @click="dialogTreeMoveCaseVisible = false">取 消</el-button>
+                    <el-button type="primary" @click="moveCase">确 定</el-button>
+                  </span>
+                    </el-dialog>
                     <el-table
                         highlight-current-row
                         v-loading="loading"
@@ -308,6 +350,8 @@ export default {
 
     props: {
         run: Boolean,
+        //父组件修改move状态，子组件监听move,调用getTree('move')修改dialogTreeMoveCaseVisible状态，激活移动用例弹窗
+        move: Boolean,
         back: Boolean,
         project: {
             require: true
@@ -319,7 +363,8 @@ export default {
             require: false
         },
         del: Boolean,
-        onlyMe: Boolean
+        onlyMe: Boolean,
+        isSelectCase: Boolean
     },
 
     watch: {
@@ -330,8 +375,13 @@ export default {
         run() {
             this.asyncs = false;
             this.reportName = "";
-            this.getTree();
+            this.getTree('run');
         },
+
+        move() {
+                this.getTree('move');
+        },
+
         node() {
             this.search = '';
             this.searchType = '1';
@@ -385,6 +435,7 @@ export default {
             dataTree: {},
             loading: false,
             dialogTableVisible: false,
+            dialogTreeMoveCaseVisible: false,
             selectTest: [],
             summary: {},
             currentRow: '',
@@ -399,10 +450,15 @@ export default {
     },
 
     methods: {
-        getTree() {
+        getTree(showType) {
             this.$api.getTree(this.$route.params.id, {params: {type: 2}}).then(resp => {
                 this.dataTree = resp.tree;
-                this.dialogTreeVisible = true;
+                // run是批量运行case弹窗，其他是批量更新case relation弹窗
+                    if (showType === 'run'){
+                        this.dialogTreeVisible = true;
+                    }else {
+                        this.dialogTreeMoveCaseVisible = true;
+                    }
             })
         },
 
@@ -440,6 +496,45 @@ export default {
                 })
             }
         },
+
+        moveCase() {
+                this.dialogTreeVisible = false;
+                const relation = this.$refs.tree.getCheckedKeys();
+                let length = relation.length;
+                if (length === 0) {
+                    this.$notify.error({
+                        title: '提示',
+                        message: '请至少选择一个节点',
+                        duration: 1500
+                    });
+                } else if ( length !== 1){
+                    this.$notify.error({
+                        title: '提示',
+                        message: 'API只能移动到一个节点, 现在选了' + length + '个节点',
+                        duration: 1500
+                    });
+                } else {
+                    this.$api.moveCase({
+                        "project": this.project,
+                        "relation": relation[0],
+                        "case": this.selectTest
+                    }).then(resp => {
+                        if (resp.success) {
+                            this.$message.success({
+                                message: '移动Case成功',
+                                duration: 1500
+                            });
+                            this.dialogTreeMoveCaseVisible = false
+                            this.resetSearch()
+                        } else {
+                            this.$message.error({
+                                message: resp.msg,
+                                duration: 1500
+                            })
+                        }
+                    })
+                }
+            },
 
         // 同步运行单个用例
         handleRunTest(id, name) {
@@ -522,6 +617,12 @@ export default {
 
         handleSelectionChange(val) {
             this.selectTest = val;
+            // 更新是否已经选择Case, 父组件依赖这个属性来判断是否显示移动用例按钮
+                if (this.selectTest.length > 0){
+                    this.$emit('update:isSelectCase', true);
+                }else {
+                    this.$emit('update:isSelectCase', false);
+                }
         },
 
         handleDelTest(id) {
