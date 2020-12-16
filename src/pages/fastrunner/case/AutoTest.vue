@@ -110,6 +110,7 @@
                     >运行用例</el-button>
 
                     <el-button
+                        v-if="addTestActivate"
                         :disabled="!isSelectCase"
                         style="margin-left: 20px"
                         type="success"
@@ -119,6 +120,7 @@
                     >移动用例</el-button>
 
                     <el-button
+                        v-if="addTestActivate"
                         :disabled="!(onlyMe && isSelectCase)"
                         style="margin-left: 20px"
                         type="danger"

@@ -110,6 +110,7 @@
                     >批量运行</el-button>
 
                     <el-button
+                        v-if="!addAPIFlag"
                         :disabled="!(!addAPIFlag && onlyMe && isSelectAPI)"
                         style="margin-left: 20px"
                         type="success"
