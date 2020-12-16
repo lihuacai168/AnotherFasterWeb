@@ -104,23 +104,21 @@
                         v-if="addTestActivate"
                         style="margin-left: 20px"
                         type="primary"
-                        icon="el-icon-caret-right"
-                        circle
                         size="mini"
                         title="批量运行用例"
                         @click="run = !run"
-                    ></el-button>
+                    >运行用例</el-button>
 
                     <el-button
                         v-if="addTestActivate"
+                        :disabled="!onlyMe"
                         style="margin-left: 20px"
                         type="danger"
                         icon="el-icon-delete"
-                        circle
                         size="mini"
                         title="批量删除用例"
                         @click="del = !del"
-                    ></el-button>
+                    >删除用例</el-button>
 
                     <el-switch
                         style="margin-left: 20px"
