@@ -105,22 +105,18 @@
                         v-if="!addAPIFlag"
                         style="margin-left: 20px"
                         type="primary"
-                        icon="el-icon-caret-right"
-                        circle
                         size="mini"
                         @click="run = !run"
-                    ></el-button>
+                    >批量运行</el-button>
 
                     <el-button
-                        v-if="!addAPIFlag && onlyMe && isSelectAPI"
+                        :disabled="!(!addAPIFlag && onlyMe && isSelectAPI)"
                         style="margin-left: 20px"
                         type="success"
-                        icon="el-icon-caret-right"
-                        circle
                         size="mini"
                         @click="move = !move"
-                        :title="'移动API'"
-                    ></el-button>
+                        :title="'移动API到指定分组'"
+                    >移动API</el-button>
 
 
                     <el-button
