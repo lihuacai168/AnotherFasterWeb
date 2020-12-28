@@ -17,10 +17,7 @@ axios.defaults.withCredentials = true;
 axios.defaults.baseURL = baseUrl;
 
 axios.interceptors.request.use(function (config) {
-    if (config.url.indexOf("/api/fastrunner/project/?cursor=") !== -1 ) {
-    }
-    else if (!config.url.startsWith("/api/user/")) {
-        // config.url = config.url + "?token=" + store.token;
+     if (!config.url.startsWith("/api/user/")) {
         // 在请求拦截中，每次请求，都会加上一个Authorization头
         config.headers.Authorization = store.token;
 
