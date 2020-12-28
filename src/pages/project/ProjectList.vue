@@ -6,6 +6,8 @@
                     <el-button type="primary"
                                size="small"
                                icon="el-icon-circle-plus"
+                               :title="isSuperuser ? '添加项目' : '权限不足，请联系管理员'"
+                               :disabled="!isSuperuser"
                                @click="dialogVisible = true">
                         添加项目
                     </el-button>
