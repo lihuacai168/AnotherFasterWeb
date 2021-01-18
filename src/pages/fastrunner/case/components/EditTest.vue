@@ -471,6 +471,14 @@
                 if (this.testData[0].body.method === "config") {
                     length -= 1;
                 }
+                if (this.testData[0].body.name === "请选择") {
+                    this.$notify.warning({
+                        title: '提示',
+                        duration: 2000,
+                        message: '测试用例必须包含配置'
+                    });
+                    return
+                }
                 this.$api.addTestCase({
                     length: length,
                     project: this.project,
