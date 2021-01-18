@@ -162,7 +162,11 @@
                         type: 'warning',
                     }).then(() => {
                         this.$api.delAllConfig({data: this.selectConfig}).then(resp => {
-                            this.getConfigList();
+                            if (resp.success) {
+                                this.getConfigList();
+                            } else {
+                                this.$message.error(resp.msg);
+                            }
                         })
                     })
                 } else {
