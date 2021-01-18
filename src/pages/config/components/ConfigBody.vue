@@ -157,13 +157,13 @@
                         if (resp.success) {
                             this.$message.success({
                                 message: '配置添加成功',
-                                duration: 1000
+                                duration: this.$store.state.duration
                             });
                             this.$emit("addSuccess");
                         } else {
                             this.$message.error({
                                 message: resp.msg,
-                                duration: 1000
+                                duration: this.$store.state.duration
                             })
                         }
                     })
@@ -184,13 +184,13 @@
                         if (resp.success) {
                             this.$message.success({
                                 message: '配置更新成功',
-                                duration: 1000
+                                duration: this.$store.state.duration
                             });
                             this.$emit("addSuccess");
                         } else {
                             this.$message.error({
                                 message: resp.msg,
-                                duration: 1000
+                                duration: this.$store.state.duration
                             })
                         }
                     })

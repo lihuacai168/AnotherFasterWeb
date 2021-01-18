@@ -169,7 +169,7 @@
                     this.$notify.warning({
                         title: '提示',
                         message: '请至少勾选一个配置',
-                        duration: 1000
+                        duration: this.$store.state.duration
                     })
                 }
             }

@@ -328,13 +328,13 @@
                 this.$notify({
                     message: resp,
                     type: 'success',
-                    duration: 1000
+                    duration: this.$store.state.duration
                 });
             },
             failure(resp) {
                 this.$notify.error({
                     message: resp,
-                    duration: 1000
+                    duration: this.$store.state.duration
                 });
             },
             getDataBaseList() {

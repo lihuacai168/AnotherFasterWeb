@@ -481,7 +481,7 @@
                     this.$notify.warning({
                         title: '提示',
                         message: '请至少选择一个接口',
-                        duration: 1000
+                        duration: this.$store.state.duration
                     })
                 }
             },

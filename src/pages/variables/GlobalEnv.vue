@@ -320,7 +320,7 @@ export default {
         this.$notify.warning({
           title: "提示",
           message: "请至少勾选一个全局变量",
-          duration: 1000,
+          duration: this.$store.state.duration,
         });
       }
     },
@@ -333,7 +333,7 @@ export default {
             if (!resp.success) {
               this.$message.info({
                 message: resp.msg,
-                duration: 1000,
+                duration: this.$store.state.duration,
               });
             } else {
               this.variablesForm.key = "";
@@ -382,7 +382,7 @@ export default {
               if (!resp.success) {
                 this.$message.info({
                   message: resp.msg,
-                  duration: 1000,
+                  duration: this.$store.state.duration,
                 });
               } else {
                 this.getVariablesList();

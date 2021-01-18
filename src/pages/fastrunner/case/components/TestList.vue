@@ -412,7 +412,7 @@ export default {
                 this.$notify.warning({
                     title: '提示',
                     message: '请至少选择一个用例集',
-                    duration: 1000
+                    duration: this.$store.state.duration
                 })
             }
         },

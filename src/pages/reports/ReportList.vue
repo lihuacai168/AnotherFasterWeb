@@ -368,7 +368,7 @@
                     this.$notify.warning({
                         title: '提示',
                         message: '请至少勾选一个测试报告',
-                        duration: 1000
+                        duration: this.$store.state.duration
                     })
                 }
             },

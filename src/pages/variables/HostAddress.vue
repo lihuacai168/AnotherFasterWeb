@@ -268,7 +268,7 @@
                             if (!resp.success) {
                                 this.$message.info({
                                     message: resp.msg,
-                                    duration: 1000
+                                    duration: this.$store.state.duration
                                 })
                             } else {
                                 this.variablesForm.name = '';
@@ -290,7 +290,7 @@
                             if (!resp.success) {
                                 this.$message.info({
                                     message: resp.msg,
-                                    duration: 1000
+                                    duration: this.$store.state.duration
                                 })
                             } else {
                                 this.getHostIPList();

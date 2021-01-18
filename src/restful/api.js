@@ -45,20 +45,20 @@ axios.interceptors.response.use(function (response) {
         if (error.response.status === 500) {
             Message.error({
                 message: '服务器内部异常, 请检查',
-                duration: 1000
+                duration: this.$store.state.duration
             })
         }
         if (error.response.status === 403) {
             Message.error({
                 message: error.response.data.msg,
-                duration: 1000
+                duration: this.$store.state.duration
             })
         }
     }
     catch (e) {
         Message.error({
             message: '服务器连接超时，请重试',
-            duration: 1000
+            duration: this.$store.state.duration
         })
     }
 });

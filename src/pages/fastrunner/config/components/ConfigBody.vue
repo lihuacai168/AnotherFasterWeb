@@ -180,7 +180,7 @@
                         } else {
                             this.$message.error({
                                 message: resp.msg,
-                                duration: 1000
+                                duration: this.$store.state.duration
                             })
                         }
                     })
@@ -204,7 +204,7 @@
                         } else {
                             this.$message.error({
                                 message: resp.msg,
-                                duration: 1000
+                                duration: this.$store.state.duration
                             })
                         }
                     })

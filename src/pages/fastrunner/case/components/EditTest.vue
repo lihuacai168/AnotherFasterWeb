@@ -437,7 +437,7 @@
                 if (this.testName === '' || this.testName.length > 100) {
                     this.$notify.warning({
                         title: '提示',
-                        duration: 1000,
+                        duration: this.$store.state.duration,
                         message: '用例集名称必填，不能超过100个字符'
                     });
                     return false
@@ -446,7 +446,7 @@
                 if (this.testData.length === 0) {
                     this.$notify.warning({
                         title: '提示',
-                        duration: 1000,
+                        duration: this.$store.state.duration,
                         message: '测试用例集至少包含一个接口'
                     });
                     return false
@@ -455,7 +455,7 @@
                 if (this.testData[0].body.method === "config" && this.testData.length === 1) {
                     this.$notify.warning({
                         title: '提示',
-                        duration: 1000,
+                        duration: this.$store.state.duration,
                         message: '测试用例集至少包含一个接口'
                     });
                     return false
@@ -493,7 +493,7 @@
                         this.$message({
                             message: resp.msg,
                             type: 'error',
-                            duration: 1000
+                            duration: this.$store.state.duration
                         });
                     }
                 })
@@ -518,7 +518,7 @@
                         this.$message({
                             message: resp.msg,
                             type: 'error',
-                            duration: 1000
+                            duration: this.$store.state.duration
                         });
                     }
                 })

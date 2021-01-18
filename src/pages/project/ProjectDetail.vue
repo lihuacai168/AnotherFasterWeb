@@ -105,13 +105,13 @@ export default {
             this.$notify({
                 message: resp["msg"],
                 type: 'success',
-                duration: 1000
+                duration: this.$store.state.duration
             });
         },
         failure(resp) {
             this.$notify.error({
                 message: resp.msg,
-                duration: 1000
+                duration: this.$store.state.duration
             });
         },
 
