@@ -126,13 +126,20 @@
                         <el-table-column
                             label="结果"
                             width="60"
-
                         >
                             <template slot-scope="scope">
                                 <div
                                     :class="{'pass': scope.row.success, 'fail':!scope.row.success}"
                                     v-text="scope.row.success === true ? '通过' :'失败'"
                                 ></div>
+                            </template>
+                        </el-table-column>
+                        <el-table-column
+                            label="创建人"
+                            width="80"
+                        >
+                            <template slot-scope="scope">
+                               <div>{{scope.row.creator}}</div>
                             </template>
                         </el-table-column>
 
@@ -193,28 +200,28 @@
                             </template>
                         </el-table-column>
 
-                        <el-table-column
-                            width="80"
-                            label="跳过"
-                        >
-                            <template slot-scope="scope">
-                                <el-tag type="info">{{ scope.row.stat.skipped }}</el-tag>
-                            </template>
-                        </el-table-column>
+<!--                        <el-table-column-->
+<!--                            width="80"-->
+<!--                            label="跳过"-->
+<!--                        >-->
+<!--                            <template slot-scope="scope">-->
+<!--                                <el-tag type="info">{{ scope.row.stat.skipped }}</el-tag>-->
+<!--                            </template>-->
+<!--                        </el-table-column>-->
 
-                        <el-table-column
-                            label="系统信息"
-                        >
-                            <template slot-scope="scope">
-                                <el-popover trigger="hover" placement="top">
-                                    <p>HttpRunner: {{ scope.row.platform.httprunner_version }}</p>
-                                    <p>Platform: {{ scope.row.platform.platform }}</p>
-                                    <div slot="reference" class="name-wrapper">
-                                        <el-tag size="medium">{{ scope.row.platform.python_version }}</el-tag>
-                                    </div>
-                                </el-popover>
-                            </template>
-                        </el-table-column>
+<!--                        <el-table-column-->
+<!--                            label="系统信息"-->
+<!--                        >-->
+<!--                            <template slot-scope="scope">-->
+<!--                                <el-popover trigger="hover" placement="top">-->
+<!--                                    <p>HttpRunner: {{ scope.row.platform.httprunner_version }}</p>-->
+<!--                                    <p>Platform: {{ scope.row.platform.platform }}</p>-->
+<!--                                    <div slot="reference" class="name-wrapper">-->
+<!--                                        <el-tag size="medium">{{ scope.row.platform.python_version }}</el-tag>-->
+<!--                                    </div>-->
+<!--                                </el-popover>-->
+<!--                            </template>-->
+<!--                        </el-table-column>-->
 
 
                         <el-table-column>
