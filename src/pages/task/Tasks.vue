@@ -88,9 +88,9 @@
                         >
                             <template slot-scope="scope">
                                 <el-switch
-                                    disabled
                                     v-model="scope.row.enabled"
                                     active-color="#13ce66"
+                                    @change="handleSwitchChange(scope.row.id, scope.row.enabled)"
                                     inactive-color="#ff4949">
                                 </el-switch>
                             </template>
@@ -248,6 +248,15 @@ export default {
                 }
             }).then(resp => {
                 this.tasksData = resp;
+            })
+        },
+        handleSwitchChange(id, val) {
+            this.$api.patchTask(id,{'switch': val}).then( resp => {
+                if(resp.success) {
+                    this.$notify.success('更新定时任务成功');
+                }else{
+                    this.$notify.success('更新定时任务失败');
+                }
             })
         },
         handleEditSchedule(id, index_data) {
