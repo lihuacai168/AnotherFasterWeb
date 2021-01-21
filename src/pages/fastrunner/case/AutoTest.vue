@@ -68,7 +68,7 @@
                         :disabled="buttonActivate"
                     >添加用例
                     </el-button>
-                    &nbsp环境:
+                    &nbspHosts:
                     <el-select
                         placeholder="请选择"
                         size="small"

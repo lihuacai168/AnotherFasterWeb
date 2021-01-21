@@ -43,7 +43,7 @@
                     {name: "测试用例", url: "AutoTest", code: "&#xe6da;"},
                     {name: "配置管理", url: "RecordConfig", code: "&#xee32;"},
                     {name: "全局变量", url: "GlobalEnv", code: "&#xe692;"},
-                    {name: "域名管理", url: "HostIP", code: "&#xe609;"},
+                    {name: "Hosts管理", url: "HostIP", code: "&#xe609;"},
                     {name: "驱动代码", url: "DebugTalk", code: "&#xe7ca;"},
                     {name: "定时任务", url: "Task", code: "&#xe61e;"},
                     {name: "历史报告", url: "Reports", code: "&#xe66e;"}

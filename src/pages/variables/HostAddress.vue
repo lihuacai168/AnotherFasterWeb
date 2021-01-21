@@ -9,11 +9,11 @@
                         size="small"
                         icon="el-icon-circle-plus-outline"
                         @click="dialogVisible=true"
-                    >新增环境
+                    >新增Hosts
                     </el-button>
 
                     <el-dialog
-                        title="添加环境"
+                        title="添加Hosts"
                         :visible.sync="dialogVisible"
                         width="35%"
                         align="center"
@@ -24,10 +24,10 @@
                             ref="variablesForm"
                             label-width="100px"
                             class="project">
-                            <el-form-item label="环境名" prop="name">
-                                <el-input resize v-model="variablesForm.name" clearable placeholder="请输入环境名"></el-input>
+                            <el-form-item label="Hosts名" prop="name">
+                                <el-input resize v-model="variablesForm.name" clearable placeholder="请输入Hosts名"></el-input>
                             </el-form-item>
-                            <el-form-item label="IP列表" prop="value">
+                            <el-form-item label="IP域名映射" prop="value">
                                 <el-input
                                     v-model="variablesForm.value"
                                     type="textarea"
@@ -45,7 +45,7 @@
                     </el-dialog>
 
                     <el-dialog
-                        title="编辑环境"
+                        title="编辑Hosts"
                         :visible.sync="editdialogVisible"
                         width="35%"
                         align="center"
@@ -56,11 +56,11 @@
                             ref="editVariablesForm"
                             label-width="100px"
                             class="project">
-                            <el-form-item label="环境名" prop="name">
+                            <el-form-item label="Hosts名" prop="name">
                                 <el-input resize v-model="editVariablesForm.name" clearable
-                                          placeholder="请输入环境名"></el-input>
+                                          placeholder="请输入Hosts名"></el-input>
                             </el-form-item>
-                            <el-form-item label="IP列表" prop="value">
+                            <el-form-item label="IP域名映射" prop="value">
                                 <el-input
                                     v-model="editVariablesForm.value"
                                     type="textarea"
@@ -111,7 +111,7 @@
                             @cell-mouse-leave="cellMouseLeave"
                         >
                             <el-table-column
-                                label="环境名"
+                                label="Hosts名"
                             >
                                 <template slot-scope="scope">
                                     <div>{{scope.row.name}}</div>
@@ -119,7 +119,7 @@
                             </el-table-column>
 
                             <el-table-column
-                                label="Host列表"
+                                label="IP域名映射表"
                             >
                                 <template slot-scope="scope">
                                     <el-input

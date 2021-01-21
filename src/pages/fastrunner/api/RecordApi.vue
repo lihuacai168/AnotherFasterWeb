@@ -70,10 +70,11 @@
                         @click="initResponse = true"
                     >添加接口
                     </el-button>
-                    &nbsp环境:
+                    &nbspHosts:
                     <el-select
                         placeholder="请选择"
                         size="small"
+                        style=“width:100%”
                         tyle="margin-left: -6px"
                         v-model="currentHost"
                     >
