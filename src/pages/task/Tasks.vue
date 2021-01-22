@@ -266,6 +266,7 @@ export default {
                 }else{
                     this.$notify.success('更新定时任务失败');
                 }
+                this.getTaskList()
             })
         },
         handleEditSchedule(id, index_data) {
