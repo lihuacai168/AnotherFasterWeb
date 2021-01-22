@@ -49,20 +49,20 @@ Vue.filter("timestampToTime", function (timestamp) {
     let date = new Date(timestamp * 1000);
     const Y = date.getFullYear() + '-';
 
-    const month = date.getMonth() + 1;
-    const M = (month < 10 ? '0' + month : month) + '-';
+    const month = date.getMonth();
+    const M = (month + 1 < 10 ? '0' + month : month) + '-';
 
-    const days = date.getDate() + 1;
-    const D = (days < 10 ? '0' + days : days) + ' ';
+    const days = date.getDate();
+    const D = (days + 1 < 10 ? '0' + days : days) + ' ';
 
-    const hours = date.getHours() + 1;
-    const h = (hours < 10 ? '0' + hours : hours) + ':';
+    const hours = date.getHours();
+    const h = (hours + 1 < 10 ? '0' + hours : hours) + ':';
 
-    const minutes = date.getMinutes() + 1;
-    const m = (minutes < 10 ? '0' + minutes : minutes) + ':';
+    const minutes = date.getMinutes();
+    const m = (minutes + 1 < 10 ? '0' + minutes : minutes) + ':';
 
-    const seconds = date.getSeconds() + 1;
-    const s = seconds < 10 ? '0' + seconds : seconds;
+    const seconds = date.getSeconds();
+    const s = seconds + 1 < 10 ? '0' + seconds : seconds;
 
     return Y + M + D + h + m + s;
 });
