@@ -72,6 +72,15 @@
                         </el-table-column>
 
                         <el-table-column
+                            width="170"
+                            label="下次执行时间"
+                        >
+                            <template slot-scope="scope">
+                                <div>{{ scope.row.kwargs.next_execute_time ? scope.row.kwargs.next_execute_time:''|timestampToTime}}</div>
+                            </template>
+                        </el-table-column>
+
+                        <el-table-column
                             width="100"
                             label="邮件策略"
                         >
