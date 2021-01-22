@@ -49,8 +49,9 @@ Vue.filter("timestampToTime", function (timestamp) {
     let date = new Date(timestamp * 1000);
     const Y = date.getFullYear() + '-';
 
-    const month = date.getMonth();
-    const M = (month + 1 < 10 ? '0' + month : month) + '-';
+    // js的月份从0开始
+    const month = date.getMonth() + 1;
+    const M = (month < 10 ? '0' + month : month) + '-';
 
     const days = date.getDate();
     const D = (days + 1 < 10 ? '0' + days : days) + ' ';
