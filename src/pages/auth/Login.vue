@@ -23,7 +23,7 @@
                 </el-col>
                 <el-col :span="24">
                     <div>
-                        <div id="form-title">FasterRunner</div>
+                        <div id="form-title">{{this.$store.state.FasterRunner}}自动化测试平台</div>
                         <form id="submit-form">
                             <div id="form-content">
                                 <div id="form-msg">登录账号</div>

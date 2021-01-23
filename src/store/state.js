@@ -4,4 +4,5 @@ export default {
     user: null,
     is_superuser: false,
     duration: 2000,
+    FasterRunner: process.env.FasterRunner
 }
