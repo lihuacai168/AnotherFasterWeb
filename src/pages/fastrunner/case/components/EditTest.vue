@@ -626,7 +626,7 @@
                 })
             },
             resetSearch(){
-                this.node = "";
+                this.currentNode = '',
                 this.$emit('update:search', '');
                 this.$emit('update:tag', '');
                 this.$emit('update:rigEnv', '');
