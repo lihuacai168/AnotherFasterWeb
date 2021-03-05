@@ -104,20 +104,36 @@
                                 </el-switch>
                             </template>
                         </el-table-column>
+<!--                        <el-table-column-->
+<!--                            width="320"-->
+<!--                            label="接收人"-->
+<!--                        >-->
+<!--                            <template slot-scope="scope">-->
+<!--                                <div>{{ scope.row.kwargs.receiver }}</div>-->
+<!--                            </template>-->
+<!--                        </el-table-column>-->
+<!--                        <el-table-column-->
+<!--                            width="320"-->
+<!--                            label="抄送人"-->
+<!--                        >-->
+<!--                            <template slot-scope="scope">-->
+<!--                                <div>{{ scope.row.kwargs.mail_cc }}</div>-->
+<!--                            </template>-->
+<!--                        </el-table-column>-->
                         <el-table-column
-                            width="320"
-                            label="接收人"
+                            width="80"
+                            label="更新人"
                         >
                             <template slot-scope="scope">
-                                <div>{{ scope.row.kwargs.receiver }}</div>
+                                <div>{{ scope.row.kwargs.updater }}</div>
                             </template>
                         </el-table-column>
                         <el-table-column
-                            width="320"
-                            label="抄送人"
+                            width="80"
+                            label="创建人"
                         >
                             <template slot-scope="scope">
-                                <div>{{ scope.row.kwargs.mail_cc }}</div>
+                                <div>{{ scope.row.kwargs.creator }}</div>
                             </template>
                         </el-table-column>
 
@@ -284,6 +300,8 @@ export default {
             this.ruleForm["webhook"] = index_data.kwargs.webhook;
             this.ruleForm["name"] = index_data.name;
             this.ruleForm["switch"] = index_data.enabled;
+            this.ruleForm["updater"] = this.$store.state.user;
+            this.ruleForm["creator"] = index_data.kwargs.creator;
             this.args = index_data.args;
         },
         // changeStatus(value) {
@@ -304,7 +322,7 @@ export default {
                 self_error: '',
                 fail_count: '',
                 sensitive_keys: '',
-                webhook: ''
+                webhook: '',
             }
         },
         getTaskList() {

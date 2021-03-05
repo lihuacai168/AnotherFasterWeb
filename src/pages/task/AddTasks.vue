@@ -22,7 +22,7 @@
                                 <el-switch v-model="ruleForm.switch"></el-switch>
                             </el-form-item>
 
-                            <el-form-item label="邮件策略" prop="strategy">
+                            <el-form-item label="通知策略" prop="strategy">
                                 <el-radio-group v-model="ruleForm.strategy">
                                     <el-radio label="始终发送"></el-radio>
                                     <el-radio label="仅失败发送"></el-radio>
@@ -30,15 +30,15 @@
                                 </el-radio-group>
                             </el-form-item>
 
-                            <el-form-item label="邮件接收人列表" prop="receiver">
-                                <el-input type="textarea" v-model="ruleForm.receiver"
-                                          placeholder="多个接收人以;分隔" clearable></el-input>
-                            </el-form-item>
-
-                            <el-form-item label="邮件抄送人列表" prop="mail_cc">
-                                <el-input type="textarea" v-model="ruleForm.mail_cc"
-                                          placeholder="多个抄送人以;分隔" clearable></el-input>
-                            </el-form-item>
+<!--                            <el-form-item label="邮件接收人列表" prop="receiver">-->
+<!--                                <el-input type="textarea" v-model="ruleForm.receiver"-->
+<!--                                          placeholder="多个接收人以;分隔" clearable></el-input>-->
+<!--                            </el-form-item>-->
+<!---->
+<!--                            <el-form-item label="邮件抄送人列表" prop="mail_cc">-->
+<!--                                <el-input type="textarea" v-model="ruleForm.mail_cc"-->
+<!--                                          placeholder="多个抄送人以;分隔" clearable></el-input>-->
+<!--                            </el-form-item>-->
 
                             <el-form-item label="webhook" prop="webhook">
                                 <el-input type="text" v-model="ruleForm.webhook"
