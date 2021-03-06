@@ -82,7 +82,7 @@
 
                         <el-table-column
                             width="100"
-                            label="邮件策略"
+                            label="通知策略"
                         >
                             <template slot-scope="scope">
                                 <div>{{ scope.row.kwargs.strategy }}</div>
