@@ -193,6 +193,7 @@
             <el-main style="padding: 0;">
                 <api-body
                     v-show="addAPIFlag"
+                    :isSaveAs="isSaveAs"
                     :nodeId="currentNode.id"
                     :project="$route.params.id"
                     :response="response"
@@ -339,7 +340,8 @@
                 visibleTag: '',
                 rigEnv: '',
                 onlyMe: true,
-                isSelectAPI: false
+                isSelectAPI: false,
+                isSaveAs: false,
             }
         },
         methods: {
@@ -351,11 +353,13 @@
                 this.visibleTag = '';
                 this.back = !this.back;
                 this.addAPIFlag = false;
+                this.isSaveAs = false;
             },
 
             handleAPI(response) {
                 this.addAPIFlag = true;
                 this.response = response;
+                this.isSaveAs = true;
             },
 
             handleChangePage(val) {
@@ -461,6 +465,7 @@
                 this.listCurrentPage = 1;
                 this.visibleTag = '';
                 this.addAPIFlag = false;
+                this.isSaveAs = false;
                 this.currentNode = node;
                 this.data = data;
                 this.rigEnv = '';
@@ -492,6 +497,7 @@
 
             handleBackList(){
               this.addAPIFlag = false
+              this.isSaveAs = false
             },
 
         },

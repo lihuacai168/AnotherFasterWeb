@@ -14,8 +14,8 @@
                 <el-button
                     slot="append"
                     type="primary"
-                    :title="userName === creator || isSuperuser ? '保存' : '只有API创建者才能更新'"
-                    :disabled="userName != creator && !isSuperuser"
+                    :title="userName === creator || isSuperuser || !isSaveAs ? '保存' : '只有API创建者才能更新'"
+                    :disabled="userName != creator && !isSuperuser && isSaveAs"
                     @click="save = !save"
                 >Save
                 </el-button>
@@ -191,7 +191,8 @@
             },
             response: {
                 require: false
-            }
+            },
+            isSaveAs: Boolean
         },
         methods: {
             reverseStatus() {
