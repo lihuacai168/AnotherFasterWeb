@@ -10,14 +10,23 @@
                 >
                     <template slot="prepend">接口信息录入</template>
 
-                    <el-button
-                        slot="append"
-                        type="success"
-                        plain
-                        @click="save = !save"
-                    >Save
-                    </el-button>
                 </el-input>
+                <el-button
+                    slot="append"
+                    type="primary"
+                    :title="userName === creator || isSuperuser ? '保存' : '只有API创建者才能更新'"
+                    :disabled="userName != creator && !isSuperuser"
+                    @click="save = !save"
+                >Save
+                </el-button>
+
+                <el-button
+                    slot="append"
+                    type="success"
+                    :title="'另存为'"
+                    @click="handleSaveAs"
+                >Save As
+                </el-button>
 
                 <el-button
                     type="primary"
@@ -219,7 +228,10 @@
                     this.run = false;
                 }
             },
-
+            handleSaveAs(){
+                this.save = !this.save;
+                this.id = '';
+            },
             validateData() {
                 if (this.url === '') {
                     this.$notify.error({
@@ -295,6 +307,7 @@
 
             addAPI() {
                 if (this.validateData()) {
+
                     this.$api.addAPI({
                         header: this.header,
                         request: this.request,
@@ -306,9 +319,9 @@
                         method: this.method,
                         name: this.name,
                         times: this.times,
-                        nodeId: this.nodeId,
-                        project: this.project,
-
+                        // 另存为时，使用response的值
+                        nodeId: this.response.relation || this.nodeId,
+                        project: this.response.project || this.project,
                     }).then(resp => {
                         if (resp.success) {
                             this.$emit('addSuccess');
@@ -330,15 +343,19 @@
                 this.url = this.response.body.url;
                 this.times = this.response.body.times;
                 this.id = this.response.id;
+                this.creator = this.response.creator;
             }
         },
         data() {
             return {
+                isSuperuser: this.$store.state.is_superuser,
+                userName: this.$store.state.user,
                 loading: false,
                 times: 1,
                 name: '',
                 url: '',
                 id: '',
+                creator: '',
                 header: [],
                 request: [],
                 extract: [],

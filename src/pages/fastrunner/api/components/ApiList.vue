@@ -294,8 +294,6 @@
                                     <el-button
                                         type="info"
                                         icon="el-icon-edit"
-                                        :title="userName === scope.row.creator || isSuperuser ? '编辑' : '只有API创建者才能编辑'"
-                                        :disabled="userName != scope.row.creator && !isSuperuser"
                                         circle size="mini"
                                         @click="handleRowClick(scope.row)"
                                     ></el-button>
