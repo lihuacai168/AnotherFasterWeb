@@ -119,8 +119,6 @@ export default {
             const pk = this.$route.params.id;
             this.$api.getProjectDetail(pk).then(res => {
                 this.projectInfo = res
-                debugger
-                console.log("projectInfo " + this.projectInfo)
             })
         }
     },

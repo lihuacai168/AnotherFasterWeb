@@ -41,6 +41,7 @@
                       </span>
                     </el-dialog>
 
+
                     <el-button
                         :disabled="currentNode === '' || !isSuperuser"
                         :title="isSuperuser ? '删除所选分组' : '删除分组权限不足' "
@@ -70,6 +71,34 @@
                         @click="initResponse = true"
                     >添加接口
                     </el-button>
+
+                    <el-button
+                        v-show="userName === projectInfo.responsible || isSuperuser"
+                        type="primary"
+                        size="small"
+                        icon="el-icon-circle-plus-outline"
+                        @click="importYAPIdialogVisible = true"
+                    >导入接口
+                    </el-button>
+
+                    <el-dialog v-bind="$attrs" v-on="$listeners" @close="onCloseYAPIdialog" title="导入YAPI接口"  align="center"
+                               :visible.sync="importYAPIdialogVisible">
+                        <el-form ref="elForm" :model="YAPIformData" :rules="rules" size="medium" label-width="100px">
+                             <el-form-item label="YAPI的地址" prop="yapi_base_url">
+                             <el-input v-model="YAPIformData.yapi_base_url" placeholder="http://yapi.xxx.com" clearable
+                                       :style="{width: '100%'}"></el-input>
+                        </el-form-item>
+                    <el-form-item label="token" prop="yapi_openapi_token">
+                     <el-input v-model="YAPIformData.yapi_openapi_token" placeholder="yapi项目的openapi token" clearable
+                         :style="{width: '100%'}"></el-input>
+                     </el-form-item>
+              </el-form>
+          <div slot="footer">
+            <el-button @click="importYAPIdialogVisible = false">取消</el-button>
+            <el-button type="primary" @click="handleConfirmYAPI">确定</el-button>
+          </div>
+        </el-dialog>
+
                     &nbspHosts:
                     <el-select
                         placeholder="请选择"
@@ -307,6 +336,8 @@
         data() {
             return {
                 isSuperuser: this.$store.state.is_superuser,
+                userName: this.$store.state.user,
+                projectInfo: {},
                 configOptions: [],
                 hostOptions: [],
                 // currentConfig: '请选择',
@@ -321,16 +352,28 @@
                     name: '',
                 },
                 rules: {
+                    yapi_base_url: [{
+                        required: true,
+                        message: 'yapi的openapi url',
+                        trigger: 'blur'
+                    }],
+                     yapi_openapi_token: [{
+                        required: true,
+                        message: 'yapi的openapi token',
+                        trigger: 'blur'
+                    }],
                     name: [
                         {required: true, message: '请输入节点名称', trigger: 'blur'},
                         {min: 1, max: 50, message: '最多不超过50个字符', trigger: 'blur'}
-                    ]
+                    ],
+
                 },
                 radio: '根节点',
                 addAPIFlag: false,
                 treeId: '',
                 maxId: '',
                 dialogVisible: false,
+                importYAPIdialogVisible: false,
                 currentNode: '',
                 data: '',
                 filterText: '',
@@ -342,6 +385,10 @@
                 onlyMe: true,
                 isSelectAPI: false,
                 isSaveAs: false,
+                YAPIformData: {
+                    yapi_base_url: '',
+                    yapi_openapi_token: '',
+                },
             }
         },
         methods: {
@@ -500,12 +547,63 @@
               this.isSaveAs = false
             },
 
+            getProjectDetail() {
+            const pk = this.$route.params.id;
+            this.$api.getProjectDetail(pk).then(res => {
+                this.projectInfo = res
+                this.YAPIformData = {
+                    'yapi_base_url': res.yapi_base_url,
+                    'yapi_openapi_token': res.yapi_openapi_token
+                }
+             })
+            },
+
+            onCloseYAPIdialog(){
+               this.YAPIformData = {
+                    yapi_base_url: '',
+                    yapi_openapi_token: '',
+                }
+            },
+
+            handleConfirmYAPI() {
+            this.$refs['elForm'].validate(valid => {
+                if (!valid) return
+                const project_id = this.$route.params.id;
+                this.$api.addYAPI(project_id, {
+                        "yapi_openapi_token": this.YAPIformData.yapi_openapi_token,
+                        "yapi_base_url": this.YAPIformData.yapi_base_url
+                }).then(resp => {
+                        this.$message.info({
+                            title: '提示',
+                            message: '导入比较消耗时间，请耐心等待~',
+                            duration: this.$store.state.duration
+                        })
+                        this.importYAPIdialogVisible = false
+                        if (resp.success) {
+                            this.$notify.success({
+                                title: '提示',
+                                message: resp.msg,
+                                duration: this.$store.state.duration
+                            })
+                            this.getTree()
+                            this.onlyMe = false
+                        } else {
+                            this.$message.error({
+                                message: resp.msg,
+                                duration: this.$store.state.duration
+                            })
+                        }
+                    })
+            })
+    },
+
         },
         name: "RecordApi",
         mounted() {
             this.getTree();
             this.getConfig();
             this.getHost();
+            this.getProjectDetail();
         }
     }
 </script>

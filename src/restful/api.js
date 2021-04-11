@@ -134,6 +134,10 @@ export const updateAPI = (url, params) => {
     return axios.patch('/api/fastrunner/api/' + url + '/', params).then(res => res.data)
 };
 
+export const addYAPI = (project_id, params) => {
+    return axios.post('/api/fastrunner/yapi/' + project_id + '/', params).then(res => res.data)
+};
+
 export const apiList = params => {
     return axios.get('/api/fastrunner/api/', params).then(res => res.data)
 };

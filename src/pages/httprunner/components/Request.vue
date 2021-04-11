@@ -22,6 +22,7 @@
                 @cell-mouse-leave="cellMouseLeave"
                 v-show="dataType !== 'json' "
             >
+                <!--Request params-->
                 <el-table-column
                     label="请求Key"
                     width="250">
@@ -29,7 +30,7 @@
                         <el-input clearable v-model="scope.row.key" placeholder="Key"></el-input>
                     </template>
                 </el-table-column>
-
+                <!--Request 表单-->
                 <el-table-column
                     v-if="dataType === 'data' "
                     label="类型"
@@ -130,7 +131,7 @@
                 </el-table-column>
             </el-table>
 
-
+            <!--Request json-->
             <editor v-model="jsonData"
                     @init="editorInit"
                     lang="json"
