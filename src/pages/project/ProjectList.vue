@@ -48,9 +48,19 @@
                             <el-form-item label="项目名称" prop="name">
                                 <el-input v-model="projectForm.name" clearable></el-input>
                             </el-form-item>
+
                             <el-form-item label="项目描述" prop="desc">
                                 <el-input v-model="projectForm.desc" clearable></el-input>
                             </el-form-item>
+
+                            <el-form-item label="YAPI地址" prop="yapi_base_url">
+                                <el-input v-model="projectForm.yapi_base_url" clearable></el-input>
+                            </el-form-item>
+
+                            <el-form-item label="YAPI token" prop="yapi_openapi_token">
+                                <el-input v-model="projectForm.yapi_openapi_token" clearable></el-input>
+                            </el-form-item>
+
                         </el-form>
                         <span slot="footer" class="dialog-footer">
                         <el-button @click="dialogVisible = false">取 消</el-button>
@@ -150,6 +160,14 @@
                                     <el-form-item label="项目描述" prop="desc">
                                         <el-input v-model="projectForm.desc" clearable></el-input>
                                     </el-form-item>
+
+                                    <el-form-item label="YAPI地址" prop="yapi_base_url">
+                                        <el-input v-model="projectForm.yapi_base_url" clearable></el-input>
+                                    </el-form-item>
+
+                                    <el-form-item label="YAPI token" prop="yapi_openapi_token">
+                                        <el-input v-model="projectForm.yapi_openapi_token" clearable></el-input>
+                                    </el-form-item>
                                 </el-form>
                                 <span slot="footer" class="dialog-footer">
                         <el-button @click="editVisible = false">取 消</el-button>
@@ -190,7 +208,9 @@
                     name: '',
                     desc: '',
                     responsible: this.$store.state.user,
-                    id: ''
+                    id: '',
+                    yapi_base_url: '',
+                    yapi_openapi_token: '',
                 },
                 rules: {
                     name: [
@@ -200,6 +220,12 @@
                     desc: [
                         {required: true, message: '简要描述下该项目', trigger: 'blur'},
                         {min: 1, max: 100, message: '最多不超过100个字符', trigger: 'blur'}
+                    ],
+                    yapi_base_url: [
+                        {required: false, message: 'YAPI openapi的url', trigger: 'blur'},
+                    ],
+                    yapi_openapi_token: [
+                        {required: false, message: 'YAPI openapi的token', trigger: 'blur'}
                     ]
                 }
             }
@@ -215,6 +241,8 @@
                 this.projectForm.name = row['name'];
                 this.projectForm.desc = row['desc'];
                 this.projectForm.id = row['id'];
+                this.projectForm.yapi_base_url = row['yapi_base_url'];
+                this.projectForm.yapi_openapi_token = row['yapi_openapi_token'];
             },
             handleDelete(index, row) {
                 this.$confirm('此操作将永久删除该项目, 是否继续?', '提示', {
@@ -255,6 +283,8 @@
                             this.projectForm.name = '';
                             this.projectForm.desc = '';
                             this.projectForm.id = '';
+                            this.projectForm.yapi_openapi_token = '';
+                            this.projectForm.yapi_base_url = '';
                         })
                     } else {
                         if (this.projectForm.id !== '') {
