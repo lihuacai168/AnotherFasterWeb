@@ -81,21 +81,24 @@
                     >导入接口
                     </el-button>
 
-                    <el-dialog v-bind="$attrs" v-on="$listeners" @close="onCloseYAPIdialog" title="导入YAPI接口"  align="center"
+                    <el-dialog  width="30%"  title="导入YAPI接口"  align="center"
                                :visible.sync="importYAPIdialogVisible">
                         <el-form ref="elForm" :model="YAPIformData" :rules="rules" size="medium" label-width="100px">
                              <el-form-item label="YAPI的地址" prop="yapi_base_url">
-                             <el-input v-model="YAPIformData.yapi_base_url" placeholder="http://yapi.xxx.com" clearable
+                             <el-input v-model="YAPIformData.yapi_base_url" readonly placeholder="http://yapi.xxx.com" clearable
                                        :style="{width: '100%'}"></el-input>
                         </el-form-item>
                     <el-form-item label="token" prop="yapi_openapi_token">
-                     <el-input v-model="YAPIformData.yapi_openapi_token" placeholder="yapi项目的openapi token" clearable
+                     <el-input v-model="YAPIformData.yapi_openapi_token" readonly placeholder="yapi项目的openapi token" clearable
                          :style="{width: '100%'}"></el-input>
                      </el-form-item>
               </el-form>
           <div slot="footer">
             <el-button @click="importYAPIdialogVisible = false">取消</el-button>
-            <el-button type="primary" @click="handleConfirmYAPI">确定</el-button>
+            <el-button type="primary" @click="handleConfirmYAPI"
+                       :title="YAPIformData.yapi_openapi_token === YAPIformDataDefaultValue || YAPIformData.yapi_base_url === YAPIformDataDefaultValue ? '配置正确带能导入' : '导入YAPI分组和接口'"
+                       :disabled="YAPIformData.yapi_openapi_token === YAPIformDataDefaultValue || YAPIformData.yapi_base_url === YAPIformDataDefaultValue">
+                导入</el-button>
           </div>
         </el-dialog>
 
@@ -334,6 +337,7 @@
             },
         },
         data() {
+            const YAPIformDataDefaultValue = '请到项目详情编辑'
             return {
                 isSuperuser: this.$store.state.is_superuser,
                 userName: this.$store.state.user,
@@ -385,9 +389,10 @@
                 onlyMe: true,
                 isSelectAPI: false,
                 isSaveAs: false,
+                YAPIformDataDefaultValue: YAPIformDataDefaultValue,
                 YAPIformData: {
-                    yapi_base_url: '',
-                    yapi_openapi_token: '',
+                    yapi_base_url: YAPIformDataDefaultValue,
+                    yapi_openapi_token: YAPIformDataDefaultValue,
                 },
             }
         },
@@ -551,19 +556,15 @@
             const pk = this.$route.params.id;
             this.$api.getProjectDetail(pk).then(res => {
                 this.projectInfo = res
-                this.YAPIformData = {
-                    'yapi_base_url': res.yapi_base_url,
-                    'yapi_openapi_token': res.yapi_openapi_token
+                if(res.yapi_base_url !== ''){
+                   this.YAPIformData.yapi_base_url = res.yapi_base_url
+                }
+                if(res.yapi_openapi_token !== ''){
+                   this.YAPIformData.yapi_openapi_token = res.yapi_openapi_token
                 }
              })
             },
 
-            onCloseYAPIdialog(){
-               this.YAPIformData = {
-                    yapi_base_url: '',
-                    yapi_openapi_token: '',
-                }
-            },
 
             handleConfirmYAPI() {
             this.$refs['elForm'].validate(valid => {
