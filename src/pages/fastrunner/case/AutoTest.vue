@@ -56,7 +56,7 @@
                         type="info"
                         size="small"
                         icon="el-icon-edit-outline"
-                        @click="renameNode"
+                        @click="renameNode(currentNode)"
                     >重命名
                     </el-button>
 
@@ -336,12 +336,13 @@
                     }
                 })
             },
-            renameNode() {
+            renameNode(nodeObj) {
                 this.$prompt('请输入节点名', '提示', {
                     confirmButtonText: '确定',
                     cancelButtonText: '取消',
                     inputPattern: /\S/,
-                    inputErrorMessage: '节点名称不能为空'
+                    inputErrorMessage: '节点名称不能为空',
+                    inputValue: nodeObj.label
                 }).then(({value}) => {
                     const parent = this.data.parent;
                     const children = parent.data.children || parent.data;
