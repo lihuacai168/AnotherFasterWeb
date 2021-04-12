@@ -570,15 +570,12 @@
             this.$refs['elForm'].validate(valid => {
                 if (!valid) return
                 const project_id = this.$route.params.id;
-                this.$api.addYAPI(project_id, {
-                        "yapi_openapi_token": this.YAPIformData.yapi_openapi_token,
-                        "yapi_base_url": this.YAPIformData.yapi_base_url
-                }).then(resp => {
-                        this.$message.info({
+                this.$message.info({
                             title: '提示',
                             message: '导入比较消耗时间，请耐心等待~',
                             duration: this.$store.state.duration
-                        })
+                })
+                this.$api.addYAPI(project_id).then(resp => {
                         this.importYAPIdialogVisible = false
                         if (resp.success) {
                             this.$notify.success({
@@ -587,6 +584,8 @@
                                 duration: this.$store.state.duration
                             })
                             this.getTree()
+                            // 重置tree节点，触发子组件更新apiList
+                            this.currentNode = ''
                             this.onlyMe = false
                         } else {
                             this.$message.error({
