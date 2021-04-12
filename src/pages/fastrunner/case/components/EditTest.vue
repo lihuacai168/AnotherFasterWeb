@@ -83,7 +83,7 @@
                     <div class="recordapi__header" :style="{flex:1}">
                         <div class="recordapi__header--item">
                             <el-input
-                                style="width: 540px; text-align: center"
+                                style="width: 500px; text-align: center"
                                 placeholder="请输入测试用例名称"
                                 v-model="testName"
                                 clearable
@@ -98,15 +98,16 @@
                                     ></el-option>
 
                                 </el-select>
-                                <el-button
-                                    slot="append"
-                                    type="success"
-                                    plain
-                                    @click="handleClickSave"
-                                >Save
-                                </el-button>
                             </el-input>
                         </div>
+
+                        <el-button
+                            slot="append"
+                            type="success"
+                            @click="handleClickSave"
+                            >Save
+                        </el-button>
+
                         <div class="recordapi__header--item">
                             <el-button
                                 type="primary"
