@@ -63,7 +63,7 @@
 
                         </el-form>
                         <span slot="footer" class="dialog-footer">
-                        <el-button @click="dialogVisible = false">取 消</el-button>
+                        <el-button @click="closeAddDialog">取 消</el-button>
                         <el-button type="primary" @click="handleConfirm('projectForm')">确 定</el-button>
                       </span>
                     </el-dialog>
@@ -170,7 +170,7 @@
                                     </el-form-item>
                                 </el-form>
                                 <span slot="footer" class="dialog-footer">
-                        <el-button @click="editVisible = false">取 消</el-button>
+                        <el-button @click="closeEditDialog">取 消</el-button>
                         <el-button type="primary" @click="handleConfirm('projectForm')">确 定</el-button>
                       </span>
                             </el-dialog>
@@ -272,6 +272,7 @@
                         } else {
                             obj = this.$api.updateProject(this.projectForm);
                         }
+
                         obj.then(resp => {
                             if (resp.success) {
                                 this.success(resp);
@@ -279,12 +280,7 @@
                             } else {
                                 this.failure(resp);
                             }
-
-                            this.projectForm.name = '';
-                            this.projectForm.desc = '';
-                            this.projectForm.id = '';
-                            this.projectForm.yapi_openapi_token = '';
-                            this.projectForm.yapi_base_url = '';
+                            this.resetProjectForm()
                         })
                     } else {
                         if (this.projectForm.id !== '') {
@@ -319,6 +315,21 @@
                 this.$api.getPagination(url).then(resp => {
                     this.projectData = resp;
                 })
+            },
+            closeEditDialog() {
+                this.editVisible = false
+                this.resetProjectForm()
+            },
+            closeAddDialog(){
+                this.dialogVisible = false
+                this.resetProjectForm()
+            },
+            resetProjectForm() {
+                this.projectForm.name = '';
+                this.projectForm.desc = '';
+                this.projectForm.id = '';
+                this.projectForm.yapi_openapi_token = '';
+                this.projectForm.yapi_base_url = '';
             },
         },
         mounted() {
