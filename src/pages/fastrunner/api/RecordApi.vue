@@ -509,6 +509,7 @@
                         this.append(this.currentNode);
                         this.updateTree(false);
                         this.dialogVisible = false;
+                        this.nodeForm.name = ''
                     }
                 });
             },
