@@ -14,6 +14,7 @@
     "axios": "^0.18.0",
     "echarts": "^4.9.0",
     "element-ui": "^2.13.0",
+    "sass-loader": "^11.0.1",
     "vue": "^2.5.2",
     "vue-loader": "^13.7.3",
     "vue-monaco-editor": "0.0.19",

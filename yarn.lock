@@ -62,6 +62,16 @@ ajv@^6.1.0:
     json-schema-traverse "^0.4.1"
     uri-js "^4.2.2"
 
+ajv@^6.12.6:
+  version "6.12.6"
+  resolved "https://registry.npm.taobao.org/ajv/download/ajv-6.12.6.tgz?cache=0&sync_timestamp=1618159990556&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2Fajv%2Fdownload%2Fajv-6.12.6.tgz#baf5a62e802b07d977034586f8c3baf5adf26df4"
+  integrity sha1-uvWmLoArB9l3A0WG+MO69a3ybfQ=
+  dependencies:
+    fast-deep-equal "^3.1.1"
+    fast-json-stable-stringify "^2.0.0"
+    json-schema-traverse "^0.4.1"
+    uri-js "^4.2.2"
+
 align-text@^0.1.1, align-text@^0.1.3:
   version "0.1.4"
   resolved "http://116.62.214.124:4873/align-text/-/align-text-0.1.4.tgz#0cd90a561093f35d0a99256c22b7069433fad117"
@@ -3828,6 +3838,11 @@ kind-of@^6.0.0, kind-of@^6.0.2:
   resolved "http://116.62.214.124:4873/kind-of/-/kind-of-6.0.3.tgz#07c05034a6c349fa06e24fa35aa76db4580ce4dd"
   integrity sha1-B8BQNKbDSfoG4k+jWqdttFgM5N0=
 
+klona@^2.0.4:
+  version "2.0.4"
+  resolved "https://registry.npm.taobao.org/klona/download/klona-2.0.4.tgz#7bb1e3affb0cb8624547ef7e8f6708ea2e39dfc0"
+  integrity sha1-e7Hjr/sMuGJFR+9+j2cI6i4538A=
+
 last-call-webpack-plugin@^2.1.2:
   version "2.1.2"
   resolved "http://116.62.214.124:4873/last-call-webpack-plugin/-/last-call-webpack-plugin-2.1.2.tgz#ad80c6e310998294d2ed2180a68e9589e4768c44"
@@ -4244,7 +4259,7 @@ negotiator@0.6.2:
   resolved "http://116.62.214.124:4873/negotiator/-/negotiator-0.6.2.tgz#feacf7ccf525a77ae9634436a64883ffeca346fb"
   integrity sha1-/qz3zPUlp3rpY0Q2pkiD/+yjRvs=
 
-neo-async@^2.5.0:
+neo-async@^2.5.0, neo-async@^2.6.2:
   version "2.6.2"
   resolved "http://116.62.214.124:4873/neo-async/-/neo-async-2.6.2.tgz#b4aafb93e3aeb2d8174ca53cf163ab7d7308305f"
   integrity sha1-tKr7k+OustgXTKU88WOrfXMIMF8=
@@ -5900,6 +5915,14 @@ safe-regex@^1.1.0:
   resolved "http://116.62.214.124:4873/safer-buffer/-/safer-buffer-2.1.2.tgz#44fa161b0187b9549dd84bb91802f9bd8385cd6a"
   integrity sha1-RPoWGwGHuVSd2Eu5GAL5vYOFzWo=
 
+sass-loader@^11.0.1:
+  version "11.0.1"
+  resolved "https://registry.npm.taobao.org/sass-loader/download/sass-loader-11.0.1.tgz?cache=0&sync_timestamp=1612804482397&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2Fsass-loader%2Fdownload%2Fsass-loader-11.0.1.tgz#8672f896593466573b904f47693e0695368e38c9"
+  integrity sha1-hnL4llk0Zlc7kE9HaT4GlTaOOMk=
+  dependencies:
+    klona "^2.0.4"
+    neo-async "^2.6.2"
+
 sax@~1.2.1, sax@~1.2.4:
   version "1.2.4"
   resolved "http://116.62.214.124:4873/sax/-/sax-1.2.4.tgz#2816234e2378bddc4e5354fab5caa895df7100d9"
@@ -6900,7 +6923,7 @@ vue-style-loader@^3.0.0, vue-style-loader@^3.0.1:
     hash-sum "^1.0.2"
     loader-utils "^1.0.2"
 
-vue-template-compiler@^2.2.6, vue-template-compiler@^2.6.11:
+vue-template-compiler@^2.2.6, vue-template-compiler@^2.5.2:
   version "2.6.12"
   resolved "http://116.62.214.124:4873/vue-template-compiler/-/vue-template-compiler-2.6.12.tgz#947ed7196744c8a5285ebe1233fe960437fcc57e"
   integrity sha1-lH7XGWdEyKUoXr4SM/6WBDf8xX4=
@@ -6920,9 +6943,9 @@ vue2-ace-editor@0.0.11:
   dependencies:
     brace "^0.11.0"
 
-vue@^2.1.0, vue@^2.2.6, vue@^2.6.11:
+vue@^2.1.0, vue@^2.2.6, vue@^2.5.2:
   version "2.6.12"
-  resolved "http://116.62.214.124:4873/vue/-/vue-2.6.12.tgz#f5ebd4fa6bd2869403e29a896aed4904456c9123"
+  resolved "https://registry.npm.taobao.org/vue/download/vue-2.6.12.tgz#f5ebd4fa6bd2869403e29a896aed4904456c9123"
   integrity sha1-9evU+mvShpQD4pqJau1JBEVskSM=
 
 vuedraggable@^2.16.0:
