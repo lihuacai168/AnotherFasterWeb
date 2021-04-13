@@ -234,7 +234,10 @@ export default {
     methods: {
         handleCellClick(row) {
             this.$store.commit('setRouterName', 'ProjectDetail');
+            this.$store.commit('setProjectName', row.name);
             this.setLocalValue("routerName", 'ProjectDetail');
+            // 在vuex严格模式下, commit会经过mutation函数不会报错, set直接修改会报错
+            this.setLocalValue('projectName', row.name);
             this.$router.push({name: 'ProjectDetail', params: {id: row['id']}});
         },
         handleEdit(index, row) {
