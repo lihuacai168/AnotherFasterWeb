@@ -43,7 +43,7 @@ Vue.filter('datetimeFormat', function (time, format = 'YY-MM-DD hh:mm:ss') {
 });
 
 Vue.filter("timestampToTime", function (timestamp) {
-    if (!timestamp){
+    if (!timestamp) {
         return ''
     }
     let date = new Date(timestamp * 1000);

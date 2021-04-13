@@ -27,12 +27,12 @@
                 >Back
                 </el-button>
 
-               <!-- <el-button
-                    type="primary"
-                    @click="handleRun"
-                    v-loading="loading"
-                >Run
-                </el-button>-->
+                <!-- <el-button
+                     type="primary"
+                     @click="handleRun"
+                     v-loading="loading"
+                 >Run
+                 </el-button>-->
 
             </div>
             <div>
@@ -149,177 +149,177 @@
 </template>
 
 <script>
-    import Headers from '../../../httprunner/components/Headers'
-    import Request from '../../../httprunner/components/Request'
-    import Extract from '../../../httprunner/components/Extract'
-    import Validate from '../../../httprunner/components/Validate'
-    import Variables from '../../../httprunner/components/Variables'
-    import Hooks from '../../../httprunner/components/Hooks'
-    import Report from '../../../reports/DebugReport'
+import Headers from '../../../httprunner/components/Headers'
+import Request from '../../../httprunner/components/Request'
+import Extract from '../../../httprunner/components/Extract'
+import Validate from '../../../httprunner/components/Validate'
+import Variables from '../../../httprunner/components/Variables'
+import Hooks from '../../../httprunner/components/Hooks'
+import Report from '../../../reports/DebugReport'
 
-    export default {
-        components: {
-            Headers,
-            Request,
-            Extract,
-            Validate,
-            Variables,
-            Hooks,
-            Report
+export default {
+    components: {
+        Headers,
+        Request,
+        Extract,
+        Validate,
+        Variables,
+        Hooks,
+        Report
 
+    },
+
+    props: {
+        response: {
+            require: true
         },
-
-        props: {
-            response: {
-                require: true
-            },
-            host: {
-                require: true
-            }
-        },
-        methods: {
-          /*  handleRun() {
-                this.run = true;
-                this.save = !this.save;
-            },
-*/
-            handleHeader(header, value) {
-                this.header = value;
-                this.tempBody.header = header;
-            },
-            handleRequest(request, value) {
-                this.request = value;
-                this.tempBody.request = request;
-            },
-            handleValidate(validate, value) {
-                this.validate = value;
-                this.tempBody.validate = validate;
-            },
-            handleExtract(extract, value) {
-                this.extract = value;
-                this.tempBody.extract = extract;
-            },
-            handleVariables(variables, value) {
-                this.variables = value;
-                this.tempBody.variables = variables;
-            },
-            handleHooks(hooks, value) {
-                this.hooks = value;
-
-                this.tempBody.hooks = hooks;
-                this.tempBody.url = this.url;
-                this.tempBody.method = this.method;
-                this.tempBody.name = this.name;
-                this.tempBody.times = this.times;
-
-                if (this.validateData()) {
-                    const body = {
-                        header: this.header,
-                        request: this.request,
-                        extract: this.extract,
-                        validate: this.validate,
-                        variables: this.variables,
-                        hooks: this.hooks,
-                        url: this.url,
-                        method: this.method,
-                        name: this.name,
-                        times: this.times
-                    };
-                    this.$emit('getNewBody', body, this.tempBody);
-                    this.run = false;
-                }
-
-            },
-
-            validateData() {
-                if (this.url === '') {
-                    this.$notify.error({
-                        title: 'url错误',
-                        message: '接口请求地址不能为空',
-                        duration: 1500
-                    });
-                    return false;
-                }
-
-                if (this.name === '') {
-                    this.$notify.error({
-                        title: 'name错误',
-                        message: '接口名称不能为空',
-                        duration: 1500
-                    });
-                    return false;
-                }
-                return true
-            }
-        },
-
-        watch: {
-            esc() {
-                this.$emit('escEdit');
-            }
-        },
-        data() {
-            return {
-                loading: false,
-                run: false,
-                esc: false,
-                times: this.response.body.times,
-                name: this.response.body.name,
-                url: this.response.body.url,
-                header: [],
-                request: [],
-                extract: [],
-                validate: [],
-                variables: [],
-                hooks: [],
-                tempBody: {},
-                method: this.response.body.method,
-                save: false,
-                summary: {},
-                dialogTableVisible: false,
-                activeTag: 'second',
-                httpOptions: [{
-                    label: 'GET',
-                }, {
-                    label: 'POST',
-                }, {
-                    label: 'PUT',
-                }, {
-                    label: 'DELETE',
-                }, {
-                    label: 'HEAD',
-                }, {
-                    label: 'OPTIONS',
-                }, {
-                    label: 'PATCH',
-                }],
-            }
-        },
-        name: "TestBody",
-        mounted() {
-            this.header = this.response.body.header;
-            this.request = this.response.body.request;
-            this.extract = this.response.body.extract;
-            this.validate = this.response.body.validate;
-            this.variables = this.response.body.variables;
-            this.hooks = this.response.body.hooks;
+        host: {
+            require: true
         }
+    },
+    methods: {
+        /*  handleRun() {
+              this.run = true;
+              this.save = !this.save;
+          },
+*/
+        handleHeader(header, value) {
+            this.header = value;
+            this.tempBody.header = header;
+        },
+        handleRequest(request, value) {
+            this.request = value;
+            this.tempBody.request = request;
+        },
+        handleValidate(validate, value) {
+            this.validate = value;
+            this.tempBody.validate = validate;
+        },
+        handleExtract(extract, value) {
+            this.extract = value;
+            this.tempBody.extract = extract;
+        },
+        handleVariables(variables, value) {
+            this.variables = value;
+            this.tempBody.variables = variables;
+        },
+        handleHooks(hooks, value) {
+            this.hooks = value;
+
+            this.tempBody.hooks = hooks;
+            this.tempBody.url = this.url;
+            this.tempBody.method = this.method;
+            this.tempBody.name = this.name;
+            this.tempBody.times = this.times;
+
+            if (this.validateData()) {
+                const body = {
+                    header: this.header,
+                    request: this.request,
+                    extract: this.extract,
+                    validate: this.validate,
+                    variables: this.variables,
+                    hooks: this.hooks,
+                    url: this.url,
+                    method: this.method,
+                    name: this.name,
+                    times: this.times
+                };
+                this.$emit('getNewBody', body, this.tempBody);
+                this.run = false;
+            }
+
+        },
+
+        validateData() {
+            if (this.url === '') {
+                this.$notify.error({
+                    title: 'url错误',
+                    message: '接口请求地址不能为空',
+                    duration: 1500
+                });
+                return false;
+            }
+
+            if (this.name === '') {
+                this.$notify.error({
+                    title: 'name错误',
+                    message: '接口名称不能为空',
+                    duration: 1500
+                });
+                return false;
+            }
+            return true
+        }
+    },
+
+    watch: {
+        esc() {
+            this.$emit('escEdit');
+        }
+    },
+    data() {
+        return {
+            loading: false,
+            run: false,
+            esc: false,
+            times: this.response.body.times,
+            name: this.response.body.name,
+            url: this.response.body.url,
+            header: [],
+            request: [],
+            extract: [],
+            validate: [],
+            variables: [],
+            hooks: [],
+            tempBody: {},
+            method: this.response.body.method,
+            save: false,
+            summary: {},
+            dialogTableVisible: false,
+            activeTag: 'second',
+            httpOptions: [{
+                label: 'GET',
+            }, {
+                label: 'POST',
+            }, {
+                label: 'PUT',
+            }, {
+                label: 'DELETE',
+            }, {
+                label: 'HEAD',
+            }, {
+                label: 'OPTIONS',
+            }, {
+                label: 'PATCH',
+            }],
+        }
+    },
+    name: "TestBody",
+    mounted() {
+        this.header = this.response.body.header;
+        this.request = this.response.body.request;
+        this.extract = this.response.body.extract;
+        this.validate = this.response.body.validate;
+        this.variables = this.response.body.variables;
+        this.hooks = this.response.body.hooks;
     }
+}
 </script>
 
 <style scoped>
-    .el-select {
-        width: 125px;
-    }
+.el-select {
+    width: 125px;
+}
 
-    .input-with-select {
-        width: 600px;
-        margin-top: 10px;
-    }
+.input-with-select {
+    width: 600px;
+    margin-top: 10px;
+}
 
-    .request {
-        margin-top: 15px;
-        border: 1px solid #ddd;
-    }
+.request {
+    margin-top: 15px;
+    border: 1px solid #ddd;
+}
 
 </style>

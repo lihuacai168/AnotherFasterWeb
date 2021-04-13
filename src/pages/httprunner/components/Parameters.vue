@@ -71,81 +71,81 @@
 
 <script>
 
-    export default {
-        props: {
-            save: Boolean,
-            parameters: {
-                require: false
-            }
-        },
-        computed:{
-            height() {
-                return window.screen.height - 440
-            }
-        },
-        methods: {
-            parseParameters() {
-                let parameters = {
-                    parameters: [],
-                    desc: {}
-                };
-                for (let content of this.tableData) {
-                    let value = content['value'];
-                    const key = content['key'];
-                    let obj = {};
-                    if (key !== '' &&  value !== '') {
-                        try {
-                            value = JSON.parse(value);
-                        }
-                        catch (err) {}
-                        obj[key] = value;
-                        parameters.parameters.push(obj);
-                        parameters.desc[key] = content.desc;
+export default {
+    props: {
+        save: Boolean,
+        parameters: {
+            require: false
+        }
+    },
+    computed: {
+        height() {
+            return window.screen.height - 440
+        }
+    },
+    methods: {
+        parseParameters() {
+            let parameters = {
+                parameters: [],
+                desc: {}
+            };
+            for (let content of this.tableData) {
+                let value = content['value'];
+                const key = content['key'];
+                let obj = {};
+                if (key !== '' && value !== '') {
+                    try {
+                        value = JSON.parse(value);
+                    } catch (err) {
                     }
-                }
-                return parameters;
-            },
-
-            cellMouseEnter(row) {
-                this.currentRow = row;
-            },
-
-            cellMouseLeave(row) {
-                this.currentRow = '';
-            },
-
-            handleEdit(index, row) {
-                this.tableData.push({
-                    key: '',
-                    value: '',
-                    desc: ''
-                });
-            },
-
-            handleDelete(index, row) {
-                this.tableData.splice(index, 1);
-            },
-
-        },
-        watch: {
-            save: function () {
-                this.$emit('parameters', this.parseParameters(), this.tableData);
-            },
-
-            parameters: function () {
-                if (this.parameters.length !== 0) {
-                    this.tableData = this.parameters;
+                    obj[key] = value;
+                    parameters.parameters.push(obj);
+                    parameters.desc[key] = content.desc;
                 }
             }
+            return parameters;
         },
-        data() {
-            return {
-                currentRow: '',
-                tableData: [{key: '', value: '', desc: ''}]
+
+        cellMouseEnter(row) {
+            this.currentRow = row;
+        },
+
+        cellMouseLeave(row) {
+            this.currentRow = '';
+        },
+
+        handleEdit(index, row) {
+            this.tableData.push({
+                key: '',
+                value: '',
+                desc: ''
+            });
+        },
+
+        handleDelete(index, row) {
+            this.tableData.splice(index, 1);
+        },
+
+    },
+    watch: {
+        save: function () {
+            this.$emit('parameters', this.parseParameters(), this.tableData);
+        },
+
+        parameters: function () {
+            if (this.parameters.length !== 0) {
+                this.tableData = this.parameters;
             }
-        },
-        name: "Parameters"
-    }
+        }
+    },
+    data() {
+        return {
+            currentRow: '',
+            tableData: [{key: '', value: '', desc: ''}]
+        }
+    },
+    name: "Parameters"
+}
 </script>
 
 <style scoped>

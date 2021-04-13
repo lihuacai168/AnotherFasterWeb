@@ -25,7 +25,8 @@
                             label-width="100px"
                             class="project">
                             <el-form-item label="Hosts名" prop="name">
-                                <el-input resize v-model="variablesForm.name" clearable placeholder="请输入Hosts名"></el-input>
+                                <el-input resize v-model="variablesForm.name" clearable
+                                          placeholder="请输入Hosts名"></el-input>
                             </el-form-item>
                             <el-form-item label="IP域名映射" prop="value">
                                 <el-input
@@ -114,7 +115,7 @@
                                 label="Hosts名"
                             >
                                 <template slot-scope="scope">
-                                    <div>{{scope.row.name}}</div>
+                                    <div>{{ scope.row.name }}</div>
                                 </template>
                             </el-table-column>
 
@@ -136,7 +137,7 @@
                                 label="更新时间"
                             >
                                 <template slot-scope="scope">
-                                    <div>{{scope.row.update_time|datetimeFormat}}</div>
+                                    <div>{{ scope.row.update_time|datetimeFormat }}</div>
 
                                 </template>
                             </el-table-column>
@@ -178,144 +179,144 @@
 
 <script>
 
-    export default {
+export default {
 
-        data() {
-            return {
-                search: '',
-                currentRow: '',
-                currentPage: 1,
-                hostIPData: {
-                    count: 0,
-                    results: []
-                },
-                editdialogVisible: false,
-                dialogVisible: false,
-                variablesForm: {
-                    name: '',
-                    value: '',
-                    project: this.$route.params.id
-                },
+    data() {
+        return {
+            search: '',
+            currentRow: '',
+            currentPage: 1,
+            hostIPData: {
+                count: 0,
+                results: []
+            },
+            editdialogVisible: false,
+            dialogVisible: false,
+            variablesForm: {
+                name: '',
+                value: '',
+                project: this.$route.params.id
+            },
 
-                editVariablesForm: {
-                    name: '',
-                    value: '',
-                    id: ''
-                },
+            editVariablesForm: {
+                name: '',
+                value: '',
+                id: ''
+            },
 
-                rules: {
-                    name: [
-                        {required: true, message: '请输入变量名', trigger: 'blur'},
-                        {min: 1, max: 100, message: '最多不超过100个字符', trigger: 'blur'}
-                    ],
-                    value: [
-                        {required: true, message: '请输入变量值', trigger: 'blur'}
-                    ]
-                }
+            rules: {
+                name: [
+                    {required: true, message: '请输入变量名', trigger: 'blur'},
+                    {min: 1, max: 100, message: '最多不超过100个字符', trigger: 'blur'}
+                ],
+                value: [
+                    {required: true, message: '请输入变量值', trigger: 'blur'}
+                ]
             }
+        }
+    },
+    methods: {
+        cellMouseEnter(row) {
+            this.currentRow = row;
         },
-        methods: {
-            cellMouseEnter(row) {
-                this.currentRow = row;
-            },
 
-            cellMouseLeave(row) {
-                this.currentRow = '';
-            },
+        cellMouseLeave(row) {
+            this.currentRow = '';
+        },
 
-            handleEditHostIP(row) {
-                this.editVariablesForm = {
-                    name: row.name,
-                    value: row.value,
-                    id: row.id
-                };
+        handleEditHostIP(row) {
+            this.editVariablesForm = {
+                name: row.name,
+                value: row.value,
+                id: row.id
+            };
 
-                this.editdialogVisible = true;
-            },
+            this.editdialogVisible = true;
+        },
 
-            handleDelHost(index) {
-                this.$confirm('此操作将永久删除该域名，是否继续?', '提示', {
-                    confirmButtonText: '确定',
-                    cancelButtonText: '取消',
-                    type: 'warning',
-                }).then(() => {
-                    this.$api.deleteHost(index).then(resp => {
-                        if (resp.success) {
-                            this.getHostIPList();
+        handleDelHost(index) {
+            this.$confirm('此操作将永久删除该域名，是否继续?', '提示', {
+                confirmButtonText: '确定',
+                cancelButtonText: '取消',
+                type: 'warning',
+            }).then(() => {
+                this.$api.deleteHost(index).then(resp => {
+                    if (resp.success) {
+                        this.getHostIPList();
+                    } else {
+                        this.$message.error(resp.msg);
+                    }
+                })
+            })
+        },
+
+        handleCurrentChange(val) {
+            this.$api.getHostPaginationBypage({
+                params: {
+                    page: this.currentPage,
+                    project: this.variablesForm.project
+                }
+            }).then(resp => {
+                this.hostIPData = resp;
+            })
+        },
+
+        handleConfirm(formName) {
+            this.$refs[formName].validate((valid) => {
+                if (valid) {
+                    this.dialogVisible = false;
+                    this.$api.addHostIP(this.variablesForm).then(resp => {
+                        if (!resp.success) {
+                            this.$message.info({
+                                message: resp.msg,
+                                duration: this.$store.state.duration
+                            })
                         } else {
-                            this.$message.error(resp.msg);
+                            this.variablesForm.name = '';
+                            this.variablesForm.value = '';
+                            this.getHostIPList();
                         }
                     })
-                })
-            },
 
-            handleCurrentChange(val) {
-                this.$api.getHostPaginationBypage({
-                    params: {
-                        page: this.currentPage,
-                        project: this.variablesForm.project
-                    }
-                }).then(resp => {
-                    this.hostIPData = resp;
-                })
-            },
+                }
+            });
 
-            handleConfirm(formName) {
-                this.$refs[formName].validate((valid) => {
-                    if (valid) {
-                        this.dialogVisible = false;
-                        this.$api.addHostIP(this.variablesForm).then(resp => {
-                            if (!resp.success) {
-                                this.$message.info({
-                                    message: resp.msg,
-                                    duration: this.$store.state.duration
-                                })
-                            } else {
-                                this.variablesForm.name = '';
-                                this.variablesForm.value = '';
-                                this.getHostIPList();
-                            }
-                        })
-
-                    }
-                });
-
-            },
-
-            handleEditConfirm(formName) {
-                this.$refs[formName].validate((valid) => {
-                    if (valid) {
-                        this.editdialogVisible = false;
-                        this.$api.updateHost(this.editVariablesForm.id, this.editVariablesForm).then(resp => {
-                            if (!resp.success) {
-                                this.$message.info({
-                                    message: resp.msg,
-                                    duration: this.$store.state.duration
-                                })
-                            } else {
-                                this.getHostIPList();
-                            }
-                        })
-                    }
-                });
-
-            },
-
-            getHostIPList() {
-                this.$api.hostList({
-                    params: {
-                        project: this.variablesForm.project
-                    }
-                }).then(resp => {
-                    this.hostIPData = resp;
-                })
-            },
         },
-        name: "HostAddress",
-        mounted() {
-            this.getHostIPList();
-        }
+
+        handleEditConfirm(formName) {
+            this.$refs[formName].validate((valid) => {
+                if (valid) {
+                    this.editdialogVisible = false;
+                    this.$api.updateHost(this.editVariablesForm.id, this.editVariablesForm).then(resp => {
+                        if (!resp.success) {
+                            this.$message.info({
+                                message: resp.msg,
+                                duration: this.$store.state.duration
+                            })
+                        } else {
+                            this.getHostIPList();
+                        }
+                    })
+                }
+            });
+
+        },
+
+        getHostIPList() {
+            this.$api.hostList({
+                params: {
+                    project: this.variablesForm.project
+                }
+            }).then(resp => {
+                this.hostIPData = resp;
+            })
+        },
+    },
+    name: "HostAddress",
+    mounted() {
+        this.getHostIPList();
     }
+}
 </script>
 
 <style>

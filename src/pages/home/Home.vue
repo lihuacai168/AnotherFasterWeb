@@ -19,22 +19,22 @@
 </template>
 
 <script>
-    import HomeHeader from './components/Header'
-    import HomeSide from './components/Side'
+import HomeHeader from './components/Header'
+import HomeSide from './components/Side'
 
-    export default {
-        name: "Home",
-        components: {
-            HomeHeader,
-            HomeSide
-        }
-
+export default {
+    name: "Home",
+    components: {
+        HomeHeader,
+        HomeSide
     }
+
+}
 </script>
 
 <style scoped>
-    .el-main {
-        padding: 0px;
-    }
+.el-main {
+    padding: 0px;
+}
 
 </style>

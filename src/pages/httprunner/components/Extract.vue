@@ -64,88 +64,88 @@
 </template>
 
 <script>
-    export default {
-        props: {
-            save: Boolean,
-            extract: {
-                require: false
-            }
+export default {
+    props: {
+        save: Boolean,
+        extract: {
+            require: false
+        }
+    },
+    computed: {
+        height() {
+            return window.screen.height - 440
+        }
+    },
+    watch: {
+        save: function () {
+            this.$emit('extract', this.parseExtract(), this.tableData);
         },
-        computed: {
-            height() {
-                return window.screen.height - 440
+        extract: function () {
+            if (this.extract.length !== 0) {
+                this.tableData = this.extract;
             }
+        }
+    },
+
+    methods: {
+        cellMouseEnter(row) {
+            this.currentRow = row;
         },
-        watch: {
-            save: function () {
-                this.$emit('extract', this.parseExtract(), this.tableData);
-            },
-            extract: function () {
-                if (this.extract.length !== 0) {
-                    this.tableData = this.extract;
+
+        cellMouseLeave(row) {
+            this.currentRow = '';
+        },
+
+        handleEdit(index, row) {
+            this.tableData.push({
+                key: '',
+                value: '',
+                desc: ''
+            });
+        },
+        handleCopy(index, row) {
+            this.tableData.splice(index + 1, 0, {
+                key: row.key,
+                value: row.value,
+                desc: row.desc
+            });
+        },
+
+        handleDelete(index, row) {
+            this.tableData.splice(index, 1);
+        },
+        // 抽取格式化
+        parseExtract() {
+            let extract = {
+                extract: [],
+                desc: {}
+            };
+            for (let content of this.tableData) {
+                const key = content['key'];
+                const value = content['value'];
+                if (key !== '' && value !== '') {
+                    let obj = {};
+                    obj[key] = value;
+                    extract.extract.push(obj);
+                    extract.desc[key] = content['desc'];
                 }
             }
-        },
+            return extract;
+        }
+    },
 
-        methods: {
-            cellMouseEnter(row) {
-                this.currentRow = row;
-            },
-
-            cellMouseLeave(row) {
-                this.currentRow = '';
-            },
-
-            handleEdit(index, row) {
-                this.tableData.push({
-                    key: '',
-                    value: '',
-                    desc: ''
-                });
-            },
-            handleCopy(index, row) {
-                this.tableData.splice(index + 1, 0, {
-                    key: row.key,
-                    value: row.value,
-                    desc: row.desc
-                });
-            },
-
-            handleDelete(index, row) {
-                this.tableData.splice(index, 1);
-            },
-            // 抽取格式化
-            parseExtract() {
-                let extract = {
-                    extract: [],
-                    desc: {}
-                };
-                for (let content of this.tableData) {
-                    const key = content['key'];
-                    const value = content['value'];
-                    if (key !== '' && value !== '') {
-                        let obj = {};
-                        obj[key] = value;
-                        extract.extract.push(obj);
-                        extract.desc[key] = content['desc'];
-                    }
-                }
-                return extract;
-            }
-        },
-
-        data() {
-            return {
-                currentRow: '',
-                tableData: [{
-                    key: '',
-                    value: '',
-                    desc: ''
-                }]
-            }
-        },
-        name: "Extract"
-    }
+    data() {
+        return {
+            currentRow: '',
+            tableData: [{
+                key: '',
+                value: '',
+                desc: ''
+            }]
+        }
+    },
+    name: "Extract"
+}
 </script>
 
 <style scoped>

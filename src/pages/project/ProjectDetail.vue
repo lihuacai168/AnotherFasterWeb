@@ -97,9 +97,9 @@ export default {
                     project: project
                 }
             }).then(res => {
-                    this.visitInfo = res
-                    this.drawLine();
-                })
+                this.visitInfo = res
+                this.drawLine();
+            })
         },
         success(resp) {
             this.$notify({

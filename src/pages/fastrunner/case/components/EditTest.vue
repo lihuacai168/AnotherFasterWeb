@@ -12,111 +12,112 @@
                     >
                     </el-input>
 
-          <el-tree
-            @node-click="handleNodeClick"
-            :data="dataTree"
-            node-key="id"
-            :default-expand-all="false"
-            :expand-on-click-node="false"
-            highlight-current
-            :filter-node-method="filterNode"
-            ref="tree2"
-          >
+                    <el-tree
+                        @node-click="handleNodeClick"
+                        :data="dataTree"
+                        node-key="id"
+                        :default-expand-all="false"
+                        :expand-on-click-node="false"
+                        highlight-current
+                        :filter-node-method="filterNode"
+                        ref="tree2"
+                    >
             <span class="custom-tree-node" slot-scope="{ node, data }">
               <span>
                 <i class="iconfont" v-html="expand"></i>
                 &nbsp;&nbsp;{{ node.label }}
               </span>
             </span>
-          </el-tree>
-        </div>
-      </div>
-    </el-aside>
+                    </el-tree>
+                </div>
+            </div>
+        </el-aside>
 
         <el-main>
             <div v-show="!editTestStepActivate" class="recordapi__header">
-                    <div class="recordapi__header" :style="{flex:1}">
-                        <div class="recordapi__header--item">
-                            <el-input placeholder="请输入接口名称" style="width: 340px; text-align: center" clearable  @input="inputVal" :value="search"  @keyup.enter.native="getAPIList">
-                                <el-button slot="append" icon="el-icon-search" @click="getAPIList"></el-button>
-                            </el-input >
-                        </div>
-                        <div class="recordapi__header--item">
-                            <el-button
-                                type="primary"
-                                @click="resetSearch"
-                            >重置
-                            </el-button>
-                        </div>
-
-<!--                            api环境字段暂时不使用-->
-<!--                        <div class="recordapi__header&#45;&#45;item">-->
-<!--                            <el-dropdown @command="rigEnvChangeHandle">-->
-<!--                                <el-button type="primary">-->
-<!--                                    环境-->
-<!--                                    <i class="el-icon-arrow-down el-icon&#45;&#45;right"></i>-->
-<!--                                </el-button>-->
-<!--                                <el-dropdown-menu slot="dropdown">-->
-<!--                                    <el-dropdown-item command="0">测试</el-dropdown-item>-->
-<!--                                    <el-dropdown-item command="1">生产</el-dropdown-item>-->
-<!--                                    <el-dropdown-item command="">所有</el-dropdown-item>-->
-<!--                                </el-dropdown-menu>-->
-<!--                            </el-dropdown>-->
-<!--                        </div>-->
-                        <div class="recordapi__header--item">
-                            <el-dropdown @command="tagChangeHandle">
-                                <el-button type="primary">
-                                    接口状态
-                                    <i class="el-icon-arrow-down el-icon--right"></i>
-                                </el-button>
-                                <el-dropdown-menu slot="dropdown">
-                                    <el-dropdown-item command="1">调试成功</el-dropdown-item>
-                                    <el-dropdown-item command="0">还未调试</el-dropdown-item>
-                                    <el-dropdown-item command="2">调试失败</el-dropdown-item>
-                                    <el-dropdown-item command="3">自动成功</el-dropdown-item>
-                                    <el-dropdown-item command="">所有</el-dropdown-item>
-                                </el-dropdown-menu>
-                            </el-dropdown>
-                        </div>
-
+                <div class="recordapi__header" :style="{flex:1}">
+                    <div class="recordapi__header--item">
+                        <el-input placeholder="请输入接口名称" style="width: 340px; text-align: center" clearable
+                                  @input="inputVal" :value="search" @keyup.enter.native="getAPIList">
+                            <el-button slot="append" icon="el-icon-search" @click="getAPIList"></el-button>
+                        </el-input>
                     </div>
-                    <div class="recordapi__header" :style="{flex:1}">
-                        <div class="recordapi__header--item">
-                            <el-input
-                                style="width: 500px; text-align: center"
-                                placeholder="请输入测试用例名称"
-                                v-model="testName"
-                                clearable
-                                v-if="testData.length > 0"
-                            >
-                                <el-select v-model="testTag" slot="prepend" placeholder="请选择" style="width: 105px">
-
-                                    <el-option
-                                        v-for="value in tagOptions" :key="value"
-                                        :label="value"
-                                        :value="value"
-                                    ></el-option>
-
-                                </el-select>
-                            </el-input>
-                        </div>
-
+                    <div class="recordapi__header--item">
                         <el-button
-                            slot="append"
-                            type="success"
-                            @click="handleClickSave"
-                            >Save
+                            type="primary"
+                            @click="resetSearch"
+                        >重置
                         </el-button>
-
-                        <div class="recordapi__header--item">
-                            <el-button
-                                type="primary"
-                                v-loading="suite_loading"
-                                @click="handleClickRun"
-                            >Send
-                            </el-button>
-                        </div>
                     </div>
+
+                    <!--                            api环境字段暂时不使用-->
+                    <!--                        <div class="recordapi__header&#45;&#45;item">-->
+                    <!--                            <el-dropdown @command="rigEnvChangeHandle">-->
+                    <!--                                <el-button type="primary">-->
+                    <!--                                    环境-->
+                    <!--                                    <i class="el-icon-arrow-down el-icon&#45;&#45;right"></i>-->
+                    <!--                                </el-button>-->
+                    <!--                                <el-dropdown-menu slot="dropdown">-->
+                    <!--                                    <el-dropdown-item command="0">测试</el-dropdown-item>-->
+                    <!--                                    <el-dropdown-item command="1">生产</el-dropdown-item>-->
+                    <!--                                    <el-dropdown-item command="">所有</el-dropdown-item>-->
+                    <!--                                </el-dropdown-menu>-->
+                    <!--                            </el-dropdown>-->
+                    <!--                        </div>-->
+                    <div class="recordapi__header--item">
+                        <el-dropdown @command="tagChangeHandle">
+                            <el-button type="primary">
+                                接口状态
+                                <i class="el-icon-arrow-down el-icon--right"></i>
+                            </el-button>
+                            <el-dropdown-menu slot="dropdown">
+                                <el-dropdown-item command="1">调试成功</el-dropdown-item>
+                                <el-dropdown-item command="0">还未调试</el-dropdown-item>
+                                <el-dropdown-item command="2">调试失败</el-dropdown-item>
+                                <el-dropdown-item command="3">自动成功</el-dropdown-item>
+                                <el-dropdown-item command="">所有</el-dropdown-item>
+                            </el-dropdown-menu>
+                        </el-dropdown>
+                    </div>
+
+                </div>
+                <div class="recordapi__header" :style="{flex:1}">
+                    <div class="recordapi__header--item">
+                        <el-input
+                            style="width: 500px; text-align: center"
+                            placeholder="请输入测试用例名称"
+                            v-model="testName"
+                            clearable
+                            v-if="testData.length > 0"
+                        >
+                            <el-select v-model="testTag" slot="prepend" placeholder="请选择" style="width: 105px">
+
+                                <el-option
+                                    v-for="value in tagOptions" :key="value"
+                                    :label="value"
+                                    :value="value"
+                                ></el-option>
+
+                            </el-select>
+                        </el-input>
+                    </div>
+
+                    <el-button
+                        slot="append"
+                        type="success"
+                        @click="handleClickSave"
+                    >Save
+                    </el-button>
+
+                    <div class="recordapi__header--item">
+                        <el-button
+                            type="primary"
+                            v-loading="suite_loading"
+                            @click="handleClickRun"
+                        >Send
+                        </el-button>
+                    </div>
+                </div>
             </div>
 
             <div v-show="!editTestStepActivate" style="margin-top: 10px; ">
@@ -131,21 +132,22 @@
 
                         >
                             <!--编辑用例时的API列表-->
-                            <div class="block edit__block" :class="`block_${item.method.toLowerCase()}`" >
-                                    <span class="block-method block_method_color" :class="`block_method_${item.method.toLowerCase()}`">
-                                        {{item.method.toUpperCase()}}
+                            <div class="block edit__block" :class="`block_${item.method.toLowerCase()}`">
+                                    <span class="block-method block_method_color"
+                                          :class="`block_method_${item.method.toLowerCase()}`">
+                                        {{ item.method.toUpperCase() }}
                                     </span>
 
                                 <div class="edit__block--inner">
-                                    <span class="block-method block_url">{{item.url}}</span>
-                                    <span class="block-summary-description">{{item.name}}</span>
+                                    <span class="block-method block_url">{{ item.url }}</span>
+                                    <span class="block-summary-description">{{ item.name }}</span>
                                 </div>
-                                   <div >
+                                <div>
                                        <span class="el-icon-s-flag"
                                              v-if="item.cases.length > 0 "
                                              :title="'API已经被用例引用,共计: ' + item.cases.length + '次'">
                                        </span>
-                                   </div>
+                                </div>
                             </div>
 
 
@@ -176,7 +178,10 @@
                                     class="block block_test"
                                     @mousemove="currentTest = -1"
                                 >
-                                    <span class="block-method block_method_config block_method_color">{{testData[0].body.method}}</span>
+                                    <span
+                                        class="block-method block_method_config block_method_color">{{
+                                            testData[0].body.method
+                                        }}</span>
                                     <input class="block-test-name" v-model="testData[0].body.name" disabled/>
 
                                     <el-button
@@ -208,8 +213,6 @@
                                         <input class="block-test-name"
                                                v-model="test.body.name"
                                         />
-
-
 
 
                                         <el-button
@@ -295,308 +298,326 @@
 </template>
 
 <script>
-    import draggable from 'vuedraggable'
-    import HttpRunner from './TestBody'
-    import Report from '../../../reports/DebugReport'
+import draggable from 'vuedraggable'
+import HttpRunner from './TestBody'
+import Report from '../../../reports/DebugReport'
 
-    export default {
-        components: {
-            draggable,
-            HttpRunner,
-            Report
-        },
-        computed: {
-            isConfigExist: {
-                get() {
-                    if (this.testData.length > 0 && this.testData[0].body.method === "config" && this.testData[0].body.name !== '请选择') {
-                        return true;
-                    }
-                    return false;
+export default {
+    components: {
+        draggable,
+        HttpRunner,
+        Report
+    },
+    computed: {
+        isConfigExist: {
+            get() {
+                if (this.testData.length > 0 && this.testData[0].body.method === "config" && this.testData[0].body.name !== '请选择') {
+                    return true;
                 }
+                return false;
+            }
+        }
+    },
+    props: {
+        host: {
+            require: true
+        },
+        config: {
+            require: true
+        },
+        project: {
+            require: true
+        },
+        node: {
+            require: true
+        },
+        testStepResp: {
+            require: false
+        },
+        back: Boolean,
+        rigEnv: [String, Number],
+        tag: [String, Number],
+        search: [String, Number]
+    },
+
+    name: "EditTest",
+    watch: {
+        config() {
+
+            const temp = {body: {name: this.config, method: 'config'}};
+            if ((this.testData.length === 0 || this.testData[0].body.method !== 'config') && this.config !== '请选择') {
+                this.testData.splice(0, 0, temp)
+            } else {
+                if (this.config !== '请选择') {
+                    this.testData.splice(0, 1, temp)
+                }
+
+            }
+
+        },
+        back() {
+            this.editTestStepActivate = false;
+        },
+
+        filterText(val) {
+            this.$refs.tree2.filter(val);
+        },
+        testStepResp() {
+
+            try {
+                this.testName = this.testStepResp.case.name;
+                this.testId = this.testStepResp.case.id;
+                this.testTag = this.testStepResp.case.tag;
+                this.relation = this.testStepResp.case.relation;
+                this.testData = JSON.parse(JSON.stringify(this.testStepResp.step))
+            } catch (e) {
+                this.testName = '';
+                this.testId = '';
+                this.testTag = '集成用例';
+                this.testData = JSON.parse(JSON.stringify(this.testStepResp))
             }
         },
-        props: {
-            host: {
-                require: true
+
+        search() {
+            this.getAPIList()
+        }
+    },
+
+    data() {
+        return {
+            tagOptions: {
+                1: '冒烟用例',
+                2: '集成用例',
+                3: '监控脚本'
             },
-            config: {
-                require: true
+            suite_loading: false,
+            loading: false,
+            dialogTableVisible: false,
+            editTestStepActivate: false,
+            currentPage: 1,
+            length: 0,
+            testId: '',
+            testName: '',
+            relation: '',
+            testTag: '集成用例',
+            currentTest: '',
+            currentNode: '',
+            currentAPI: '',
+            data: '',
+            filterText: '',
+            expand: '&#xe65f;',
+            dataTree: [],
+            summary: {},
+            apiData: {
+                count: 0,
+                results: []
             },
-            project: {
-                require: true
-            },
-            node: {
-                require: true
-            },
-            testStepResp: {
-                require: false
-            },
-            back: Boolean,
-            rigEnv: [String,Number],
-            tag: [String,Number],
-            search: [String,Number]
+
+            testData: [],
+            // rigEnv: ''
+        }
+    },
+    methods: {
+        inputVal(val) {
+            this.$emit('update:search', val)
         },
 
-        name: "EditTest",
-        watch: {
-            config() {
+        handleNewBody(body, newBody) {
+            this.editTestStepActivate = false;
+            const step = this.testData[this.currentTest].case;
+            const id = this.testData[this.currentTest].id;
+            this.testData[this.currentTest] = {
+                body: body,
+                newBody: newBody,
+                case: step,
+                id: id
+            };
+        },
+        rigEnvChangeHandle(command) {
+            this.$emit('update:rigEnv', command);
+            this.getAPIList();
+        },
+        validateData() {
+            if (this.testName === '' || this.testName.length > 100) {
+                this.$notify.warning({
+                    title: '提示',
+                    duration: this.$store.state.duration,
+                    message: '用例集名称必填，不能超过100个字符'
+                });
+                return false
+            }
 
-                const temp = {body: {name: this.config, method: 'config'}};
-                if ((this.testData.length === 0 || this.testData[0].body.method !== 'config') && this.config !== '请选择') {
-                    this.testData.splice(0, 0, temp)
+            if (this.testData.length === 0) {
+                this.$notify.warning({
+                    title: '提示',
+                    duration: this.$store.state.duration,
+                    message: '测试用例集至少包含一个接口'
+                });
+                return false
+            }
+
+            if (this.testData[0].body.method === "config" && this.testData.length === 1) {
+                this.$notify.warning({
+                    title: '提示',
+                    duration: this.$store.state.duration,
+                    message: '测试用例集至少包含一个接口'
+                });
+                return false
+            }
+
+            if (this.testData[0].body.name === "请选择" || this.testData[0].body.method !== "config") {
+                this.$notify.warning({
+                    title: '提示',
+                    duration: this.$store.state.duration,
+                    message: '测试用例必须包含配置'
+                });
+                return false
+            }
+
+            return true;
+        },
+
+        addTestSuite() {
+            var length = this.testData.length;
+
+            if (this.testData[0].body.method === "config") {
+                length -= 1;
+            }
+
+            this.$api.addTestCase({
+                length: length,
+                project: this.project,
+                relation: this.node,
+                name: this.testName,
+                body: this.testData,
+                tag: this.testTag
+            }).then(resp => {
+                if (resp.success) {
+                    this.$emit("addSuccess");
                 } else {
-                    if (this.config !== '请选择') {
-                        this.testData.splice(0, 1, temp)
-                    }
-
+                    this.$message({
+                        message: resp.msg,
+                        type: 'error',
+                        duration: this.$store.state.duration
+                    });
                 }
-
-            },
-            back() {
-                this.editTestStepActivate = false;
-            },
-
-            filterText(val) {
-                this.$refs.tree2.filter(val);
-            },
-            testStepResp() {
-
-                try {
-                    this.testName = this.testStepResp.case.name;
-                    this.testId = this.testStepResp.case.id;
-                    this.testTag = this.testStepResp.case.tag;
-                    this.relation = this.testStepResp.case.relation;
-                    this.testData = JSON.parse(JSON.stringify(this.testStepResp.step))
-                } catch (e) {
-                    this.testName = '';
-                    this.testId = '';
-                    this.testTag = '集成用例';
-                    this.testData = JSON.parse(JSON.stringify(this.testStepResp))
-                }
-            },
-
-            search(){
-                this.getAPIList()
-            }
+            })
         },
 
-        data() {
-            return {
-                tagOptions: {
-                    1: '冒烟用例',
-                    2: '集成用例',
-                    3: '监控脚本'
-                },
-                suite_loading: false,
-                loading: false,
-                dialogTableVisible: false,
-                editTestStepActivate: false,
-                currentPage: 1,
-                length: 0,
-                testId: '',
-                testName: '',
-                relation: '',
-                testTag: '集成用例',
-                currentTest: '',
-                currentNode: '',
-                currentAPI: '',
-                data: '',
-                filterText: '',
-                expand: '&#xe65f;',
-                dataTree: [],
-                summary: {},
-                apiData: {
-                    count: 0,
-                    results: []
-                },
+        updateTestSuite() {
+            var length = this.testData.length;
+            if (this.testData[0].body.method === "config") {
+                length -= 1;
+            }
+            this.$api.updateTestCase(this.testId, {
+                length: length,
+                name: this.testName,
+                tag: this.testTag,
+                body: this.testData,
+                project: this.project,
+                relation: this.relation
+            }).then(resp => {
+                if (resp.success) {
+                    this.$emit("addSuccess");
+                } else {
+                    this.$message({
+                        message: resp.msg,
+                        type: 'error',
+                        duration: this.$store.state.duration
+                    });
+                }
+            })
+        },
 
-                testData: [],
-                // rigEnv: ''
+        handleClickSave() {
+            if (this.validateData()) {
+                if (this.testId === '') {
+                    this.addTestSuite();
+                } else {
+                    this.updateTestSuite();
+                }
             }
         },
-        methods: {
-            inputVal(val) {
-                this.$emit('update:search', val)
-            },
-
-            handleNewBody(body, newBody) {
-                this.editTestStepActivate = false;
-                const step = this.testData[this.currentTest].case;
-                const id = this.testData[this.currentTest].id;
-                this.testData[this.currentTest] = {
-                    body: body,
-                    newBody: newBody,
-                    case: step,
-                    id: id
-                };
-            },
-            rigEnvChangeHandle(command) {
-                this.$emit('update:rigEnv', command);
-                this.getAPIList();
-            },
-            validateData() {
-                if (this.testName === '' || this.testName.length > 100) {
-                    this.$notify.warning({
-                        title: '提示',
-                        duration: this.$store.state.duration,
-                        message: '用例集名称必填，不能超过100个字符'
-                    });
-                    return false
-                }
-
-                if (this.testData.length === 0) {
-                    this.$notify.warning({
-                        title: '提示',
-                        duration: this.$store.state.duration,
-                        message: '测试用例集至少包含一个接口'
-                    });
-                    return false
-                }
-
-                if (this.testData[0].body.method === "config" && this.testData.length === 1) {
-                    this.$notify.warning({
-                        title: '提示',
-                        duration: this.$store.state.duration,
-                        message: '测试用例集至少包含一个接口'
-                    });
-                    return false
-                }
-
-                if (this.testData[0].body.name === "请选择" || this.testData[0].body.method !== "config") {
-                    this.$notify.warning({
-                        title: '提示',
-                        duration: this.$store.state.duration,
-                        message: '测试用例必须包含配置'
-                    });
-                    return false
-                }
-
-                return true;
-            },
-
-            addTestSuite() {
-                var length = this.testData.length;
-
-                if (this.testData[0].body.method === "config") {
-                    length -= 1;
-                }
-
-                this.$api.addTestCase({
-                    length: length,
-                    project: this.project,
-                    relation: this.node,
-                    name: this.testName,
-                    body: this.testData,
-                    tag: this.testTag
-                }).then(resp => {
-                    if (resp.success) {
-                        this.$emit("addSuccess");
-                    } else {
-                        this.$message({
-                            message: resp.msg,
-                            type: 'error',
-                            duration: this.$store.state.duration
-                        });
-                    }
-                })
-            },
-
-            updateTestSuite() {
-                var length = this.testData.length;
-                if (this.testData[0].body.method === "config") {
-                    length -= 1;
-                }
-                this.$api.updateTestCase(this.testId, {
-                    length: length,
-                    name: this.testName,
-                    tag: this.testTag,
-                    body: this.testData,
-                    project: this.project,
-                    relation: this.relation
-                }).then(resp => {
-                    if (resp.success) {
-                        this.$emit("addSuccess");
-                    } else {
-                        this.$message({
-                            message: resp.msg,
-                            type: 'error',
-                            duration: this.$store.state.duration
-                        });
-                    }
-                })
-            },
-
-            handleClickSave() {
-                if (this.validateData()) {
-                    if (this.testId === '') {
-                        this.addTestSuite();
-                    } else {
-                        this.updateTestSuite();
-                    }
-                }
-            },
-            // 全部运行
-            handleClickRun() {
-                if (this.validateData()) {
-                    this.suite_loading = true;
-                    this.$api.runSingleTestSuite({
-                        host: this.host,
-                        name: this.testName,
-                        body: this.testData,
-                        project: this.project
-                    }).then(resp => {
-                        this.suite_loading = false;
-                        this.summary = resp;
-                        this.dialogTableVisible = true;
-                    }).catch(resp => {
-                        this.suite_loading = false;
-                    })
-                }
-            },
-            handlePartialRun(index){
-                if (this.validateData()) {
-                    this.suite_loading = true;
-                    this.$api.runSingleTestSuite({
-                        host: this.host,
-                        name: this.testName,
-                        body: this.testData.slice(0,index+1),
-                        project: this.project
-                    }).then(resp => {
-                        this.suite_loading = false;
-                        this.summary = resp;
-                        this.dialogTableVisible = true;
-                    }).catch(resp => {
-                        this.suite_loading = false;
-                    })
-                }
-
-            },
-            // 单个运行
-            handleSingleRun() {
-                this.loading = true;
-                var config = null;
-                if (this.testData.length > 0 && this.testData[0].body.method === "config") {
-                    config = this.testData[0].body;
-                }
-                debugger
-                this.$api.runSingleTest({
+        // 全部运行
+        handleClickRun() {
+            if (this.validateData()) {
+                this.suite_loading = true;
+                this.$api.runSingleTestSuite({
                     host: this.host,
-                    config: config,
-                    body: this.testData[this.currentTest],
+                    name: this.testName,
+                    body: this.testData,
                     project: this.project
                 }).then(resp => {
-                    this.loading = false;
+                    this.suite_loading = false;
                     this.summary = resp;
                     this.dialogTableVisible = true;
                 }).catch(resp => {
-                    this.loading = false;
+                    this.suite_loading = false;
                 })
-            },
+            }
+        },
+        handlePartialRun(index) {
+            if (this.validateData()) {
+                this.suite_loading = true;
+                this.$api.runSingleTestSuite({
+                    host: this.host,
+                    name: this.testName,
+                    body: this.testData.slice(0, index + 1),
+                    project: this.project
+                }).then(resp => {
+                    this.suite_loading = false;
+                    this.summary = resp;
+                    this.dialogTableVisible = true;
+                }).catch(resp => {
+                    this.suite_loading = false;
+                })
+            }
 
-            handlePageChange(val) {
-                this.$api.getPaginationBypage({
+        },
+        // 单个运行
+        handleSingleRun() {
+            this.loading = true;
+            var config = null;
+            if (this.testData.length > 0 && this.testData[0].body.method === "config") {
+                config = this.testData[0].body;
+            }
+            debugger
+            this.$api.runSingleTest({
+                host: this.host,
+                config: config,
+                body: this.testData[this.currentTest],
+                project: this.project
+            }).then(resp => {
+                this.loading = false;
+                this.summary = resp;
+                this.dialogTableVisible = true;
+            }).catch(resp => {
+                this.loading = false;
+            })
+        },
+
+        handlePageChange(val) {
+            this.$api.getPaginationBypage({
+                params: {
+                    page: this.currentPage,
+                    node: this.currentNode,
+                    project: this.project,
+                    tag: this.tag,
+                    rigEnv: this.rigEnv,
+                    search: this.search
+                }
+            }).then(res => {
+                this.apiData = res;
+            })
+        },
+
+        //  接口状态搜索
+        tagChangeHandle(command) {
+            // this.tag = command
+            this.$emit('update:tag', command);
+            this.$nextTick(() => {
+                this.$api.apiList({
                     params: {
-                        page: this.currentPage,
                         node: this.currentNode,
                         project: this.project,
                         tag: this.tag,
@@ -606,157 +627,144 @@
                 }).then(res => {
                     this.apiData = res;
                 })
-            },
-
-            //  接口状态搜索
-            tagChangeHandle(command) {
-                // this.tag = command
-                this.$emit('update:tag', command);
-                this.$nextTick(()=> {
-                    this.$api.apiList({
-                        params: {
-                            node: this.currentNode,
-                            project: this.project,
-                            tag: this.tag,
-                            rigEnv: this.rigEnv,
-                            search: this.search
-                        }
-                    }).then(res => {
-                        this.apiData = res;
-                    })
-                })
-            },
-            resetSearch(){
-                this.currentNode = '',
+            })
+        },
+        resetSearch() {
+            this.currentNode = '',
                 this.$emit('update:search', '');
-                this.$emit('update:tag', '');
-                this.$emit('update:rigEnv', '');
-                this.getAPIList();
-            },
-            getAPIList() {
-                this.$nextTick(()=> {
-                    this.$api.apiList({
-                        params: {
-                            node: this.currentNode,
-                            project: this.project,
-                            search: this.search,
-                            rigEnv: this.rigEnv,
-                            tag: this.tag
-                        }
-                    }).then(res => {
-                        this.apiData = res;
-                    })
-                })
-            },
-
-            getTree() {
-                this.$api.getTree(this.$route.params.id, {
+            this.$emit('update:tag', '');
+            this.$emit('update:rigEnv', '');
+            this.getAPIList();
+        },
+        getAPIList() {
+            this.$nextTick(() => {
+                this.$api.apiList({
                     params: {
-                        type: 1
+                        node: this.currentNode,
+                        project: this.project,
+                        search: this.search,
+                        rigEnv: this.rigEnv,
+                        tag: this.tag
                     }
-                }).then(resp => {
-                    this.dataTree = resp['tree'];
+                }).then(res => {
+                    this.apiData = res;
                 })
-            },
+            })
+        },
 
-            handleNodeClick(node, data) {
-                this.currentNode = node.id;
-                this.data = data;
-                this.getAPIList();
-
-            },
-
-            filterNode(value, data) {
-                if (!value) return true;
-                return data.label.indexOf(value) !== -1;
-            },
-
-            dragEnd(event) {
-                if (this.testData.length > this.length) {
-                    this.testData.splice(this.length, 1)
+        getTree() {
+            this.$api.getTree(this.$route.params.id, {
+                params: {
+                    type: 1
                 }
-            },
+            }).then(resp => {
+                this.dataTree = resp['tree'];
+            })
+        },
 
-            drop(event) {
-                event.preventDefault();
-                // 创建用例时,默认加上config
-                if(this.testData.length === 0){
-                    this.testData.push({body: {name: this.config, method: 'config'}})
-                }
-                this.currentAPI&&this.testData.push(this.currentAPI);
-            },
-            allowDrop(event) {
-                event.preventDefault();
-            },
+        handleNodeClick(node, data) {
+            this.currentNode = node.id;
+            this.data = data;
+            this.getAPIList();
 
         },
-        mounted() {
-            this.getTree();
-            this.getAPIList();
-        }
+
+        filterNode(value, data) {
+            if (!value) return true;
+            return data.label.indexOf(value) !== -1;
+        },
+
+        dragEnd(event) {
+            if (this.testData.length > this.length) {
+                this.testData.splice(this.length, 1)
+            }
+        },
+
+        drop(event) {
+            event.preventDefault();
+            // 创建用例时,默认加上config
+            if (this.testData.length === 0) {
+                this.testData.push({body: {name: this.config, method: 'config'}})
+            }
+            this.currentAPI && this.testData.push(this.currentAPI);
+        },
+        allowDrop(event) {
+            event.preventDefault();
+        },
+
+    },
+    mounted() {
+        this.getTree();
+        this.getAPIList();
     }
+}
 </script>
 
 <style scoped>
 
-    .test-list {
-        height: 590px;
-    }
+.test-list {
+    height: 590px;
+}
 
-    .block_test {
-        margin-top: 10px;
-        border: 1px solid #49cc90;
-        background-color: rgba(236, 248, 238, .4)
-    }
+.block_test {
+    margin-top: 10px;
+    border: 1px solid #49cc90;
+    background-color: rgba(236, 248, 238, .4)
+}
 
-    .block_method_test {
-        background-color: darkcyan;
-    }
+.block_method_test {
+    background-color: darkcyan;
+}
 
-    .block_method_config {
-        background-color: red;
-    }
+.block_method_config {
+    background-color: red;
+}
 
-    .block-test-name {
-        /*修改用例中API名字显示不全*/
-        width: 450px;
-        /*超过宽度自动变成...*/
-        text-overflow: ellipsis;
-        overflow: hidden;
-        white-space: nowrap;
+.block-test-name {
+    /*修改用例中API名字显示不全*/
+    width: 450px;
+    /*超过宽度自动变成...*/
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
 
-        padding-left: 10px;
-        -webkit-box-flex: 1;
-        -ms-flex: 1;
-        font-family: Open Sans, sans-serif;
-        color: #3b4151;
-        border: none;
-        outline: none;
-        background: rgba(236, 248, 238, .4)
+    padding-left: 10px;
+    -webkit-box-flex: 1;
+    -ms-flex: 1;
+    font-family: Open Sans, sans-serif;
+    color: #3b4151;
+    border: none;
+    outline: none;
+    background: rgba(236, 248, 238, .4)
 
-    }
+}
 
-    .recordapi__header {
-        display: flex;
-        align-items: center;
-    }
-    .recordapi__header--item.is-strench {
-        flex:1;
-    }
-    .recordapi__header--item {
-        margin:0 8px;
-    }
-    .edit__block {
-        height: auto;
-        padding: 0 5px;
-        line-height: 1;
-    }
-    .edit__block--inner {
-        padding: 10px 0 10px 15px;
-    }
-    .edit__block--inner .block-method {
-        padding:0;
-        text-align: left;
-        margin-bottom: 4px;
-    }
+.recordapi__header {
+    display: flex;
+    align-items: center;
+}
+
+.recordapi__header--item.is-strench {
+    flex: 1;
+}
+
+.recordapi__header--item {
+    margin: 0 8px;
+}
+
+.edit__block {
+    height: auto;
+    padding: 0 5px;
+    line-height: 1;
+}
+
+.edit__block--inner {
+    padding: 10px 0 10px 15px;
+}
+
+.edit__block--inner .block-method {
+    padding: 0;
+    text-align: left;
+    margin-bottom: 4px;
+}
 </style>

@@ -12,21 +12,21 @@
                     >新增配置
                     </el-button>
 
-                  <!--  <el-button
-                        type="primary"
-                        plain
-                        size="small"
-                        icon="el-icon-upload"
-                    >导入配置
-                    </el-button>
+                    <!--  <el-button
+                          type="primary"
+                          plain
+                          size="small"
+                          icon="el-icon-upload"
+                      >导入配置
+                      </el-button>
 
-                    <el-button
-                        type="info"
-                        plain
-                        size="small"
-                        icon="el-icon-download"
-                    >导出配置
-                    </el-button>-->
+                      <el-button
+                          type="info"
+                          plain
+                          size="small"
+                          icon="el-icon-download"
+                      >导出配置
+                      </el-button>-->
 
                     <el-button
                         style="margin-left: 20px"
@@ -42,7 +42,8 @@
                         type="text"
                         style="position: absolute; right: 30px;"
                         @click="addConfigActivate=false"
-                    >返回列表</el-button>
+                    >返回列表
+                    </el-button>
 
                 </div>
             </div>
@@ -74,98 +75,98 @@
 </template>
 
 <script>
-    import ConfigBody from './components/ConfigBody'
-    import ConfigList from './components/ConfigList'
+import ConfigBody from './components/ConfigBody'
+import ConfigList from './components/ConfigList'
 
-    export default {
-        components: {
-            ConfigBody,
-            ConfigList
-        },
+export default {
+    components: {
+        ConfigBody,
+        ConfigList
+    },
 
-        computed: {
-            initResponse: {
-                get() {
-                    return this.addConfigActivate;
-                },
-                set(value) {
-                    this.addConfigActivate = value;
-                    this.respConfig = {
-                        is_default: false,
-                        id: '',
-                        body: {
-                            name: '',
-                            base_url: '',
-                            header: [{
-                                key: "",
-                                value: "",
-                                desc: ""
-                            }],
-                            request: {
-                                data: [{
-                                    key: "",
-                                    value: "",
-                                    desc: "",
-                                    type: 1
-                                }],
-                                params: [{
-                                    key: "",
-                                    value: "",
-                                    desc: "",
-                                    type: 1
-                                }],
-                                json_data: ''
-                            },
-                            variables: [{
+    computed: {
+        initResponse: {
+            get() {
+                return this.addConfigActivate;
+            },
+            set(value) {
+                this.addConfigActivate = value;
+                this.respConfig = {
+                    is_default: false,
+                    id: '',
+                    body: {
+                        name: '',
+                        base_url: '',
+                        header: [{
+                            key: "",
+                            value: "",
+                            desc: ""
+                        }],
+                        request: {
+                            data: [{
                                 key: "",
                                 value: "",
                                 desc: "",
                                 type: 1
                             }],
-                            hooks: [{
-                                setup: "",
-                                teardown: ""
-                            }],
-                            parameters: [{
+                            params: [{
                                 key: "",
                                 value: "",
                                 desc: "",
+                                type: 1
                             }],
+                            json_data: ''
+                        },
+                        variables: [{
+                            key: "",
+                            value: "",
+                            desc: "",
+                            type: 1
+                        }],
+                        hooks: [{
+                            setup: "",
+                            teardown: ""
+                        }],
+                        parameters: [{
+                            key: "",
+                            value: "",
+                            desc: "",
+                        }],
 
-                        }
-                    };
-                }
-            },
-        },
-        data() {
-            return {
-                back: false,
-                del: false,
-                addConfigActivate: false,
-                respConfig: '',
-                type: ''
+                    }
+                };
             }
         },
-        methods: {
-            handleAddSuccess () {
-                this.back = !this.back;
-                this.addConfigActivate = false;
-            },
-            addConfig() {
-                this.initResponse = true;
-                this.type = 'add'
-            },
-            handleRespConfig(row) {
-                this.respConfig = row;
-                this.type = 'edit';
-                this.addConfigActivate = true;
-            }
-        },
-        name: "RecordConfig",
-        mounted() {
-
+    },
+    data() {
+        return {
+            back: false,
+            del: false,
+            addConfigActivate: false,
+            respConfig: '',
+            type: ''
         }
+    },
+    methods: {
+        handleAddSuccess() {
+            this.back = !this.back;
+            this.addConfigActivate = false;
+        },
+        addConfig() {
+            this.initResponse = true;
+            this.type = 'add'
+        },
+        handleRespConfig(row) {
+            this.respConfig = row;
+            this.type = 'edit';
+            this.addConfigActivate = true;
+        }
+    },
+    name: "RecordConfig",
+    mounted() {
+
     }
+}
 </script>
 
 <style>

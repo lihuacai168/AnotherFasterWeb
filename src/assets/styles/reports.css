@@ -37,7 +37,7 @@
 
 
 .DELETE {
-    color:  #f93e3e;
+    color: #f93e3e;
 }
 
 
@@ -50,7 +50,7 @@
 }
 
 .OPTIONS {
-    color:  #409eff;
+    color: #409eff;
 }
 
 
@@ -59,7 +59,7 @@
     border: 1px solid #ebedef;
     border-radius: 4px;
     color: #222 !important;
-    font-family: Consolas,monospace;
+    font-family: Consolas, monospace;
     font-size: 13px;
     margin: 0;
     padding: 7px 10px;

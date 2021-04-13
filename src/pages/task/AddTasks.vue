@@ -15,7 +15,8 @@
                             </el-form-item>
 
                             <el-form-item label="时间配置" prop="crontab">
-                                <el-input clearable v-model="ruleForm.crontab" placeholder="请输入cortab表达式，例如 2 12 * * *"></el-input>
+                                <el-input clearable v-model="ruleForm.crontab"
+                                          placeholder="请输入cortab表达式，例如 2 12 * * *"></el-input>
                             </el-form-item>
 
                             <el-form-item label="任务状态" prop="switch">
@@ -30,15 +31,15 @@
                                 </el-radio-group>
                             </el-form-item>
 
-<!--                            <el-form-item label="邮件接收人列表" prop="receiver">-->
-<!--                                <el-input type="textarea" v-model="ruleForm.receiver"-->
-<!--                                          placeholder="多个接收人以;分隔" clearable></el-input>-->
-<!--                            </el-form-item>-->
-<!---->
-<!--                            <el-form-item label="邮件抄送人列表" prop="mail_cc">-->
-<!--                                <el-input type="textarea" v-model="ruleForm.mail_cc"-->
-<!--                                          placeholder="多个抄送人以;分隔" clearable></el-input>-->
-<!--                            </el-form-item>-->
+                            <!--                            <el-form-item label="邮件接收人列表" prop="receiver">-->
+                            <!--                                <el-input type="textarea" v-model="ruleForm.receiver"-->
+                            <!--                                          placeholder="多个接收人以;分隔" clearable></el-input>-->
+                            <!--                            </el-form-item>-->
+                            <!---->
+                            <!--                            <el-form-item label="邮件抄送人列表" prop="mail_cc">-->
+                            <!--                                <el-input type="textarea" v-model="ruleForm.mail_cc"-->
+                            <!--                                          placeholder="多个抄送人以;分隔" clearable></el-input>-->
+                            <!--                            </el-form-item>-->
 
                             <el-form-item label="webhook" prop="webhook">
                                 <el-input type="text" v-model="ruleForm.webhook"
@@ -129,7 +130,7 @@
                             >
                                 <div class="block block_options">
                                     <span class="block-method block_method_options block_method_color">Case</span>
-                                    <span class="block_name">{{item.name}}</span>
+                                    <span class="block_name">{{ item.name }}</span>
                                 </div>
                             </div>
                         </el-col>
@@ -157,18 +158,18 @@
                                             class="block block_test"
                                             @mousemove="currentTest = index"
                                         >
-                                        <!--编辑用例列表-->
-                                        <span
-                                            class="block-method block_method_test block_method_color">Task</span>
-                                            <span class="block-test-name">{{test.name}}</span>
+                                            <!--编辑用例列表-->
+                                            <span
+                                                class="block-method block_method_test block_method_color">Task</span>
+                                            <span class="block-test-name">{{ test.name }}</span>
                                             <!--<el-button-->
-                                                <!--style="position: absolute; right: 48px; top: 8px"-->
-                                                <!--v-show="currentTest === index"-->
-                                                <!--type="info"-->
-                                                <!--icon="el-icon-edit"-->
-                                                <!--circle size="mini"-->
-                                                <!--@click="handleEditTestCase"-->
-                                                <!--title="编辑"-->
+                                            <!--style="position: absolute; right: 48px; top: 8px"-->
+                                            <!--v-show="currentTest === index"-->
+                                            <!--type="info"-->
+                                            <!--icon="el-icon-edit"-->
+                                            <!--circle size="mini"-->
+                                            <!--@click="handleEditTestCase"-->
+                                            <!--title="编辑"-->
                                             <!--&gt;-->
                                             <!--</el-button>-->
                                             <el-button
@@ -197,210 +198,210 @@
 </template>
 
 <script>
-    import draggable from 'vuedraggable'
+import draggable from 'vuedraggable'
 
-    export default {
+export default {
 
-        name: "AddTasks",
-        props: {
-            ruleForm: {
-                require: true
+    name: "AddTasks",
+    props: {
+        ruleForm: {
+            require: true
+        },
+        args: {
+            require: true
+        },
+        scheduleId: {
+            require: true
+        }
+    },
+    watch: {
+        filterText(val) {
+            this.$refs.tree2.filter(val);
+        },
+    },
+    components: {
+        draggable
+    },
+
+    data() {
+        return {
+            currentTest: '',
+            length: 0,
+            testData: [],
+            currentSuite: '',
+            search: '',
+            next: false,
+            node: '',
+            currentPage: 1,
+            filterText: '',
+            expand: '&#xe65f;',
+            dataTree: [],
+            suiteData: {
+                count: 0,
+                results: []
             },
-            args: {
-                require: true
+            rules: {
+                name: [
+                    {required: true, message: '请输入任务名称', trigger: 'blur'},
+                    {min: 1, max: 50, message: '长度在 1 到 50 个字符', trigger: 'blur'}
+                ],
+                crontab: [
+                    {required: true, message: '请输入正确的crontab表达式', trigger: 'blur'}
+                ]
+
             },
-            scheduleId:{
-                require: true
+            editTestCaseActivate: false,
+        }
+    },
+    methods: {
+        handleNewTestCase(kwargsForm) {
+            this.editTestCaseActivate = false;
+            this.next = true;
+            this.testData[this.currentTest]["kwargs"] = kwargsForm;
+        },
+        saveTask() {
+            var task = [];
+            for (let value of this.testData) {
+                task.push(value.id);
             }
-        },
-        watch: {
-            filterText(val) {
-                this.$refs.tree2.filter(val);
-            },
-        },
-        components: {
-            draggable
-        },
-
-        data() {
-            return {
-                currentTest: '',
-                length: 0,
-                testData: [],
-                currentSuite: '',
-                search: '',
-                next: false,
-                node: '',
-                currentPage: 1,
-                filterText: '',
-                expand: '&#xe65f;',
-                dataTree: [],
-                suiteData: {
-                    count: 0,
-                    results: []
-                },
-                rules: {
-                    name: [
-                        {required: true, message: '请输入任务名称', trigger: 'blur'},
-                        {min: 1, max: 50, message: '长度在 1 到 50 个字符', trigger: 'blur'}
-                    ],
-                    crontab: [
-                        {required: true, message: '请输入正确的crontab表达式', trigger: 'blur'}
-                    ]
-
-                },
-                editTestCaseActivate: false,
-            }
-        },
-        methods: {
-            handleNewTestCase(kwargsForm){
-                this.editTestCaseActivate = false;
-                this.next = true;
-                this.testData[this.currentTest]["kwargs"] = kwargsForm;
-            },
-            saveTask(){
-                var task = [];
-                for(let value of this.testData){
-                    task.push(value.id);
-                }
-                debugger
-                var form = this.ruleForm;
-                form["data"] = task ;
-                form["project"] = this.$route.params.id;
-                if (this.scheduleId === ''){
+            debugger
+            var form = this.ruleForm;
+            form["data"] = task;
+            form["project"] = this.$route.params.id;
+            if (this.scheduleId === '') {
                 this.$api.addTask(form).then(resp => {
-                    if(!resp.success){
+                    if (!resp.success) {
                         this.$message.error(resp.msg)
-                    }else{
+                    } else {
                         this.$emit("changeStatus", false);
                     }
                 })
-                }else{
-                    this.$api.updateTask(this.scheduleId,{project:this.$route.params.id},form).then( resp => {
-                        if (resp.status === 200) {
-                            this.$notify.success('更新定时任务成功');
-                            this.$emit("changeStatus", false);
-                        }
-                    })
-                }
-            },
-
-            dragEnd(event) {
-                if (this.testData.length > this.length) {
-                    this.testData.splice(this.length, 1)
-                }
-            },
-            drop(event) {
-                event.preventDefault();
-                this.testData.push(this.currentSuite);
-            },
-            allowDrop(event) {
-                event.preventDefault();
-            },
-            handlePageChange(val) {
-                this.$api.getTestPaginationBypage({
-                    params: {
-                        page: this.currentPage,
-                        node: this.node,
-                        project: this.$route.params.id,
-                        search: ''
+            } else {
+                this.$api.updateTask(this.scheduleId, {project: this.$route.params.id}, form).then(resp => {
+                    if (resp.status === 200) {
+                        this.$notify.success('更新定时任务成功');
+                        this.$emit("changeStatus", false);
                     }
-                }).then(res => {
-                    this.suiteData = res;
-                })
-            },
-            handleCurrentChange(val) {
-                this.$api.getTestPaginationBypage({
-                    params: {
-                        page: this.currentPage,
-                        project: this.$route.params.id,
-                        node: this.node,
-                        search: this.search
-                    }
-                }).then(resp => {
-                    this.suiteData = resp;
-                })
-            },
-            submitForm(formName) {
-                this.$refs[formName].validate((valid) => {
-                    if (valid) {
-                        this.next = true;
-                    } else {
-                        return false;
-                    }
-                });
-                this.testData = this.args
-                // 用map遍历args的所有caseId,如果和用例集中的id相等,就返回该用例的全部信息
-                // 用map,filter过滤,case的数据在第二页时,会导致name=undefined
-                // this.testData = this.args.map(caseId=> this.suiteData.results.filter(testCase=> testCase.id === caseId)[0]);
-                debugger
-            },
-            resetForm(formName) {
-                this.$refs[formName].resetFields();
-            },
-            filterNode(value, data) {
-                if (!value) return true;
-                return data.label.indexOf(value) !== -1;
-            },
-            getTree() {
-                this.$api.getTree(this.$route.params.id, {params: {type: 2}}).then(resp => {
-                    this.dataTree = resp.tree;
-                })
-            },
-
-            handleNodeClick(node) {
-                this.node = node.id;
-                this.getTestList();
-
-            },
-            getTestList() {
-                this.$api.testList({
-                    params: {
-                        project: this.$route.params.id,
-                        node: this.node,
-                        search: this.search,
-                        caseNameOrUrl: ""
-                    }
-                }).then(resp => {
-                    this.suiteData = resp;
                 })
             }
         },
-        mounted() {
-            this.getTree();
+
+        dragEnd(event) {
+            if (this.testData.length > this.length) {
+                this.testData.splice(this.length, 1)
+            }
+        },
+        drop(event) {
+            event.preventDefault();
+            this.testData.push(this.currentSuite);
+        },
+        allowDrop(event) {
+            event.preventDefault();
+        },
+        handlePageChange(val) {
+            this.$api.getTestPaginationBypage({
+                params: {
+                    page: this.currentPage,
+                    node: this.node,
+                    project: this.$route.params.id,
+                    search: ''
+                }
+            }).then(res => {
+                this.suiteData = res;
+            })
+        },
+        handleCurrentChange(val) {
+            this.$api.getTestPaginationBypage({
+                params: {
+                    page: this.currentPage,
+                    project: this.$route.params.id,
+                    node: this.node,
+                    search: this.search
+                }
+            }).then(resp => {
+                this.suiteData = resp;
+            })
+        },
+        submitForm(formName) {
+            this.$refs[formName].validate((valid) => {
+                if (valid) {
+                    this.next = true;
+                } else {
+                    return false;
+                }
+            });
+            this.testData = this.args
+            // 用map遍历args的所有caseId,如果和用例集中的id相等,就返回该用例的全部信息
+            // 用map,filter过滤,case的数据在第二页时,会导致name=undefined
+            // this.testData = this.args.map(caseId=> this.suiteData.results.filter(testCase=> testCase.id === caseId)[0]);
+            debugger
+        },
+        resetForm(formName) {
+            this.$refs[formName].resetFields();
+        },
+        filterNode(value, data) {
+            if (!value) return true;
+            return data.label.indexOf(value) !== -1;
+        },
+        getTree() {
+            this.$api.getTree(this.$route.params.id, {params: {type: 2}}).then(resp => {
+                this.dataTree = resp.tree;
+            })
+        },
+
+        handleNodeClick(node) {
+            this.node = node.id;
             this.getTestList();
+
+        },
+        getTestList() {
+            this.$api.testList({
+                params: {
+                    project: this.$route.params.id,
+                    node: this.node,
+                    search: this.search,
+                    caseNameOrUrl: ""
+                }
+            }).then(resp => {
+                this.suiteData = resp;
+            })
         }
+    },
+    mounted() {
+        this.getTree();
+        this.getTestList();
     }
+}
 </script>
 
 <style scoped>
 
-    .test-list {
-        height: 590px;
-    }
+.test-list {
+    height: 590px;
+}
 
-    .block_test {
-        margin-top: 10px;
-        border: 1px solid #49cc90;
-        background-color: rgba(236, 248, 238, .4)
-    }
+.block_test {
+    margin-top: 10px;
+    border: 1px solid #49cc90;
+    background-color: rgba(236, 248, 238, .4)
+}
 
-    .block_method_test {
-        background-color: #304056;
-    }
+.block_method_test {
+    background-color: #304056;
+}
 
-    .block-test-name {
-        width: 700px;
-        padding-left: 10px;
-        -webkit-box-flex: 1;
-        -ms-flex: 1;
-        font-family: Open Sans, sans-serif;
-        color: #3b4151;
-        border: none;
-        outline: none;
-        background: rgba(236, 248, 238, .4)
+.block-test-name {
+    width: 700px;
+    padding-left: 10px;
+    -webkit-box-flex: 1;
+    -ms-flex: 1;
+    font-family: Open Sans, sans-serif;
+    color: #3b4151;
+    border: none;
+    outline: none;
+    background: rgba(236, 248, 238, .4)
 
-    }
+}
 
 
 </style>

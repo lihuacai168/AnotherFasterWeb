@@ -67,149 +67,149 @@
 
 <script>
 
-    export default {
-        props: {
-            save: Boolean,
-            header: {
-                require: false
-            }
+export default {
+    props: {
+        save: Boolean,
+        header: {
+            require: false
+        }
+    },
+    methods: {
+        querySearch(queryString, cb) {
+            let headerOptions = this.headerOptions;
+            let results = queryString ? headerOptions.filter(this.createFilter(queryString)) : headerOptions;
+            cb(results);
         },
-        methods: {
-            querySearch(queryString, cb) {
-                let headerOptions = this.headerOptions;
-                let results = queryString ? headerOptions.filter(this.createFilter(queryString)) : headerOptions;
-                cb(results);
-            },
 
-            createFilter(queryString) {
-                return (headerOptions) => {
-                    return (headerOptions.value.toLowerCase().indexOf(queryString.toLowerCase()) === 0);
-                };
-            },
-
-            cellMouseEnter(row) {
-                this.currentRow = row;
-            },
-
-            cellMouseLeave(row) {
-                this.currentRow = '';
-            },
-
-            handleEdit(index, row) {
-                this.tableData.push({
-                    key: '',
-                    value: '',
-                    desc: ''
-                });
-            },
-
-            handleDelete(index, row) {
-                this.tableData.splice(index, 1);
-            },
-
-            // 头部信息格式化
-            parseHeader() {
-                let header = {
-                    header: {},
-                    desc: {}
-                };
-                for (let content of this.tableData) {
-                    if (content['key'] !== '' && content['value'] !== '') {
-                        header.header[content['key']] = content['value'];
-                        header.desc[content['key']] = content['desc'];
-                    }
-                }
-                return header;
-            }
+        createFilter(queryString) {
+            return (headerOptions) => {
+                return (headerOptions.value.toLowerCase().indexOf(queryString.toLowerCase()) === 0);
+            };
         },
-        watch: {
-            save: function () {
-                this.$emit('header', this.parseHeader(), this.tableData);
-            },
 
-            header: function () {
-                if (this.header.length !== 0) {
-                    this.tableData = this.header;
+        cellMouseEnter(row) {
+            this.currentRow = row;
+        },
+
+        cellMouseLeave(row) {
+            this.currentRow = '';
+        },
+
+        handleEdit(index, row) {
+            this.tableData.push({
+                key: '',
+                value: '',
+                desc: ''
+            });
+        },
+
+        handleDelete(index, row) {
+            this.tableData.splice(index, 1);
+        },
+
+        // 头部信息格式化
+        parseHeader() {
+            let header = {
+                header: {},
+                desc: {}
+            };
+            for (let content of this.tableData) {
+                if (content['key'] !== '' && content['value'] !== '') {
+                    header.header[content['key']] = content['value'];
+                    header.desc[content['key']] = content['desc'];
                 }
             }
+            return header;
+        }
+    },
+    watch: {
+        save: function () {
+            this.$emit('header', this.parseHeader(), this.tableData);
         },
-        computed:{
-            height() {
-                return window.screen.height - 440
-            }
-        },
-        data() {
-            return {
-                headerOptions: [{
-                    value: 'Accept'
-                }, {
-                    value: 'Accept-Charset'
-                }, {
-                    value: 'Accept-Language'
-                }, {
-                    value: 'Accept-Datetime'
-                }, {
-                    value: 'Authorization'
-                }, {
-                    value: 'Cache-Control'
-                }, {
-                    value: 'Connection'
-                }, {
-                    value: 'Cookie'
-                }, {
-                    value: 'Content-Length'
-                }, {
-                    value: 'Content-MD5'
-                }, {
-                    value: 'Content-Type'
-                }, {
-                    value: 'Expect'
-                }, {
-                    value: 'Date'
-                }, {
-                    value: 'From'
-                }, {
-                    value: 'Host'
-                }, {
-                    value: 'If-Match'
-                }, {
-                    value: 'If-Modified-Since'
-                }, {
-                    value: 'If-None-Match'
-                }, {
-                    value: 'If-Range'
-                }, {
-                    value: 'If-Unmodified-Since'
-                }, {
-                    value: 'Max-Forwards'
-                }, {
-                    value: 'Origin'
-                }, {
-                    value: 'Pragma'
-                }, {
-                    value: 'Proxy-Authorization'
-                }, {
-                    value: 'Range'
-                }, {
-                    value: 'Referer'
-                }, {
-                    value: 'TE'
-                }, {
-                    value: 'User-Agent'
-                }, {
-                    value: 'Upgrade'
-                }, {
-                    value: 'Via'
-                }, {
-                    value: 'Warning'
-                }],
 
-                currentRow: '',
-                tableData: [{key: '', value: '', desc: ''}]
+        header: function () {
+            if (this.header.length !== 0) {
+                this.tableData = this.header;
             }
-        },
-        name: "Header"
-    }
+        }
+    },
+    computed: {
+        height() {
+            return window.screen.height - 440
+        }
+    },
+    data() {
+        return {
+            headerOptions: [{
+                value: 'Accept'
+            }, {
+                value: 'Accept-Charset'
+            }, {
+                value: 'Accept-Language'
+            }, {
+                value: 'Accept-Datetime'
+            }, {
+                value: 'Authorization'
+            }, {
+                value: 'Cache-Control'
+            }, {
+                value: 'Connection'
+            }, {
+                value: 'Cookie'
+            }, {
+                value: 'Content-Length'
+            }, {
+                value: 'Content-MD5'
+            }, {
+                value: 'Content-Type'
+            }, {
+                value: 'Expect'
+            }, {
+                value: 'Date'
+            }, {
+                value: 'From'
+            }, {
+                value: 'Host'
+            }, {
+                value: 'If-Match'
+            }, {
+                value: 'If-Modified-Since'
+            }, {
+                value: 'If-None-Match'
+            }, {
+                value: 'If-Range'
+            }, {
+                value: 'If-Unmodified-Since'
+            }, {
+                value: 'Max-Forwards'
+            }, {
+                value: 'Origin'
+            }, {
+                value: 'Pragma'
+            }, {
+                value: 'Proxy-Authorization'
+            }, {
+                value: 'Range'
+            }, {
+                value: 'Referer'
+            }, {
+                value: 'TE'
+            }, {
+                value: 'User-Agent'
+            }, {
+                value: 'Upgrade'
+            }, {
+                value: 'Via'
+            }, {
+                value: 'Warning'
+            }],
+
+            currentRow: '',
+            tableData: [{key: '', value: '', desc: ''}]
+        }
+    },
+    name: "Header"
+}
 </script>
 
 <style scoped>

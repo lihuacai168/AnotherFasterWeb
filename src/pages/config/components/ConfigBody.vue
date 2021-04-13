@@ -86,162 +86,162 @@
 </template>
 
 <script>
-    import Headers from '../../../httprunner/components/Headers'
-    import Request from '../../../httprunner/components/Request'
-    import Variables from '../../../httprunner/components/Variables'
-    import Hooks from '../../../httprunner/components/Hooks'
-    import Parameters from '../../../httprunner/components/Parameters'
+import Headers from '../../../httprunner/components/Headers'
+import Request from '../../../httprunner/components/Request'
+import Variables from '../../../httprunner/components/Variables'
+import Hooks from '../../../httprunner/components/Hooks'
+import Parameters from '../../../httprunner/components/Parameters'
 
-    export default {
-        components: {
-            Headers,
-            Request,
-            Variables,
-            Hooks,
-            Parameters
+export default {
+    components: {
+        Headers,
+        Request,
+        Variables,
+        Hooks,
+        Parameters
+    },
+
+    props: {
+        project: {
+            require: false
+        },
+        response: {
+            require: false
+        }
+    },
+
+    watch: {
+        response: function () {
+            this.name = this.response.body.name;
+            this.baseUrl = this.response.body.base_url;
+            this.id = this.response.id;
+        }
+    },
+
+    methods: {
+        handleHeader(header) {
+            this.header = header;
+        },
+        handleRequest(request) {
+            this.request = request;
         },
 
-        props: {
-            project: {
-                require: false
-            },
-            response: {
-                require: false
+        handleVariables(variables) {
+            this.variables = variables;
+        },
+        handleHooks(hooks) {
+            this.hooks = hooks;
+        },
+        handleParameters(parameters) {
+            this.parameters = parameters;
+            if (this.id === '') {
+                this.addConfig();
+            } else {
+                this.updateConfig();
             }
         },
 
-        watch: {
-            response: function () {
-                this.name = this.response.body.name;
-                this.baseUrl = this.response.body.base_url;
-                this.id = this.response.id;
+        addConfig() {
+            if (this.validateData()) {
+                this.$api.addConfig({
+                    parameters: this.parameters,
+                    header: this.header,
+                    request: this.request,
+                    variables: this.variables,
+                    hooks: this.hooks,
+                    base_url: this.baseUrl,
+                    name: this.name,
+                    project: this.project,
+
+                }).then(resp => {
+                    if (resp.success) {
+                        this.$message.success({
+                            message: '配置添加成功',
+                            duration: this.$store.state.duration
+                        });
+                        this.$emit("addSuccess");
+                    } else {
+                        this.$message.error({
+                            message: resp.msg,
+                            duration: this.$store.state.duration
+                        })
+                    }
+                })
             }
         },
 
-        methods: {
-            handleHeader(header) {
-                this.header = header;
-            },
-            handleRequest(request) {
-                this.request = request;
-            },
-
-            handleVariables(variables) {
-                this.variables = variables;
-            },
-            handleHooks(hooks) {
-                this.hooks = hooks;
-            },
-            handleParameters(parameters) {
-                this.parameters = parameters;
-                if (this.id === '') {
-                    this.addConfig();
-                } else {
-                    this.updateConfig();
-                }
-            },
-
-            addConfig() {
-                if (this.validateData()) {
-                    this.$api.addConfig({
-                        parameters: this.parameters,
-                        header: this.header,
-                        request: this.request,
-                        variables: this.variables,
-                        hooks: this.hooks,
-                        base_url: this.baseUrl,
-                        name: this.name,
-                        project: this.project,
-
-                    }).then(resp => {
-                        if (resp.success) {
-                            this.$message.success({
-                                message: '配置添加成功',
-                                duration: this.$store.state.duration
-                            });
-                            this.$emit("addSuccess");
-                        } else {
-                            this.$message.error({
-                                message: resp.msg,
-                                duration: this.$store.state.duration
-                            })
-                        }
-                    })
-                }
-            },
-
-            updateConfig() {
-                if (this.validateData()) {
-                    this.$api.updateConfig(this.id, {
-                        parameters: this.parameters,
-                        header: this.header,
-                        request: this.request,
-                        variables: this.variables,
-                        hooks: this.hooks,
-                        base_url: this.baseUrl,
-                        name: this.name,
-                    }).then(resp => {
-                        if (resp.success) {
-                            this.$message.success({
-                                message: '配置更新成功',
-                                duration: this.$store.state.duration
-                            });
-                            this.$emit("addSuccess");
-                        } else {
-                            this.$message.error({
-                                message: resp.msg,
-                                duration: this.$store.state.duration
-                            })
-                        }
-                    })
-                }
-            },
-
-            validateData() {
-                if (this.name === '') {
-                    this.$notify.error({
-                        title: '参数错误',
-                        message: '配置名称不能为空',
-                        duration: 1500
-                    });
-                    return false;
-                }
-                return true
-            },
-
-        },
-
-        data() {
-            return {
-                name: '',
-                baseUrl: '',
-                id: '',
-                header: [],
-                request: [],
-                variables: [],
-                hooks: [],
-                parameters: [],
-                save: false,
-                activeTag: 'first',
+        updateConfig() {
+            if (this.validateData()) {
+                this.$api.updateConfig(this.id, {
+                    parameters: this.parameters,
+                    header: this.header,
+                    request: this.request,
+                    variables: this.variables,
+                    hooks: this.hooks,
+                    base_url: this.baseUrl,
+                    name: this.name,
+                }).then(resp => {
+                    if (resp.success) {
+                        this.$message.success({
+                            message: '配置更新成功',
+                            duration: this.$store.state.duration
+                        });
+                        this.$emit("addSuccess");
+                    } else {
+                        this.$message.error({
+                            message: resp.msg,
+                            duration: this.$store.state.duration
+                        })
+                    }
+                })
             }
         },
-        name: "ConfigBody"
-    }
+
+        validateData() {
+            if (this.name === '') {
+                this.$notify.error({
+                    title: '参数错误',
+                    message: '配置名称不能为空',
+                    duration: 1500
+                });
+                return false;
+            }
+            return true
+        },
+
+    },
+
+    data() {
+        return {
+            name: '',
+            baseUrl: '',
+            id: '',
+            header: [],
+            request: [],
+            variables: [],
+            hooks: [],
+            parameters: [],
+            save: false,
+            activeTag: 'first',
+        }
+    },
+    name: "ConfigBody"
+}
 </script>
 
 <style scoped>
-    .el-select {
-        width: 130px;
-    }
+.el-select {
+    width: 130px;
+}
 
-    .input-with-select {
-        width: 600px;
-        margin-top: 10px;
-    }
+.input-with-select {
+    width: 600px;
+    margin-top: 10px;
+}
 
-    .request {
-        margin-top: 15px;
-        border: 1px solid #ddd;
-    }
+.request {
+    margin-top: 15px;
+    border: 1px solid #ddd;
+}
 
 </style>

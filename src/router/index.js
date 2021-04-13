@@ -17,7 +17,7 @@ import HostAddress from '@/pages/variables/HostAddress'
 Vue.use(Router);
 
 export default new Router({
-    mode:'history',
+    mode: 'history',
     routes: [
         {
             path: '/fastrunner/register',

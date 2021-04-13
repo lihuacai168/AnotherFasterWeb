@@ -43,7 +43,7 @@
                                 <el-radio v-for="item in tags"
                                           :key="item.value"
                                           :label="item.value"
-                                >{{item.name}}
+                                >{{ item.name }}
                                 </el-radio>
                             </el-radio-group>
                         </div>
@@ -106,7 +106,9 @@
                             <el-tag v-if="scope.row.type===4" type="danger">Mongodb</el-tag>
                             <el-tag v-if="scope.row.type===5" type="info">InfluxDB</el-tag>
                             <span
-                                style="margin-left: 10px; font-size: 18px; font-weight: bold">{{ scope.row.name }}</span>
+                                style="margin-left: 10px; font-size: 18px; font-weight: bold">{{
+                                    scope.row.name
+                                }}</span>
                         </template>
                     </el-table-column>
 
@@ -211,148 +213,148 @@
 </template>
 
 <script>
-    export default {
-        data() {
-            return {
-                editVisible:false,
-                dialogVisible: false,
-                dataBaseData: {
-                    results:[]
-                },
-                dataBaseForm: {
-                    name: '',
-                    desc: '',
-                    server: '',
-                    account: '',
-                    password: '',
-                    type: 2,
-                    id: ''
-                },
-                tags: [
-                    {name: 'Sql Server', value: 1},
-                    {name: 'MySQL', value: 2},
-                    {name: 'Oracle', value: 3},
-                    {name: 'Mongodb', value: 4},
-                    {name: 'InfluxDB', value: 5}
+export default {
+    data() {
+        return {
+            editVisible: false,
+            dialogVisible: false,
+            dataBaseData: {
+                results: []
+            },
+            dataBaseForm: {
+                name: '',
+                desc: '',
+                server: '',
+                account: '',
+                password: '',
+                type: 2,
+                id: ''
+            },
+            tags: [
+                {name: 'Sql Server', value: 1},
+                {name: 'MySQL', value: 2},
+                {name: 'Oracle', value: 3},
+                {name: 'Mongodb', value: 4},
+                {name: 'InfluxDB', value: 5}
+            ],
+            rules: {
+                name: [
+                    {required: true, message: '请输入数据库名称', trigger: 'blur'},
+                    {min: 1, max: 50, message: '最多不超过50个字符', trigger: 'blur'}
                 ],
-                rules: {
-                    name: [
-                        {required: true, message: '请输入数据库名称', trigger: 'blur'},
-                        {min: 1, max: 50, message: '最多不超过50个字符', trigger: 'blur'}
-                    ],
-                    server: [
-                        {required: true, message: '请输入数据库访问地址', trigger: 'blur'},
-                        {min: 1, max: 50, message: '最多不超过50个字符', trigger: 'blur'}
-                    ],
-                    account: [
-                        {required: true, message: '请输入登陆账号', trigger: 'blur'},
-                        {min: 1, max: 50, message: '最多不超过50个字符', trigger: 'blur'}
-                    ],
-                    password: [
-                        {required: true, message: '请输入登陆密码', trigger: 'blur'},
-                        {min: 1, max: 50, message: '最多不超过50个字符', trigger: 'blur'}
-                    ],
-                    desc: [
-                        {required: true, message: '请简要描述下该数据库', trigger: 'blur'},
-                        {min: 1, max: 100, message: '最多不超过100个字符', trigger: 'blur'}
-                    ]
-                }
+                server: [
+                    {required: true, message: '请输入数据库访问地址', trigger: 'blur'},
+                    {min: 1, max: 50, message: '最多不超过50个字符', trigger: 'blur'}
+                ],
+                account: [
+                    {required: true, message: '请输入登陆账号', trigger: 'blur'},
+                    {min: 1, max: 50, message: '最多不超过50个字符', trigger: 'blur'}
+                ],
+                password: [
+                    {required: true, message: '请输入登陆密码', trigger: 'blur'},
+                    {min: 1, max: 50, message: '最多不超过50个字符', trigger: 'blur'}
+                ],
+                desc: [
+                    {required: true, message: '请简要描述下该数据库', trigger: 'blur'},
+                    {min: 1, max: 100, message: '最多不超过100个字符', trigger: 'blur'}
+                ]
             }
         }
-        ,
-        methods: {
-            handleEdit(index, row) {
-                this.editVisible = true;
-                this.dataBaseForm.name = row['name'];
-                this.dataBaseForm.desc = row['desc'];
-                this.dataBaseForm.id = row['id'];
-                this.dataBaseForm.server = row['server'];
-                this.dataBaseForm.type = row['type'];
-                this.dataBaseForm.account = row['account'];
-                this.dataBaseForm.password = row['password'];
-            },
-            handleDelete(index, row) {
-                this.$confirm('此操作将永久删除该数据库, 是否继续?', '提示', {
-                    confirmButtonText: '确定',
-                    cancelButtonText: '取消',
-                    type: 'warning'
-                }).then(() => {
-                    this.$api.deleteDataBase(row["id"]).then(resp => {
-                        this.success('数据库删除成功');
-                        this.getDataBaseList();
-                    }).catch(resp => {
-                        this.failure(resp)
-                    });
-                })
-            },
-            handleConfirm(formName) {
-                this.$refs[formName].validate((valid) => {
-                    if (valid) {
-                        this.dialogVisible = false;
-                        this.editVisible = false;
-                        let obj;
-
-                        if (this.dataBaseForm.id === '') {
-                            obj = this.$api.addDataBase(this.dataBaseForm);
-                        } else {
-                            obj = this.$api.updateDataBase(this.dataBaseForm.id, this.dataBaseForm);
-                        }
-                        obj.then(resp => {
-                            if (resp["name"] === this.dataBaseForm.name) {
-                                this.success(resp["name"] + '数据库操作成功');
-                                this.getDataBaseList();
-                            }
-
-                            this.dataBaseForm.name = '';
-                            this.dataBaseForm.desc = '';
-                            this.dataBaseForm.id = '';
-                            this.dataBaseForm.account = '';
-                            this.dataBaseForm.password = '';
-                            this.dataBaseForm.server = '';
-                            this.dataBaseForm.type = 2;
-                        }).catch(resp => {
-                            this.failure(resp);
-                        });
-                    } else {
-                        if (this.dataBaseForm.id !== '') {
-                            this.editVisible = true;
-                        }else {
-                            this.dialogVisible = true;
-                        }
-                        return false;
-                    }
-                });
-
-            },
-            success(resp) {
-                this.$notify({
-                    message: resp,
-                    type: 'success',
-                    duration: this.$store.state.duration
-                });
-            },
-            failure(resp) {
-                this.$notify.error({
-                    message: resp,
-                    duration: this.$store.state.duration
-                });
-            },
-            getDataBaseList() {
-                this.$api.getDataBaseList().then(resp => {
-                    this.dataBaseData = resp;
-                })
-            },
-            getPagination(url) {
-                this.$api.getPagination(url).then(resp => {
-                    this.dataBaseData = resp;
-                })
-            },
-        },
-        mounted() {
-            this.getDataBaseList();
-        },
-        name: "DataBase"
     }
+    ,
+    methods: {
+        handleEdit(index, row) {
+            this.editVisible = true;
+            this.dataBaseForm.name = row['name'];
+            this.dataBaseForm.desc = row['desc'];
+            this.dataBaseForm.id = row['id'];
+            this.dataBaseForm.server = row['server'];
+            this.dataBaseForm.type = row['type'];
+            this.dataBaseForm.account = row['account'];
+            this.dataBaseForm.password = row['password'];
+        },
+        handleDelete(index, row) {
+            this.$confirm('此操作将永久删除该数据库, 是否继续?', '提示', {
+                confirmButtonText: '确定',
+                cancelButtonText: '取消',
+                type: 'warning'
+            }).then(() => {
+                this.$api.deleteDataBase(row["id"]).then(resp => {
+                    this.success('数据库删除成功');
+                    this.getDataBaseList();
+                }).catch(resp => {
+                    this.failure(resp)
+                });
+            })
+        },
+        handleConfirm(formName) {
+            this.$refs[formName].validate((valid) => {
+                if (valid) {
+                    this.dialogVisible = false;
+                    this.editVisible = false;
+                    let obj;
+
+                    if (this.dataBaseForm.id === '') {
+                        obj = this.$api.addDataBase(this.dataBaseForm);
+                    } else {
+                        obj = this.$api.updateDataBase(this.dataBaseForm.id, this.dataBaseForm);
+                    }
+                    obj.then(resp => {
+                        if (resp["name"] === this.dataBaseForm.name) {
+                            this.success(resp["name"] + '数据库操作成功');
+                            this.getDataBaseList();
+                        }
+
+                        this.dataBaseForm.name = '';
+                        this.dataBaseForm.desc = '';
+                        this.dataBaseForm.id = '';
+                        this.dataBaseForm.account = '';
+                        this.dataBaseForm.password = '';
+                        this.dataBaseForm.server = '';
+                        this.dataBaseForm.type = 2;
+                    }).catch(resp => {
+                        this.failure(resp);
+                    });
+                } else {
+                    if (this.dataBaseForm.id !== '') {
+                        this.editVisible = true;
+                    } else {
+                        this.dialogVisible = true;
+                    }
+                    return false;
+                }
+            });
+
+        },
+        success(resp) {
+            this.$notify({
+                message: resp,
+                type: 'success',
+                duration: this.$store.state.duration
+            });
+        },
+        failure(resp) {
+            this.$notify.error({
+                message: resp,
+                duration: this.$store.state.duration
+            });
+        },
+        getDataBaseList() {
+            this.$api.getDataBaseList().then(resp => {
+                this.dataBaseData = resp;
+            })
+        },
+        getPagination(url) {
+            this.$api.getPagination(url).then(resp => {
+                this.dataBaseData = resp;
+            })
+        },
+    },
+    mounted() {
+        this.getDataBaseList();
+    },
+    name: "DataBase"
+}
 </script>
 
 <style scoped>

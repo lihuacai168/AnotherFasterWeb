@@ -292,39 +292,40 @@
                                     <el-popover
                                         style="margin-left: 10px"
                                         trigger="hover"
-                                        >
+                                    >
                                         <div style="text-align: center">
 
-                                    <el-button
-                                        type="success"
-                                        icon="el-icon-document-copy"
-                                        circle size="mini"
-                                        title="复制用例"
-                                        @click="handleCopyTest(scope.row.id, scope.row.name)"
-                                    >
-                                    </el-button>
+                                            <el-button
+                                                type="success"
+                                                icon="el-icon-document-copy"
+                                                circle size="mini"
+                                                title="复制用例"
+                                                @click="handleCopyTest(scope.row.id, scope.row.name)"
+                                            >
+                                            </el-button>
 
-                                    <el-button
-                                        type="danger"
-                                        icon="el-icon-delete"
-                                        :title="userName === scope.row.creator || isSuperuser ? '删除' : '只有用例创建者才能删除'"
-                                        :disabled="userName != scope.row.creator && !isSuperuser"
-                                        circle size="mini"
-                                        @click="handleDelTest(scope.row.id)"
-                                    >
-                                    </el-button>
+                                            <el-button
+                                                type="danger"
+                                                icon="el-icon-delete"
+                                                :title="userName === scope.row.creator || isSuperuser ? '删除' : '只有用例创建者才能删除'"
+                                                :disabled="userName != scope.row.creator && !isSuperuser"
+                                                circle size="mini"
+                                                @click="handleDelTest(scope.row.id)"
+                                            >
+                                            </el-button>
 
-                                    <el-button
-                                        type="warning"
-                                        icon="el-icon-refresh"
-                                        :title="userName === scope.row.creator || isSuperuser ? '从API同步用例步骤' : '只有用例创建者才能同步'"
-                                        :disabled="userName != scope.row.creator && !isSuperuser"
-                                        circle size="mini"
-                                        @click="handleSyncCaseStep(scope.row.id)"
-                                    >
-                                    </el-button>
+                                            <el-button
+                                                type="warning"
+                                                icon="el-icon-refresh"
+                                                :title="userName === scope.row.creator || isSuperuser ? '从API同步用例步骤' : '只有用例创建者才能同步'"
+                                                :disabled="userName != scope.row.creator && !isSuperuser"
+                                                circle size="mini"
+                                                @click="handleSyncCaseStep(scope.row.id)"
+                                            >
+                                            </el-button>
                                         </div>
-                                    <el-button icon="el-icon-more" title="更多" circle size="mini" slot="reference" ></el-button>
+                                        <el-button icon="el-icon-more" title="更多" circle size="mini"
+                                                   slot="reference"></el-button>
                                     </el-popover>
                                 </el-row>
                             </template>
@@ -379,7 +380,7 @@ export default {
         },
 
         move() {
-                this.getTree('move');
+            this.getTree('move');
         },
 
         node() {
@@ -454,11 +455,11 @@ export default {
             this.$api.getTree(this.$route.params.id, {params: {type: 2}}).then(resp => {
                 this.dataTree = resp.tree;
                 // run是批量运行case弹窗，其他是批量更新case relation弹窗
-                    if (showType === 'run'){
-                        this.dialogTreeVisible = true;
-                    }else {
-                        this.dialogTreeMoveCaseVisible = true;
-                    }
+                if (showType === 'run') {
+                    this.dialogTreeVisible = true;
+                } else {
+                    this.dialogTreeMoveCaseVisible = true;
+                }
             })
         },
 
@@ -498,43 +499,43 @@ export default {
         },
 
         moveCase() {
-                this.dialogTreeVisible = false;
-                const relation = this.$refs.tree.getCheckedKeys();
-                let length = relation.length;
-                if (length === 0) {
-                    this.$notify.error({
-                        title: '提示',
-                        message: '请至少选择一个节点',
-                        duration: 1500
-                    });
-                } else if ( length !== 1){
-                    this.$notify.error({
-                        title: '提示',
-                        message: 'API只能移动到一个节点, 现在选了' + length + '个节点',
-                        duration: 1500
-                    });
-                } else {
-                    this.$api.moveCase({
-                        "project": this.project,
-                        "relation": relation[0],
-                        "case": this.selectTest
-                    }).then(resp => {
-                        if (resp.success) {
-                            this.$message.success({
-                                message: '移动Case成功',
-                                duration: 1500
-                            });
-                            this.dialogTreeMoveCaseVisible = false
-                            this.resetSearch()
-                        } else {
-                            this.$message.error({
-                                message: resp.msg,
-                                duration: 1500
-                            })
-                        }
-                    })
-                }
-            },
+            this.dialogTreeVisible = false;
+            const relation = this.$refs.tree.getCheckedKeys();
+            let length = relation.length;
+            if (length === 0) {
+                this.$notify.error({
+                    title: '提示',
+                    message: '请至少选择一个节点',
+                    duration: 1500
+                });
+            } else if (length !== 1) {
+                this.$notify.error({
+                    title: '提示',
+                    message: 'API只能移动到一个节点, 现在选了' + length + '个节点',
+                    duration: 1500
+                });
+            } else {
+                this.$api.moveCase({
+                    "project": this.project,
+                    "relation": relation[0],
+                    "case": this.selectTest
+                }).then(resp => {
+                    if (resp.success) {
+                        this.$message.success({
+                            message: '移动Case成功',
+                            duration: 1500
+                        });
+                        this.dialogTreeMoveCaseVisible = false
+                        this.resetSearch()
+                    } else {
+                        this.$message.error({
+                            message: resp.msg,
+                            duration: 1500
+                        })
+                    }
+                })
+            }
+        },
 
         // 同步运行单个用例
         handleRunTest(id, name) {
@@ -554,7 +555,14 @@ export default {
         * @param name，用例名称，测试报告使用这个名称
          */
         handleAsyncRunTest(id, name) {
-            this.$api.runTestByPk(id, {params: {project: this.project, name: name, host: this.host, "async": true}}).then(resp => {
+            this.$api.runTestByPk(id, {
+                params: {
+                    project: this.project,
+                    name: name,
+                    host: this.host,
+                    "async": true
+                }
+            }).then(resp => {
                 if (resp.success) {
                     this.$message.info({
                         title: '提示',
@@ -618,11 +626,11 @@ export default {
         handleSelectionChange(val) {
             this.selectTest = val;
             // 更新是否已经选择Case, 父组件依赖这个属性来判断是否显示移动用例按钮
-                if (this.selectTest.length > 0){
-                    this.$emit('update:isSelectCase', true);
-                }else {
-                    this.$emit('update:isSelectCase', false);
-                }
+            if (this.selectTest.length > 0) {
+                this.$emit('update:isSelectCase', true);
+            } else {
+                this.$emit('update:isSelectCase', false);
+            }
         },
 
         handleDelTest(id) {

@@ -5,29 +5,29 @@
 
 
                 <div class="report__header--item">
-                        <el-input placeholder="请输入报告名称" clearable v-model="search" style="width: 400px">
-                            <el-button slot="append" icon="el-icon-search" @click="getReportList"></el-button>
-                        </el-input>
+                    <el-input placeholder="请输入报告名称" clearable v-model="search" style="width: 400px">
+                        <el-button slot="append" icon="el-icon-search" @click="getReportList"></el-button>
+                    </el-input>
                 </div>
                 <div class="report__header--item">
-                        <el-dropdown @command="reportTypeChangeHandle">
-                            <el-button type="primary">
-                                类型
-                                <i class="el-icon-arrow-down el-icon--right"></i>
-                            </el-button>
-                            <el-dropdown-menu slot="dropdown">
-                                <el-dropdown-item command="1">调试</el-dropdown-item>
-                                <el-dropdown-item command="3">定时</el-dropdown-item>
-                                <el-dropdown-item command="4">部署</el-dropdown-item>
-                                <el-dropdown-item command="2">异步</el-dropdown-item>
-                                <el-dropdown-item command="">全部</el-dropdown-item>
-                            </el-dropdown-menu>
-                        </el-dropdown>
+                    <el-dropdown @command="reportTypeChangeHandle">
+                        <el-button type="primary">
+                            类型
+                            <i class="el-icon-arrow-down el-icon--right"></i>
+                        </el-button>
+                        <el-dropdown-menu slot="dropdown">
+                            <el-dropdown-item command="1">调试</el-dropdown-item>
+                            <el-dropdown-item command="3">定时</el-dropdown-item>
+                            <el-dropdown-item command="4">部署</el-dropdown-item>
+                            <el-dropdown-item command="2">异步</el-dropdown-item>
+                            <el-dropdown-item command="">全部</el-dropdown-item>
+                        </el-dropdown-menu>
+                    </el-dropdown>
                 </div>
                 <div class="report__header--item">
                     <el-dropdown @command="reportStatusChangeHandle">
                         <el-button type="primary">
-                             结果
+                            结果
                             <i class="el-icon-arrow-down el-icon--right"></i>
                         </el-button>
                         <el-dropdown-menu slot="dropdown">
@@ -55,33 +55,31 @@
                 </el-switch>
 
                 <div class="report__header--item">
-                        <el-button
-                            v-if="isSuperuser"
-                            :title="'删除'"
-                            v-show="reportData.count !== 0"
-                            style="margin-left: 20px"
-                            type="danger"
-                            icon="el-icon-delete"
-                            circle
-                            size="mini"
-                            @click="delSelectionReports"
-                        ></el-button>
+                    <el-button
+                        v-if="isSuperuser"
+                        :title="'删除'"
+                        v-show="reportData.count !== 0"
+                        style="margin-left: 20px"
+                        type="danger"
+                        icon="el-icon-delete"
+                        circle
+                        size="mini"
+                        @click="delSelectionReports"
+                    ></el-button>
                 </div>
 
                 <div class="report__header--item">
-                        <el-pagination
-                            :page-size="11"
-                            v-show="reportData.count !== 0 "
-                            background
-                            @current-change="handleCurrentChange"
-                            :current-page.sync="currentPage"
-                            layout="total, prev, pager, next, jumper"
-                            :total="reportData.count"
-                        >
-                        </el-pagination>
+                    <el-pagination
+                        :page-size="11"
+                        v-show="reportData.count !== 0 "
+                        background
+                        @current-change="handleCurrentChange"
+                        :current-page.sync="currentPage"
+                        layout="total, prev, pager, next, jumper"
+                        :total="reportData.count"
+                    >
+                    </el-pagination>
                 </div>
-
-
 
 
             </div>
@@ -119,7 +117,7 @@
                             label="报告名称"
                         >
                             <template slot-scope="scope">
-                                <div>{{scope.row.name}}</div>
+                                <div>{{ scope.row.name }}</div>
                             </template>
                         </el-table-column>
 
@@ -139,7 +137,7 @@
                             width="80"
                         >
                             <template slot-scope="scope">
-                               <div>{{scope.row.creator}}</div>
+                                <div>{{ scope.row.creator }}</div>
                             </template>
                         </el-table-column>
 
@@ -149,7 +147,7 @@
                             width="180"
                         >
                             <template slot-scope="scope">
-                                <div>{{scope.row.time.start_at|timestampToTime}}</div>
+                                <div>{{ scope.row.time.start_at|timestampToTime }}</div>
 
                             </template>
                         </el-table-column>
@@ -200,28 +198,28 @@
                             </template>
                         </el-table-column>
 
-<!--                        <el-table-column-->
-<!--                            width="80"-->
-<!--                            label="跳过"-->
-<!--                        >-->
-<!--                            <template slot-scope="scope">-->
-<!--                                <el-tag type="info">{{ scope.row.stat.skipped }}</el-tag>-->
-<!--                            </template>-->
-<!--                        </el-table-column>-->
+                        <!--                        <el-table-column-->
+                        <!--                            width="80"-->
+                        <!--                            label="跳过"-->
+                        <!--                        >-->
+                        <!--                            <template slot-scope="scope">-->
+                        <!--                                <el-tag type="info">{{ scope.row.stat.skipped }}</el-tag>-->
+                        <!--                            </template>-->
+                        <!--                        </el-table-column>-->
 
-<!--                        <el-table-column-->
-<!--                            label="系统信息"-->
-<!--                        >-->
-<!--                            <template slot-scope="scope">-->
-<!--                                <el-popover trigger="hover" placement="top">-->
-<!--                                    <p>HttpRunner: {{ scope.row.platform.httprunner_version }}</p>-->
-<!--                                    <p>Platform: {{ scope.row.platform.platform }}</p>-->
-<!--                                    <div slot="reference" class="name-wrapper">-->
-<!--                                        <el-tag size="medium">{{ scope.row.platform.python_version }}</el-tag>-->
-<!--                                    </div>-->
-<!--                                </el-popover>-->
-<!--                            </template>-->
-<!--                        </el-table-column>-->
+                        <!--                        <el-table-column-->
+                        <!--                            label="系统信息"-->
+                        <!--                        >-->
+                        <!--                            <template slot-scope="scope">-->
+                        <!--                                <el-popover trigger="hover" placement="top">-->
+                        <!--                                    <p>HttpRunner: {{ scope.row.platform.httprunner_version }}</p>-->
+                        <!--                                    <p>Platform: {{ scope.row.platform.platform }}</p>-->
+                        <!--                                    <div slot="reference" class="name-wrapper">-->
+                        <!--                                        <el-tag size="medium">{{ scope.row.platform.python_version }}</el-tag>-->
+                        <!--                                    </div>-->
+                        <!--                                </el-popover>-->
+                        <!--                            </template>-->
+                        <!--                        </el-table-column>-->
 
 
                         <el-table-column>
@@ -258,169 +256,172 @@
 
 <script>
 
-    export default {
+export default {
 
 
-        data() {
-            return {
-                search: '',
-                selectReports: [],
-                currentRow: '',
-                currentPage: 1,
-                onlyMe: true,
-                isSuperuser: this.$store.state.is_superuser,
+    data() {
+        return {
+            search: '',
+            selectReports: [],
+            currentRow: '',
+            currentPage: 1,
+            onlyMe: true,
+            isSuperuser: this.$store.state.is_superuser,
             // (1, "调试"),
             //     (2, "异步"),
             //     (3, "定时"),
             //     (4, "部署"),
             //     ("", "全部"),
-                reportType:'',
-                reportStatus:'',
-                reportData: {
-                    count: 0,
-                    results: []
+            reportType: '',
+            reportStatus: '',
+            reportData: {
+                count: 0,
+                results: []
+            }
+        }
+    },
+
+    watch: {
+        search() {
+            this.getReportList()
+        },
+
+        onlyMe() {
+            this.getReportList()
+        }
+    },
+
+    methods: {
+        cellMouseEnter(row) {
+            this.currentRow = row;
+        },
+
+        cellMouseLeave(row) {
+            this.currentRow = '';
+        },
+
+        handleWatchReports(index) {
+            window.open(this.$api.baseUrl + "/api/fastrunner/reports/" + index + "/")
+
+        },
+
+
+        handleSelectionChange(val) {
+            this.selectReports = val;
+        },
+        reportTypeChangeHandle(command) {
+            this.reportType = command;
+            // this.$emit('update:reportType', command);
+            // this.search = "";
+            this.getReportList()
+        },
+        reportStatusChangeHandle(command) {
+            this.reportStatus = command;
+            this.getReportList()
+        },
+        resetSearch() {
+            this.search = "";
+            this.reportType = "";
+            this.reportStatus = "";
+            this.currentPage = 1;
+            this.onlyMe = true;
+            this.getReportList();
+        },
+        handleCurrentChange(val) {
+            this.$api.getReportsPaginationBypage({
+                params: {
+                    project: this.$route.params.id,
+                    search: this.search,
+                    reportType: this.reportType,
+                    reportStatus: this.reportStatus,
+                    page: this.currentPage,
+                    onlyMe: this.onlyMe,
                 }
-            }
+            }).then(resp => {
+                this.reportData = resp;
+            })
         },
 
-        watch: {
-            search(){
-             this.getReportList()
-            },
-
-            onlyMe(){
-                this.getReportList()
-            }
-        },
-
-        methods: {
-            cellMouseEnter(row) {
-                this.currentRow = row;
-            },
-
-            cellMouseLeave(row) {
-                this.currentRow = '';
-            },
-
-            handleWatchReports(index) {
-                window.open(this.$api.baseUrl + "/api/fastrunner/reports/" + index + "/")
-
-            },
-
-
-            handleSelectionChange(val) {
-                this.selectReports = val;
-            },
-            reportTypeChangeHandle(command) {
-                this.reportType = command;
-                // this.$emit('update:reportType', command);
-                // this.search = "";
-                this.getReportList()
-            },
-            reportStatusChangeHandle(command) {
-                this.reportStatus = command;
-                this.getReportList()
-            },
-            resetSearch(){
-                this.search = "";
-                this.reportType = "";
-                this.reportStatus = "";
-                this.currentPage = 1;
-                this.onlyMe = true;
-                this.getReportList();
-            },
-            handleCurrentChange(val) {
-                this.$api.getReportsPaginationBypage({
-                    params: {
-                        project: this.$route.params.id,
-                        search: this.search,
-                        reportType: this.reportType,
-                        reportStatus: this.reportStatus,
-                        page: this.currentPage,
-                        onlyMe: this.onlyMe,
+        handleDelReports(index) {
+            this.$confirm('此操作将永久删除该测试报告，是否继续?', '提示', {
+                confirmButtonText: '确定',
+                cancelButtonText: '取消',
+                type: 'warning',
+            }).then(() => {
+                this.$api.deleteReports(index).then(resp => {
+                    if (resp.success) {
+                        this.getReportList();
+                    } else {
+                        this.$message.error(resp.msg);
                     }
-                }).then(resp => {
-                    this.reportData = resp;
                 })
-            },
+            })
+        },
 
-            handleDelReports(index) {
-                this.$confirm('此操作将永久删除该测试报告，是否继续?', '提示', {
+        delSelectionReports() {
+            if (this.selectReports.length !== 0) {
+                this.$confirm('此操作将永久删除勾选的测试报告，是否继续?', '提示', {
                     confirmButtonText: '确定',
                     cancelButtonText: '取消',
                     type: 'warning',
                 }).then(() => {
-                    this.$api.deleteReports(index).then(resp => {
-                        if (resp.success) {
-                            this.getReportList();
-                        } else {
-                            this.$message.error(resp.msg);
-                        }
+                    this.$api.delAllReports({data: this.selectReports}).then(resp => {
+                        this.getReportList();
                     })
                 })
-            },
-
-            delSelectionReports() {
-                if (this.selectReports.length !== 0) {
-                    this.$confirm('此操作将永久删除勾选的测试报告，是否继续?', '提示', {
-                        confirmButtonText: '确定',
-                        cancelButtonText: '取消',
-                        type: 'warning',
-                    }).then(() => {
-                        this.$api.delAllReports({data: this.selectReports}).then(resp => {
-                            this.getReportList();
-                        })
-                    })
-                } else {
-                    this.$notify.warning({
-                        title: '提示',
-                        message: '请至少勾选一个测试报告',
-                        duration: this.$store.state.duration
-                    })
-                }
-            },
-            getReportList() {
-                this.$api.reportList({
-                    params: {
-                        project: this.$route.params.id,
-                        search: this.search,
-                        reportType: this.reportType,
-                        reportStatus: this.reportStatus,
-                        page: this.currentPage,
-                        onlyMe: this.onlyMe,
-                    }
-                }).then(resp => {
-                    this.reportData = resp;
+            } else {
+                this.$notify.warning({
+                    title: '提示',
+                    message: '请至少勾选一个测试报告',
+                    duration: this.$store.state.duration
                 })
-            },
+            }
         },
-        name: "ReportList",
-        mounted() {
-            this.getReportList();
-        }
+        getReportList() {
+            this.$api.reportList({
+                params: {
+                    project: this.$route.params.id,
+                    search: this.search,
+                    reportType: this.reportType,
+                    reportStatus: this.reportStatus,
+                    page: this.currentPage,
+                    onlyMe: this.onlyMe,
+                }
+            }).then(resp => {
+                this.reportData = resp;
+            })
+        },
+    },
+    name: "ReportList",
+    mounted() {
+        this.getReportList();
     }
+}
 </script>
 
 <style scoped>
-    .pass {
-        font-weight: bold;
-        color: #13ce66;
-    }
-    .fail {
-        font-weight: bold;
-        color: red;
-    }
+.pass {
+    font-weight: bold;
+    color: #13ce66;
+}
 
-     .report__header {
-         display: flex;
-         align-items: center;
-     }
-    .report__header--item.is-stench {
-        flex:1;
-    }
-    .report__header--item {
-        margin:0 8px;
-    }
+.fail {
+    font-weight: bold;
+    color: red;
+}
+
+.report__header {
+    display: flex;
+    align-items: center;
+}
+
+.report__header--item.is-stench {
+    flex: 1;
+}
+
+.report__header--item {
+    margin: 0 8px;
+}
 
 
 </style>

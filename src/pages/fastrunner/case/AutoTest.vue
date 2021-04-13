@@ -107,7 +107,8 @@
                         size="mini"
                         title="批量运行用例"
                         @click="run = !run"
-                    >运行用例</el-button>
+                    >运行用例
+                    </el-button>
 
                     <el-button
                         v-if="addTestActivate"
@@ -117,7 +118,8 @@
                         size="mini"
                         title="移动用例到指定分组"
                         @click="move = !move"
-                    >移动用例</el-button>
+                    >移动用例
+                    </el-button>
 
                     <el-button
                         v-if="addTestActivate"
@@ -128,7 +130,8 @@
                         size="mini"
                         title="批量删除用例"
                         @click="del = !del"
-                    >删除用例</el-button>
+                    >删除用例
+                    </el-button>
 
                     <el-switch
                         style="margin-left: 20px"
@@ -230,204 +233,204 @@
 </template>
 
 <script>
-    import EditTest from './components/EditTest'
-    import TestList from './components/TestList'
+import EditTest from './components/EditTest'
+import TestList from './components/TestList'
 
-    export default {
-        computed: {
-            buttonActivate: {
-                get: function () {
-                    return !this.addTestActivate || this.currentNode === '';
-                },
-                set: function (value) {
-                    this.addTestActivate = value;
-                    this.testStepResp = [];
-                }
+export default {
+    computed: {
+        buttonActivate: {
+            get: function () {
+                return !this.addTestActivate || this.currentNode === '';
+            },
+            set: function (value) {
+                this.addTestActivate = value;
+                this.testStepResp = [];
             }
-        },
-        watch: {
-            filterText(val) {
-                this.$refs.tree2.filter(val);
-            }
-        },
-        components: {
-            EditTest,
-            TestList,
-        },
-        data() {
-            return {
-                testStepResp: [],
-                nodeForm: {
-                    name: '',
-                },
-                rules: {
-                    name: [
-                        {required: true, message: '请输入节点名称', trigger: 'blur'},
-                        {min: 1, max: 50, message: '最多不超过50个字符', trigger: 'blur'}
-                    ]
-                },
-                hostOptions:[],
-                back: false,
-                del: false,
-                run: false,
-                move: false,
-                radio: '根节点',
-                addTestActivate: true,
-                currentConfig: '请选择',
-                currentHost:'请选择',
-                treeId: '',
-                maxId: '',
-                dialogVisible: false,
-                currentNode: '',
-                data: '',
-                filterText: '',
-                expand: '&#xe65f;',
-                dataTree: [],
-                configOptions: [],
-                rigEnv: "",
-                tag: "",
-                search: "",
-                onlyMe: true,
-                isSelectCase: false
-            }
-        },
-        methods: {
-            handleDragEnd() {
-                this.updateTree(false);
-            },
-            getConfig() {
-                this.$api.getAllConfig(this.$route.params.id).then(resp => {
-                    this.configOptions = resp;
-                    this.configOptions.push({
-                        name: '请选择'
-                    })
-                })
-            },
-
-            handleBackList() {
-                this.addTestActivate = true;
-                this.back = !this.back;
-            },
-
-            handleTestStep(resp) {
-                this.testStepResp = resp;
-                this.addTestActivate = false;
-            },
-            getTree() {
-                this.$api.getTree(this.$route.params.id, {params: {type: 2}}).then(resp => {
-                    this.dataTree = resp['tree'];
-                    this.treeId = resp['id'];
-                    this.maxId = resp['max'];
-                })
-            },
-
-            updateTree(mode) {
-                this.$api.updateTree(this.treeId, {
-                    mode: mode,
-                    body: this.dataTree,
-                    node: this.currentNode.id,
-                    type: 2
-                }).then(resp => {
-                    if (resp['success']) {
-                        this.dataTree = resp['tree'];
-                        this.maxId = resp['max'];
-                    } else {
-                        this.$message.error(resp['msg']);
-                    }
-                })
-            },
-            renameNode(nodeObj) {
-                this.$prompt('请输入节点名', '提示', {
-                    confirmButtonText: '确定',
-                    cancelButtonText: '取消',
-                    inputPattern: /\S/,
-                    inputErrorMessage: '节点名称不能为空',
-                    inputValue: nodeObj.label
-                }).then(({value}) => {
-                    const parent = this.data.parent;
-                    const children = parent.data.children || parent.data;
-                    const index = children.findIndex(d => d.id === this.currentNode.id);
-                    children[index]["label"] = value
-                    this.updateTree(false);
-                });
-            },
-
-            deleteNode() {
-                this.$confirm('此操作将永久删除该节点下所有用例, 是否继续?', '提示', {
-                    confirmButtonText: '确定',
-                    cancelButtonText: '取消',
-                    type: 'warning'
-                }).then(() => {
-                    if (this.currentNode === '') {
-                        this.$message.info('请选择一个节点');
-                    } else {
-                        if (this.currentNode.children.length !== 0) {
-                            this.$message.warning('此节点有子节点，不可删除！');
-                        } else {
-                            this.remove(this.currentNode, this.data);
-                            this.updateTree(true);
-                        }
-                    }
-
-                })
-            },
-
-            handleConfirm(formName) {
-                this.$refs[formName].validate((valid) => {
-                    if (valid) {
-                        this.append(this.currentNode);
-                        this.updateTree(false);
-                        this.dialogVisible = false;
-                        this.nodeForm.name = ''
-                    }
-                });
-            },
-
-            handleNodeClick(node, data) {
-                this.currentNode = node;
-                this.data = data;
-            },
-
-            filterNode(value, data) {
-                if (!value) return true;
-                return data.label.indexOf(value) !== -1;
-            },
-
-            remove(data, node) {
-                const parent = node.parent;
-                const children = parent.data.children || parent.data;
-                const index = children.findIndex(d => d.id === data.id);
-                children.splice(index, 1);
-            },
-
-            append(data) {
-                const newChild = {id: ++this.maxId, label: this.nodeForm.name, children: []};
-                if (data === '' || this.dataTree.length === 0 || this.radio === '根节点') {
-                    this.dataTree.push(newChild);
-                    return
-                }
-                if (!data.children) {
-                    this.$set(data, 'children', []);
-                }
-                data.children.push(newChild);
-            },
-            getHost() {
-                this.$api.getAllHost(this.$route.params.id).then(resp => {
-                    this.hostOptions = resp;
-                    this.hostOptions.push({
-                        name: '请选择'
-                    })
-                })
-            },
-
-        },
-        name: "AutoTest",
-        mounted() {
-            this.getTree();
-            this.getConfig();
-            this.getHost();
         }
+    },
+    watch: {
+        filterText(val) {
+            this.$refs.tree2.filter(val);
+        }
+    },
+    components: {
+        EditTest,
+        TestList,
+    },
+    data() {
+        return {
+            testStepResp: [],
+            nodeForm: {
+                name: '',
+            },
+            rules: {
+                name: [
+                    {required: true, message: '请输入节点名称', trigger: 'blur'},
+                    {min: 1, max: 50, message: '最多不超过50个字符', trigger: 'blur'}
+                ]
+            },
+            hostOptions: [],
+            back: false,
+            del: false,
+            run: false,
+            move: false,
+            radio: '根节点',
+            addTestActivate: true,
+            currentConfig: '请选择',
+            currentHost: '请选择',
+            treeId: '',
+            maxId: '',
+            dialogVisible: false,
+            currentNode: '',
+            data: '',
+            filterText: '',
+            expand: '&#xe65f;',
+            dataTree: [],
+            configOptions: [],
+            rigEnv: "",
+            tag: "",
+            search: "",
+            onlyMe: true,
+            isSelectCase: false
+        }
+    },
+    methods: {
+        handleDragEnd() {
+            this.updateTree(false);
+        },
+        getConfig() {
+            this.$api.getAllConfig(this.$route.params.id).then(resp => {
+                this.configOptions = resp;
+                this.configOptions.push({
+                    name: '请选择'
+                })
+            })
+        },
+
+        handleBackList() {
+            this.addTestActivate = true;
+            this.back = !this.back;
+        },
+
+        handleTestStep(resp) {
+            this.testStepResp = resp;
+            this.addTestActivate = false;
+        },
+        getTree() {
+            this.$api.getTree(this.$route.params.id, {params: {type: 2}}).then(resp => {
+                this.dataTree = resp['tree'];
+                this.treeId = resp['id'];
+                this.maxId = resp['max'];
+            })
+        },
+
+        updateTree(mode) {
+            this.$api.updateTree(this.treeId, {
+                mode: mode,
+                body: this.dataTree,
+                node: this.currentNode.id,
+                type: 2
+            }).then(resp => {
+                if (resp['success']) {
+                    this.dataTree = resp['tree'];
+                    this.maxId = resp['max'];
+                } else {
+                    this.$message.error(resp['msg']);
+                }
+            })
+        },
+        renameNode(nodeObj) {
+            this.$prompt('请输入节点名', '提示', {
+                confirmButtonText: '确定',
+                cancelButtonText: '取消',
+                inputPattern: /\S/,
+                inputErrorMessage: '节点名称不能为空',
+                inputValue: nodeObj.label
+            }).then(({value}) => {
+                const parent = this.data.parent;
+                const children = parent.data.children || parent.data;
+                const index = children.findIndex(d => d.id === this.currentNode.id);
+                children[index]["label"] = value
+                this.updateTree(false);
+            });
+        },
+
+        deleteNode() {
+            this.$confirm('此操作将永久删除该节点下所有用例, 是否继续?', '提示', {
+                confirmButtonText: '确定',
+                cancelButtonText: '取消',
+                type: 'warning'
+            }).then(() => {
+                if (this.currentNode === '') {
+                    this.$message.info('请选择一个节点');
+                } else {
+                    if (this.currentNode.children.length !== 0) {
+                        this.$message.warning('此节点有子节点，不可删除！');
+                    } else {
+                        this.remove(this.currentNode, this.data);
+                        this.updateTree(true);
+                    }
+                }
+
+            })
+        },
+
+        handleConfirm(formName) {
+            this.$refs[formName].validate((valid) => {
+                if (valid) {
+                    this.append(this.currentNode);
+                    this.updateTree(false);
+                    this.dialogVisible = false;
+                    this.nodeForm.name = ''
+                }
+            });
+        },
+
+        handleNodeClick(node, data) {
+            this.currentNode = node;
+            this.data = data;
+        },
+
+        filterNode(value, data) {
+            if (!value) return true;
+            return data.label.indexOf(value) !== -1;
+        },
+
+        remove(data, node) {
+            const parent = node.parent;
+            const children = parent.data.children || parent.data;
+            const index = children.findIndex(d => d.id === data.id);
+            children.splice(index, 1);
+        },
+
+        append(data) {
+            const newChild = {id: ++this.maxId, label: this.nodeForm.name, children: []};
+            if (data === '' || this.dataTree.length === 0 || this.radio === '根节点') {
+                this.dataTree.push(newChild);
+                return
+            }
+            if (!data.children) {
+                this.$set(data, 'children', []);
+            }
+            data.children.push(newChild);
+        },
+        getHost() {
+            this.$api.getAllHost(this.$route.params.id).then(resp => {
+                this.hostOptions = resp;
+                this.hostOptions.push({
+                    name: '请选择'
+                })
+            })
+        },
+
+    },
+    name: "AutoTest",
+    mounted() {
+        this.getTree();
+        this.getConfig();
+        this.getHost();
     }
+}
 </script>
 
 <style scoped>

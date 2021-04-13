@@ -22,7 +22,7 @@
                             round
                         >
                             在线运行
-                       </el-button>
+                        </el-button>
                     </el-col>
                     <el-col :span="9">
                         <h2>调试控制台</h2>
@@ -73,65 +73,65 @@
 </template>
 
 <script>
-    export default {
-        data() {
-            return {
-                codeHeight: 500,
-                code: {
-                    code: '',
-                    id: ''
-                },
-                resp: {
-                    msg: ''
-                }
+export default {
+    data() {
+        return {
+            codeHeight: 500,
+            code: {
+                code: '',
+                id: ''
+            },
+            resp: {
+                msg: ''
             }
-        },
-        name: "DebugTalk",
-        methods: {
-            handleRunCode() {
-                this.resp.msg = '';
-                this.$api.runDebugtalk(this.code).then(resp => {
-                    this.resp = resp;
-                })
-            },
-
-            handleConfirm() {
-                this.$api.updateDebugtalk(this.code).then(resp => {
-                    this.getDebugTalk();
-                    this.$message.success("代码保存成功");
-                })
-            },
-            editorInit() {
-                require('brace/ext/language_tools');
-                require('brace/mode/python');
-                require('brace/theme/monokai');
-                require('brace/snippets/python');
-            },
-            getDebugTalk() {
-                this.$api.getDebugtalk(this.$route.params.id).then(res => {
-                    this.code = res;
-                })
-            }
-        },
-        components: {
-            editor: require('vue2-ace-editor')
-        },
-        mounted() {
-            this.getDebugTalk();
-            this.codeHeight = window.screen.height - 248;
         }
+    },
+    name: "DebugTalk",
+    methods: {
+        handleRunCode() {
+            this.resp.msg = '';
+            this.$api.runDebugtalk(this.code).then(resp => {
+                this.resp = resp;
+            })
+        },
+
+        handleConfirm() {
+            this.$api.updateDebugtalk(this.code).then(resp => {
+                this.getDebugTalk();
+                this.$message.success("代码保存成功");
+            })
+        },
+        editorInit() {
+            require('brace/ext/language_tools');
+            require('brace/mode/python');
+            require('brace/theme/monokai');
+            require('brace/snippets/python');
+        },
+        getDebugTalk() {
+            this.$api.getDebugtalk(this.$route.params.id).then(res => {
+                this.code = res;
+            })
+        }
+    },
+    components: {
+        editor: require('vue2-ace-editor')
+    },
+    mounted() {
+        this.getDebugTalk();
+        this.codeHeight = window.screen.height - 248;
     }
+}
 </script>
 
 <style scoped>
 
-    .ace_editor {
-        position: relative;
-        overflow: hidden;
-        font: 18px/normal 'Monaco', 'Menlo', 'Ubuntu Mono', 'Consolas', 'source-code-pro', monospace !important;
-        direction: ltr;
-        text-align: left;
-        -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
-    }
+.ace_editor {
+    position: relative;
+    overflow: hidden;
+    font: 18px/normal 'Monaco', 'Menlo', 'Ubuntu Mono', 'Consolas', 'source-code-pro', monospace !important;
+    direction: ltr;
+    text-align: left;
+    -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+}
 
 </style>

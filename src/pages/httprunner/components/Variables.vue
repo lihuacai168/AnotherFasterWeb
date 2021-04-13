@@ -85,184 +85,184 @@
 </template>
 
 <script>
-    export default {
-        name: "Variables",
+export default {
+    name: "Variables",
 
-        props: {
-            save: Boolean,
-            variables: {
-                require: false
-            }
-        },
-        computed: {
-            height() {
-                return window.screen.height - 440
-            }
-        },
+    props: {
+        save: Boolean,
+        variables: {
+            require: false
+        }
+    },
+    computed: {
+        height() {
+            return window.screen.height - 440
+        }
+    },
 
-        watch: {
-            save: function () {
-                this.$emit('variables', this.parseVariables(), this.tableData);
-            },
-
-            variables: function () {
-                if (this.variables.length !== 0) {
-                    this.tableData = this.variables;
-                }
-            }
+    watch: {
+        save: function () {
+            this.$emit('variables', this.parseVariables(), this.tableData);
         },
 
-        methods: {
-            cellMouseEnter(row) {
-                this.currentRow = row;
-            },
+        variables: function () {
+            if (this.variables.length !== 0) {
+                this.tableData = this.variables;
+            }
+        }
+    },
 
-            cellMouseLeave(row) {
-                this.currentRow = '';
-            },
+    methods: {
+        cellMouseEnter(row) {
+            this.currentRow = row;
+        },
 
-            handleEdit(index, row) {
-                this.tableData.splice(index + 1, 0, {
-                    key: '',
-                    value: '',
-                    type: 1,
-                    desc: ''
-                })
-                //
-                // this.tableData.push({
-                //     key: '',
-                //     value: '',
-                //     type: 1,
-                //     desc: ''
-                // });
-            },
-            handleCopy(index, row) {
-                this.tableData.splice(index + 1, 0, {
-                    key: row.key,
-                    value: row.value,
-                    type: row.type,
-                    desc: row.desc
-                });
-            },
-            handleDelete(index, row) {
-                this.tableData.splice(index, 1);
-            },
+        cellMouseLeave(row) {
+            this.currentRow = '';
+        },
 
-            // 类型转换
-            parseType(type, value) {
-                let tempValue;
-                const msg = value + ' => ' + this.dataTypeOptions[type - 1].label + ' 转换异常, 该数据自动剔除';
-                switch (type) {
-                    case 1:
-                        tempValue = value;
-                        break;
-                    case 2:
+        handleEdit(index, row) {
+            this.tableData.splice(index + 1, 0, {
+                key: '',
+                value: '',
+                type: 1,
+                desc: ''
+            })
+            //
+            // this.tableData.push({
+            //     key: '',
+            //     value: '',
+            //     type: 1,
+            //     desc: ''
+            // });
+        },
+        handleCopy(index, row) {
+            this.tableData.splice(index + 1, 0, {
+                key: row.key,
+                value: row.value,
+                type: row.type,
+                desc: row.desc
+            });
+        },
+        handleDelete(index, row) {
+            this.tableData.splice(index, 1);
+        },
+
+        // 类型转换
+        parseType(type, value) {
+            let tempValue;
+            const msg = value + ' => ' + this.dataTypeOptions[type - 1].label + ' 转换异常, 该数据自动剔除';
+            switch (type) {
+                case 1:
+                    tempValue = value;
+                    break;
+                case 2:
+                    // 包含$是引用类型,可以任意类型
+                    if (value.indexOf("$") != -1) {
+                        tempValue = value
+                    } else {
+                        tempValue = parseInt(value);
+                    }
+                    break;
+                case 3:
+                    tempValue = parseFloat(value);
+                    break;
+                case 4:
+                    if (value === 'False' || value === 'True') {
+                        let bool = {
+                            'True': true,
+                            'False': false
+                        };
+                        tempValue = bool[value];
+                    } else {
+                        this.$notify.error({
+                            title: '类型转换错误',
+                            message: msg,
+                            duration: 2000
+                        });
+                        return 'exception'
+                    }
+                    break;
+                case 5:
+                case 6:
+                    try {
+                        tempValue = JSON.parse(value);
+                    } catch (err) {
                         // 包含$是引用类型,可以任意类型
                         if (value.indexOf("$") != -1) {
                             tempValue = value
                         } else {
-                            tempValue = parseInt(value);
+                            tempValue = false
                         }
-                        break;
-                    case 3:
-                        tempValue = parseFloat(value);
-                        break;
-                    case 4:
-                        if (value === 'False' || value === 'True') {
-                            let bool = {
-                                'True': true,
-                                'False': false
-                            };
-                            tempValue = bool[value];
-                        } else {
-                            this.$notify.error({
-                                title: '类型转换错误',
-                                message: msg,
-                                duration: 2000
-                            });
-                            return 'exception'
-                        }
-                        break;
-                    case 5:
-                    case 6:
-                        try {
-                            tempValue = JSON.parse(value);
-                        } catch (err) {
-                            // 包含$是引用类型,可以任意类型
-                            if (value.indexOf("$") != -1) {
-                                tempValue = value
-                            } else {
-                                tempValue = false
-                            }
-                        }
-                        break;
-                }
-                if (tempValue !== 0 && !tempValue && type !== 4 && type !== 1) {
-                    this.$notify.error({
-                        title: '类型转换错误',
-                        message: msg,
-                        duration: 2000
-                    });
-                    return 'exception'
-                }
-                return tempValue;
-            },
-
-            //变量格式化variables
-            parseVariables() {
-                let variables = {
-                    variables: [],
-                    desc: {}
-                };
-                for (let content of this.tableData) {
-                    if (content['key'] !== '') {
-                        let obj = {};
-                        const value = this.parseType(content['type'], content['value']);
-                        if (value === 'exception') {
-                            continue;
-                        }
-                        obj[content['key']] = value;
-                        variables.variables.push(obj);
-                        variables.desc[content['key']] = content['desc'];
                     }
-                }
-                return variables;
-            },
-        },
-        data() {
-            return {
-                currentRow: '',
-                tableData: [{
-                    key: '',
-                    value: '',
-                    type: 1,
-                    desc: ''
-                }],
-
-                dataTypeOptions: [{
-                    label: 'String',
-                    value: 1
-                }, {
-                    label: 'Integer',
-                    value: 2
-                }, {
-                    label: 'Float',
-                    value: 3
-                }, {
-                    label: 'Boolean',
-                    value: 4
-                }, {
-                    label: 'List',
-                    value: 5
-                }, {
-                    label: 'Dict',
-                    value: 6
-                }],
-
-                dataType: 'data'
+                    break;
             }
+            if (tempValue !== 0 && !tempValue && type !== 4 && type !== 1) {
+                this.$notify.error({
+                    title: '类型转换错误',
+                    message: msg,
+                    duration: 2000
+                });
+                return 'exception'
+            }
+            return tempValue;
+        },
+
+        //变量格式化variables
+        parseVariables() {
+            let variables = {
+                variables: [],
+                desc: {}
+            };
+            for (let content of this.tableData) {
+                if (content['key'] !== '') {
+                    let obj = {};
+                    const value = this.parseType(content['type'], content['value']);
+                    if (value === 'exception') {
+                        continue;
+                    }
+                    obj[content['key']] = value;
+                    variables.variables.push(obj);
+                    variables.desc[content['key']] = content['desc'];
+                }
+            }
+            return variables;
+        },
+    },
+    data() {
+        return {
+            currentRow: '',
+            tableData: [{
+                key: '',
+                value: '',
+                type: 1,
+                desc: ''
+            }],
+
+            dataTypeOptions: [{
+                label: 'String',
+                value: 1
+            }, {
+                label: 'Integer',
+                value: 2
+            }, {
+                label: 'Float',
+                value: 3
+            }, {
+                label: 'Boolean',
+                value: 4
+            }, {
+                label: 'List',
+                value: 5
+            }, {
+                label: 'Dict',
+                value: 6
+            }],
+
+            dataType: 'data'
         }
     }
+}
 </script>
 
 <style scoped>

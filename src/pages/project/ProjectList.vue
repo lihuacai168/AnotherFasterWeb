@@ -140,7 +140,8 @@
                                 size="medium"
                                 type="primary"
                                 :title="(isSuperuser || userName === scope.row.responsible) ? '编辑项目' : '权限不足，请联系管理员'"
-                                :disabled="!(isSuperuser || userName === scope.row.responsible)"description="这个框不用管他会自动消失的"
+                                :disabled="!(isSuperuser || userName === scope.row.responsible)"
+                                description="这个框不用管他会自动消失的"
                                 @click="handleEdit(scope.$index, scope.row)">编辑
                             </el-button>
 
@@ -194,149 +195,149 @@
 
 <script>
 
-    export default {
-        data() {
-            return {
-                isSuperuser: this.$store.state.is_superuser,
-                userName: this.$store.state.user,
-                dialogVisible: false,
-                editVisible: false,
-                projectData: {
-                    results: []
-                },
-                projectForm: {
-                    name: '',
-                    desc: '',
-                    responsible: this.$store.state.user,
-                    id: '',
-                    yapi_base_url: '',
-                    yapi_openapi_token: '',
-                },
-                rules: {
-                    name: [
-                        {required: true, message: '请输入项目名称', trigger: 'blur'},
-                        {min: 1, max: 50, message: '最多不超过50个字符', trigger: 'blur'}
-                    ],
-                    desc: [
-                        {required: true, message: '简要描述下该项目', trigger: 'blur'},
-                        {min: 1, max: 100, message: '最多不超过100个字符', trigger: 'blur'}
-                    ],
-                    yapi_base_url: [
-                        {required: false, message: 'YAPI openapi的url', trigger: 'blur'},
-                    ],
-                    yapi_openapi_token: [
-                        {required: false, message: 'YAPI openapi的token', trigger: 'blur'}
-                    ]
-                }
+export default {
+    data() {
+        return {
+            isSuperuser: this.$store.state.is_superuser,
+            userName: this.$store.state.user,
+            dialogVisible: false,
+            editVisible: false,
+            projectData: {
+                results: []
+            },
+            projectForm: {
+                name: '',
+                desc: '',
+                responsible: this.$store.state.user,
+                id: '',
+                yapi_base_url: '',
+                yapi_openapi_token: '',
+            },
+            rules: {
+                name: [
+                    {required: true, message: '请输入项目名称', trigger: 'blur'},
+                    {min: 1, max: 50, message: '最多不超过50个字符', trigger: 'blur'}
+                ],
+                desc: [
+                    {required: true, message: '简要描述下该项目', trigger: 'blur'},
+                    {min: 1, max: 100, message: '最多不超过100个字符', trigger: 'blur'}
+                ],
+                yapi_base_url: [
+                    {required: false, message: 'YAPI openapi的url', trigger: 'blur'},
+                ],
+                yapi_openapi_token: [
+                    {required: false, message: 'YAPI openapi的token', trigger: 'blur'}
+                ]
             }
+        }
+    },
+    methods: {
+        handleCellClick(row) {
+            this.$store.commit('setRouterName', 'ProjectDetail');
+            this.setLocalValue("routerName", 'ProjectDetail');
+            this.$router.push({name: 'ProjectDetail', params: {id: row['id']}});
         },
-        methods: {
-            handleCellClick(row) {
-                this.$store.commit('setRouterName', 'ProjectDetail');
-                this.setLocalValue("routerName",'ProjectDetail');
-                this.$router.push({name: 'ProjectDetail', params: {id: row['id']}});
-            },
-            handleEdit(index, row) {
-                this.editVisible = true;
-                this.projectForm.name = row['name'];
-                this.projectForm.desc = row['desc'];
-                this.projectForm.id = row['id'];
-                this.projectForm.yapi_base_url = row['yapi_base_url'];
-                this.projectForm.yapi_openapi_token = row['yapi_openapi_token'];
-            },
-            handleDelete(index, row) {
-                this.$confirm('此操作将永久删除该项目, 是否继续?', '提示', {
-                    confirmButtonText: '确定',
-                    cancelButtonText: '取消',
-                    type: 'warning'
-                }).then(() => {
-                    this.$api.deleteProject({data: {"id": row["id"]}}).then(resp => {
-                        if (resp['success']) {
+        handleEdit(index, row) {
+            this.editVisible = true;
+            this.projectForm.name = row['name'];
+            this.projectForm.desc = row['desc'];
+            this.projectForm.id = row['id'];
+            this.projectForm.yapi_base_url = row['yapi_base_url'];
+            this.projectForm.yapi_openapi_token = row['yapi_openapi_token'];
+        },
+        handleDelete(index, row) {
+            this.$confirm('此操作将永久删除该项目, 是否继续?', '提示', {
+                confirmButtonText: '确定',
+                cancelButtonText: '取消',
+                type: 'warning'
+            }).then(() => {
+                this.$api.deleteProject({data: {"id": row["id"]}}).then(resp => {
+                    if (resp['success']) {
+                        this.success(resp);
+                        this.getProjectList();
+                    } else {
+                        this.failure(resp);
+                    }
+                })
+            })
+        },
+        handleConfirm(formName) {
+            this.$refs[formName].validate((valid) => {
+                if (valid) {
+                    this.dialogVisible = false;
+                    this.editVisible = false;
+                    let obj;
+
+                    if (this.projectForm.id === '') {
+                        obj = this.$api.addProject(this.projectForm);
+                    } else {
+                        obj = this.$api.updateProject(this.projectForm);
+                    }
+
+                    obj.then(resp => {
+                        if (resp.success) {
                             this.success(resp);
                             this.getProjectList();
                         } else {
                             this.failure(resp);
                         }
+                        this.resetProjectForm()
                     })
-                })
-            },
-            handleConfirm(formName) {
-                this.$refs[formName].validate((valid) => {
-                    if (valid) {
-                        this.dialogVisible = false;
-                        this.editVisible = false;
-                        let obj;
-
-                        if (this.projectForm.id === '') {
-                            obj = this.$api.addProject(this.projectForm);
-                        } else {
-                            obj = this.$api.updateProject(this.projectForm);
-                        }
-
-                        obj.then(resp => {
-                            if (resp.success) {
-                                this.success(resp);
-                                this.getProjectList();
-                            } else {
-                                this.failure(resp);
-                            }
-                            this.resetProjectForm()
-                        })
+                } else {
+                    if (this.projectForm.id !== '') {
+                        this.editVisible = true;
                     } else {
-                        if (this.projectForm.id !== '') {
-                            this.editVisible = true;
-                        } else {
-                            this.dialogVisible = true;
-                        }
-                        return false;
+                        this.dialogVisible = true;
                     }
-                });
+                    return false;
+                }
+            });
 
-            },
-            success(resp) {
-                this.$notify({
-                    message: resp["msg"],
-                    type: 'success',
-                    duration: this.$store.state.duration
-                });
-            },
-            failure(resp) {
-                this.$notify.error({
-                    message: resp["msg"],
-                    duration: this.$store.state.duration
-                });
-            },
-            getProjectList() {
-                this.$api.getProjectList().then(resp => {
-                    this.projectData = resp;
-                })
-            },
-            getPagination(url) {
-                this.$api.getPagination(url).then(resp => {
-                    this.projectData = resp;
-                })
-            },
-            closeEditDialog() {
-                this.editVisible = false
-                this.resetProjectForm()
-            },
-            closeAddDialog(){
-                this.dialogVisible = false
-                this.resetProjectForm()
-            },
-            resetProjectForm() {
-                this.projectForm.name = '';
-                this.projectForm.desc = '';
-                this.projectForm.id = '';
-                this.projectForm.yapi_openapi_token = '';
-                this.projectForm.yapi_base_url = '';
-            },
         },
-        mounted() {
-            this.getProjectList();
+        success(resp) {
+            this.$notify({
+                message: resp["msg"],
+                type: 'success',
+                duration: this.$store.state.duration
+            });
         },
-        name: "ProjectList"
-    }
+        failure(resp) {
+            this.$notify.error({
+                message: resp["msg"],
+                duration: this.$store.state.duration
+            });
+        },
+        getProjectList() {
+            this.$api.getProjectList().then(resp => {
+                this.projectData = resp;
+            })
+        },
+        getPagination(url) {
+            this.$api.getPagination(url).then(resp => {
+                this.projectData = resp;
+            })
+        },
+        closeEditDialog() {
+            this.editVisible = false
+            this.resetProjectForm()
+        },
+        closeAddDialog() {
+            this.dialogVisible = false
+            this.resetProjectForm()
+        },
+        resetProjectForm() {
+            this.projectForm.name = '';
+            this.projectForm.desc = '';
+            this.projectForm.id = '';
+            this.projectForm.yapi_openapi_token = '';
+            this.projectForm.yapi_base_url = '';
+        },
+    },
+    mounted() {
+        this.getProjectList();
+    },
+    name: "ProjectList"
+}
 </script>
 
 <style scoped>

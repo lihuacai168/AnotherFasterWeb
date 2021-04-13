@@ -76,7 +76,11 @@
                             label="下次执行时间"
                         >
                             <template slot-scope="scope">
-                                <div>{{ scope.row.kwargs.next_execute_time ? scope.row.kwargs.next_execute_time:''|timestampToTime}}</div>
+                                <div>
+                                    {{
+                                        scope.row.kwargs.next_execute_time ? scope.row.kwargs.next_execute_time : '' | timestampToTime
+                                    }}
+                                </div>
                             </template>
                         </el-table-column>
 
@@ -104,22 +108,22 @@
                                 </el-switch>
                             </template>
                         </el-table-column>
-<!--                        <el-table-column-->
-<!--                            width="320"-->
-<!--                            label="接收人"-->
-<!--                        >-->
-<!--                            <template slot-scope="scope">-->
-<!--                                <div>{{ scope.row.kwargs.receiver }}</div>-->
-<!--                            </template>-->
-<!--                        </el-table-column>-->
-<!--                        <el-table-column-->
-<!--                            width="320"-->
-<!--                            label="抄送人"-->
-<!--                        >-->
-<!--                            <template slot-scope="scope">-->
-<!--                                <div>{{ scope.row.kwargs.mail_cc }}</div>-->
-<!--                            </template>-->
-<!--                        </el-table-column>-->
+                        <!--                        <el-table-column-->
+                        <!--                            width="320"-->
+                        <!--                            label="接收人"-->
+                        <!--                        >-->
+                        <!--                            <template slot-scope="scope">-->
+                        <!--                                <div>{{ scope.row.kwargs.receiver }}</div>-->
+                        <!--                            </template>-->
+                        <!--                        </el-table-column>-->
+                        <!--                        <el-table-column-->
+                        <!--                            width="320"-->
+                        <!--                            label="抄送人"-->
+                        <!--                        >-->
+                        <!--                            <template slot-scope="scope">-->
+                        <!--                                <div>{{ scope.row.kwargs.mail_cc }}</div>-->
+                        <!--                            </template>-->
+                        <!--                        </el-table-column>-->
                         <el-table-column
                             width="80"
                             label="更新人"
@@ -276,10 +280,10 @@ export default {
             })
         },
         handleSwitchChange(id, val) {
-            this.$api.patchTask(id,{'switch': val}).then( resp => {
-                if(resp.success) {
+            this.$api.patchTask(id, {'switch': val}).then(resp => {
+                if (resp.success) {
                     this.$notify.success('更新定时任务成功');
-                }else{
+                } else {
                     this.$notify.success('更新定时任务失败');
                 }
                 this.getTaskList()

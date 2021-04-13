@@ -1,6 +1,6 @@
 export default {
     routerName: null,
-    token:null,
+    token: null,
     user: null,
     is_superuser: false,
     duration: 2000,

@@ -11,7 +11,7 @@ export default {
         state.routerName = value
     },
 
-    setIsSuperuser(state, value){
+    setIsSuperuser(state, value) {
         state.is_superuser = value
     }
 }

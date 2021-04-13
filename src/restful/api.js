@@ -4,7 +4,6 @@ import router from '../router'
 import {Message} from 'element-ui';
 
 
-
 export let baseUrl = "http://localhost:8000";
 // export let baseUrl = "http://192.168.22.19:8000";
 
@@ -17,7 +16,7 @@ axios.defaults.withCredentials = true;
 axios.defaults.baseURL = baseUrl;
 
 axios.interceptors.request.use(function (config) {
-     if (!config.url.startsWith("/api/user/")) {
+    if (!config.url.startsWith("/api/user/")) {
         // 在请求拦截中，每次请求，都会加上一个Authorization头
         config.headers.Authorization = store.token;
 
@@ -54,8 +53,7 @@ axios.interceptors.response.use(function (response) {
                 duration: this.$store.state.duration
             })
         }
-    }
-    catch (e) {
+    } catch (e) {
         Message.error({
             message: '服务器连接超时，请重试',
             duration: this.$store.state.duration
@@ -91,7 +89,7 @@ export const getProjectDetail = pk => {
 };
 
 export const getVisit = params => {
-    return axios.get('/api/fastrunner/visit/',params).then(res => res.data)
+    return axios.get('/api/fastrunner/visit/', params).then(res => res.data)
 };
 
 export const getPagination = url => {
@@ -163,11 +161,9 @@ export const getAPISingle = url => {
 };
 
 
-
 export const getPaginationBypage = params => {
     return axios.get('/api/fastrunner/api/', params).then(res => res.data)
 };
-
 
 
 export const addTestCase = params => {
@@ -296,7 +292,7 @@ export const updateVariables = (url, params) => {
 };
 
 export const updateTask = (url, params, data) => {
-    return axios({url:'/api/fastrunner/schedule/' + url + '/', method: 'PUT', params:params, data:data})
+    return axios({url: '/api/fastrunner/schedule/' + url + '/', method: 'PUT', params: params, data: data})
 };
 
 export const patchTask = (url, params) => {

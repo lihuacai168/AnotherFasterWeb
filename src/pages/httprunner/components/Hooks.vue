@@ -60,77 +60,77 @@
 </template>
 
 <script>
-    export default {
-        props: {
-            save: Boolean,
-            hooks: {
-                require: false
-            }
+export default {
+    props: {
+        save: Boolean,
+        hooks: {
+            require: false
+        }
+    },
+    computed: {
+        height() {
+            return window.screen.height - 440
+        }
+    },
+    watch: {
+        save: function () {
+            this.$emit('hooks', this.parse_hooks(), this.tableData);
         },
-        computed:{
-            height() {
-                return window.screen.height - 440
-            }
-        },
-        watch: {
-            save: function () {
-                this.$emit('hooks', this.parse_hooks(), this.tableData);
-            },
 
-            hooks: function () {
-                if (this.hooks.length !== 0) {
-                    this.tableData = this.hooks;
+        hooks: function () {
+            if (this.hooks.length !== 0) {
+                this.tableData = this.hooks;
+            }
+        }
+    },
+
+    methods: {
+        cellMouseEnter(row) {
+            this.currentRow = row;
+        },
+
+        cellMouseLeave(row) {
+            this.currentRow = '';
+        },
+
+        handleEdit(index, row, flag) {
+            this.tableData.push({
+                setup: '',
+                teardown: ''
+            });
+        },
+
+        handleDelete(index, row) {
+            this.tableData.splice(index, 1);
+        },
+
+        parse_hooks() {
+            let hooks = {
+                setup_hooks: [],
+                teardown_hooks: []
+            };
+            for (let content of this.tableData) {
+                if (content.setup !== '') {
+                    hooks.setup_hooks.push(content.setup);
+                }
+                if (content.teardown !== '') {
+                    hooks.teardown_hooks.push(content.teardown);
                 }
             }
-        },
-
-        methods: {
-            cellMouseEnter(row) {
-                this.currentRow = row;
-            },
-
-            cellMouseLeave(row) {
-                this.currentRow = '';
-            },
-
-            handleEdit(index, row, flag) {
-                this.tableData.push({
-                    setup: '',
-                    teardown: ''
-                });
-            },
-
-            handleDelete(index, row) {
-                this.tableData.splice(index, 1);
-            },
-
-            parse_hooks() {
-                let hooks = {
-                    setup_hooks: [],
-                    teardown_hooks: []
-                };
-                for (let content of this.tableData) {
-                    if (content.setup !== '') {
-                        hooks.setup_hooks.push(content.setup);
-                    }
-                    if (content.teardown !== '') {
-                        hooks.teardown_hooks.push(content.teardown);
-                    }
-                }
-                return hooks;
-            }
-        },
-        data() {
-            return {
-                currentRow: '',
-                tableData: [{
-                    setup: '',
-                    teardown: ''
-                }]
-            }
-        },
-        name: "Hooks"
-    }
+            return hooks;
+        }
+    },
+    data() {
+        return {
+            currentRow: '',
+            tableData: [{
+                setup: '',
+                teardown: ''
+            }]
+        }
+    },
+    name: "Hooks"
+}
 </script>
 
 <style scoped>
