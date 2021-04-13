@@ -111,6 +111,7 @@ export default {
                 this.setLocalValue("token", resp.token);
                 this.setLocalValue("user", resp.user);
                 this.setLocalValue("routerName", 'ProjectList');
+                this.setLocalValue("is_superuser", resp.is_superuser);
             } else {
                 this.$message.error({
                     message: resp.msg,
