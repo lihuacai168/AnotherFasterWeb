@@ -122,9 +122,14 @@ new Vue({
         if (this.getLocalValue("routerName") === null) {
             this.setLocalValue("routerName", "ProjectList");
         }
+
+        if (this.getLocalValue("is_superuser") === null) {
+            this.setLocalValue("is_superuser", false);
+        }
         this.$store.commit("isLogin", this.getLocalValue("token"));
         this.$store.commit("setUser", this.getLocalValue("user"));
         this.$store.commit("setRouterName", this.getLocalValue("routerName"));
+        this.$store.commit("setIsSuperuser", this.getLocalValue("is_superuser"));
 
     }
 })
