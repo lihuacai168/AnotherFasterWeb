@@ -581,8 +581,8 @@ export default {
                     message: '如果是首次导入，可能时间稍长，请耐心等待~',
                     duration: this.$store.state.duration
                 })
+                this.importYAPIdialogVisible = false
                 this.$api.addYAPI(project_id).then(resp => {
-                    this.importYAPIdialogVisible = false
                     if (resp.success) {
                         let created =  "新增：" + resp.createdCount + " 条API"
                         let updated = "更新：" + resp.updatedCount  + " 条API"
