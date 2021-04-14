@@ -578,21 +578,37 @@ export default {
                 const project_id = this.$route.params.id;
                 this.$message.info({
                     title: '提示',
-                    message: '导入比较消耗时间，请耐心等待~',
+                    message: '如果是首次导入，可能时间稍长，请耐心等待~',
                     duration: this.$store.state.duration
                 })
                 this.$api.addYAPI(project_id).then(resp => {
                     this.importYAPIdialogVisible = false
                     if (resp.success) {
-                        this.$notify.success({
-                            title: '提示',
+                        let created =  "新增：" + resp.createdCount + " 条API"
+                        let updated = "更新：" + resp.updatedCount  + " 条API"
+                        if (resp.createdCount > 0 || resp.updatedCount > 0){
+                            this.$notify.success({
+                            title: '导入API提示',
+                            message: created + " ；" + updated,
+                            duration: this.$store.state.duration
+                            })
+                        }
+                        const NOT_CREATED_AND_UPDATED_CODE = '0002'
+                        if (resp.code === NOT_CREATED_AND_UPDATED_CODE){
+                            this.$notify.success({
+                            title: '导入API提示',
                             message: resp.msg,
                             duration: this.$store.state.duration
-                        })
-                        this.getTree()
-                        // 重置tree节点，触发子组件更新apiList
-                        this.currentNode = ''
-                        this.onlyMe = false
+                            })
+                        }
+                        const CREATED_OR_UPDATED_CODE = '0001'
+                        if (resp.code === CREATED_OR_UPDATED_CODE){
+                            this.getTree()
+                            // 重置tree节点，触发子组件更新apiList
+                            // TODO 改成直接调用子组件的getAPIList方法
+                            this.currentNode = ''
+                            this.onlyMe = false
+                        }
                     } else {
                         this.$message.error({
                             message: resp.msg,
