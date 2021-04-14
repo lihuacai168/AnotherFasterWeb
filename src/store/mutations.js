@@ -11,8 +11,9 @@ export default {
         state.routerName = value
     },
     setProjectName(state, value) {
-        if (value !== ''){
-            value = ' / ' + value
+        if (value !== '' ){
+            console.log(value)
+            value = ' / ' + value.replaceAll('/', '').replaceAll(' ', '')
         }
         state.projectName = value
     },

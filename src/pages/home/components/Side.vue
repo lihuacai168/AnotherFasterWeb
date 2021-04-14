@@ -56,7 +56,11 @@ export default {
             this.$store.commit('setRouterName', url);
             this.$router.push({name: url});
             this.setLocalValue("routerName", url);
-            this.$store.commit('setProjectName', '');
+            let projectName = ''
+            if (url !== 'ProjectList') {
+                projectName = this.$store.state.projectName
+            }
+            this.$store.commit('setProjectName', projectName);
         }
     }
 }
