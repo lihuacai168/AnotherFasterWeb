@@ -52,6 +52,17 @@
                             <el-form-item label="项目描述" prop="desc">
                                 <el-input v-model="projectForm.desc" clearable></el-input>
                             </el-form-item>
+                            <el-form ref="elForm" :model="projectForm" :rules="rules" size="medium" label-width="100px">
+                                <el-form-item label="负责人" prop="responsible">
+                                    <el-select v-model="projectForm.responsible" placeholder="请选择项目负责人" filterable
+                                               clearable
+                                               :style="{width: '100%'}">
+                                        <el-option v-for="(item, index) in responsibleOptions" :key="index"
+                                                   :label="item.label"
+                                                   :value="item.value" :disabled="item.disabled"></el-option>
+                                    </el-select>
+                                </el-form-item>
+                            </el-form>
 
                             <el-form-item label="YAPI地址" prop="yapi_base_url">
                                 <el-input v-model="projectForm.yapi_base_url" clearable></el-input>
@@ -161,7 +172,17 @@
                                     <el-form-item label="项目描述" prop="desc">
                                         <el-input v-model="projectForm.desc" clearable></el-input>
                                     </el-form-item>
-
+                            <el-form ref="elForm" :model="projectForm" :rules="rules" size="medium" label-width="100px">
+                                <el-form-item label="负责人" prop="responsible">
+                                    <el-select v-model="projectForm.responsible" placeholder="请选择项目负责人" filterable
+                                               clearable
+                                               :style="{width: '100%'}">
+                                        <el-option v-for="(item, index) in responsibleOptions" :key="index"
+                                                   :label="item.label"
+                                                   :value="item.value" :disabled="item.disabled"></el-option>
+                                    </el-select>
+                                </el-form-item>
+                            </el-form>
                                     <el-form-item label="YAPI地址" prop="yapi_base_url">
                                         <el-input v-model="projectForm.yapi_base_url" clearable></el-input>
                                     </el-form-item>
@@ -213,6 +234,7 @@ export default {
                 yapi_base_url: '',
                 yapi_openapi_token: '',
             },
+            responsibleOptions: [],
             rules: {
                 name: [
                     {required: true, message: '请输入项目名称', trigger: 'blur'},
@@ -222,6 +244,11 @@ export default {
                     {required: true, message: '简要描述下该项目', trigger: 'blur'},
                     {min: 1, max: 100, message: '最多不超过100个字符', trigger: 'blur'}
                 ],
+                        responsible: [{
+          required: true,
+          message: '请选择项目负责人',
+          trigger: 'change'
+        }],
                 yapi_base_url: [
                     {required: false, message: 'YAPI openapi的url', trigger: 'blur'},
                 ],
@@ -244,6 +271,7 @@ export default {
             this.editVisible = true;
             this.projectForm.name = row['name'];
             this.projectForm.desc = row['desc'];
+            this.projectForm.responsible = row['responsible'];
             this.projectForm.id = row['id'];
             this.projectForm.yapi_base_url = row['yapi_base_url'];
             this.projectForm.yapi_openapi_token = row['yapi_openapi_token'];
@@ -331,13 +359,23 @@ export default {
         resetProjectForm() {
             this.projectForm.name = '';
             this.projectForm.desc = '';
+            this.projectForm.responsible = '';
             this.projectForm.id = '';
             this.projectForm.yapi_openapi_token = '';
             this.projectForm.yapi_base_url = '';
         },
+        getUserList(){
+            this.$api.getUserList().then(resp => {
+                for (let i = 0; i < resp.length; i++) {
+                    this.responsibleOptions.push({"label": resp[i].username, "value": resp[i].username})
+                    }
+                }
+            )
+        },
     },
-    mounted() {
+    created() {
         this.getProjectList();
+        this.getUserList()
     },
     name: "ProjectList"
 }

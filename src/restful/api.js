@@ -16,7 +16,7 @@ axios.defaults.withCredentials = true;
 axios.defaults.baseURL = baseUrl;
 
 axios.interceptors.request.use(function (config) {
-    if (!config.url.startsWith("/api/user/")) {
+    if (!config.url.startsWith("/api/user/") || config.url === "/api/user/list/") {
         // 在请求拦截中，每次请求，都会加上一个Authorization头
         config.headers.Authorization = store.token;
 
@@ -68,6 +68,10 @@ export const register = params => {
 
 export const login = params => {
     return axios.post('/api/user/login/', params).then(res => res.data)
+};
+
+export const getUserList = () => {
+    return axios.get('/api/user/list/').then(res => res.data)
 };
 
 
