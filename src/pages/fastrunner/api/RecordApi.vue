@@ -104,7 +104,7 @@
                             </el-button>
                         </div>
                     </el-dialog>
-
+                    <span v-show="this.$store.state.show_hosts">
                     &nbspHosts:
                     <el-select
                         placeholder="请选择"
@@ -120,6 +120,7 @@
                             :value="item.name">
                         </el-option>
                     </el-select>
+                    </span>
                     &nbsp配置:
                     <el-select
                         placeholder="请选择"

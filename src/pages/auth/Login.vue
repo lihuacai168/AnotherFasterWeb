@@ -108,10 +108,12 @@ export default {
                 this.$store.commit("setUser", resp.user);
                 this.$store.commit("setIsSuperuser", resp.is_superuser);
                 this.$store.commit("setRouterName", 'ProjectList');
+                this.$store.commit("setShowHots", resp.show_hosts);
                 this.setLocalValue("token", resp.token);
                 this.setLocalValue("user", resp.user);
                 this.setLocalValue("routerName", 'ProjectList');
                 this.setLocalValue("is_superuser", resp.is_superuser);
+                this.setLocalValue("show_hosts", resp.show_hosts);
             } else {
                 this.$message.error({
                     message: resp.msg,

@@ -68,6 +68,7 @@
                         :disabled="buttonActivate"
                     >添加用例
                     </el-button>
+                    <span v-show="this.$store.state.show_hosts">
                     &nbspHosts:
                     <el-select
                         placeholder="请选择"
@@ -82,6 +83,7 @@
                             :value="item.name">
                         </el-option>
                     </el-select>
+                    </span>
                     &nbsp配置:
                     <el-select
                         placeholder="请选择"
@@ -291,7 +293,7 @@ export default {
             tag: "",
             search: "",
             onlyMe: true,
-            isSelectCase: false
+            isSelectCase: false,
         }
     },
     methods: {

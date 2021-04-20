@@ -33,6 +33,7 @@ export default {
             this.$store.commit("isLogin", null);
             this.setLocalValue("token", null);
             this.setLocalValue("is_superuser", false);
+            this.setLocalValue("show_hosts", false);
             this.$router.push({name: "Login"});
         }
     },

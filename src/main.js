@@ -77,6 +77,10 @@ Vue.prototype.setLocalValue = function (name, value) {
 Vue.prototype.getLocalValue = function (name) {
     const value = localStorage.getItem(name);
     if (value) {
+        // localStorage只能存字符串，布尔类型需要转换
+        if(value === "false" || value === "true"){
+            return eval(value)
+        }
         return value;
     } else {
         return '';
@@ -126,10 +130,13 @@ new Vue({
         if (this.getLocalValue("is_superuser") === null) {
             this.setLocalValue("is_superuser", false);
         }
+        if (this.getLocalValue("show_hosts") === null) {
+            this.setLocalValue("show_hosts", false);
+        }
         this.$store.commit("isLogin", this.getLocalValue("token"));
         this.$store.commit("setUser", this.getLocalValue("user"));
         this.$store.commit("setRouterName", this.getLocalValue("routerName"));
         this.$store.commit("setIsSuperuser", this.getLocalValue("is_superuser"));
-
+        this.$store.commit("setShowHots", this.getLocalValue("show_hosts"));
     }
 })

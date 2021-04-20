@@ -20,5 +20,8 @@ export default {
 
     setIsSuperuser(state, value) {
         state.is_superuser = value
+    },
+    setShowHots(state, value) {
+        state.show_hosts = value
     }
 }
