@@ -216,10 +216,17 @@
                             <template slot-scope="scope">
                                 <div class="block" :class="`block_${scope.row.method.toLowerCase()}`">
                                     <span class="block-method block_method_color"
+                                          :title="'API分组：' +scope.row.relation_name"
                                           :class="`block_method_${scope.row.method.toLowerCase()}`">
                                         {{ scope.row.method.toUpperCase() }}
                                     </span>
-
+                                    <div class="block">
+                                       <span class="block-method block_method_color block_method_options"
+                                             v-if="scope.row.creator==='yapi'"
+                                             :title="'从YAPI导入的接口'">
+                                            YAPI
+                                       </span>
+                                    </div>
                                     <span class="block-method block_url">{{ scope.row.url }}</span>
                                     <span class="block-summary-description">{{ scope.row.name }}</span>
                                     <div>
