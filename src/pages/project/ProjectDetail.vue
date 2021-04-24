@@ -30,9 +30,13 @@
 
         </ul>
         <ul class="project_detail">
+<!--            <li class="pull-left">-->
+<!--                <p class="title-p"><i class="iconfont">&#xe609;</i> &nbsp;{{ projectInfo.host_count }} 套环境</p>-->
+<!--                <p class="desc-p">环境总数</p>-->
+<!--            </li>            -->
             <li class="pull-left">
-                <p class="title-p"><i class="iconfont">&#xe609;</i> &nbsp;{{ projectInfo.host_count }} 套环境</p>
-                <p class="desc-p">环境总数</p>
+                <p class="title-p"><i class="iconfont">&#xe609;</i> &nbsp;{{ projectInfo.api_cover_rate }}% 接口覆盖率</p>
+                <p class="desc-p">用例步骤和接口总数的比例</p>
             </li>
             <li class="pull-left">
                 <p class="title-p"><i class="iconfont">&#xe66e;</i> 共 {{ projectInfo.report_count }} 个报告
