@@ -367,6 +367,7 @@ export default {
         visibleTag: [Number, String],
         rigEnv: [Number, String],
         onlyMe: Boolean,
+        showYAPI: Boolean,
         isSelectAPI: Boolean
     },
     data() {
@@ -459,7 +460,9 @@ export default {
         onlyMe() {
             this.getAPIList()
         },
-
+        showYAPI() {
+            this.getAPIList()
+        },
         search() {
             this.getAPIList()
         }
@@ -485,6 +488,7 @@ export default {
             this.$emit('update:visibleTag', '');
             this.$emit('update:rigEnv', '');
             this.$emit('update:onlyMe', true);
+            this.$emit('update:showYAPI', true);
             this.getAPIList();
         },
         handleOnlyMeChange() {
@@ -625,7 +629,8 @@ export default {
                         search: this.search,
                         tag: this.visibleTag,
                         rigEnv: this.rigEnv,
-                        onlyMe: this.onlyMe
+                        onlyMe: this.onlyMe,
+                        showYAPI: this.showYAPI
                     }
                 }).then(res => {
                     this.apiData = res;
@@ -643,7 +648,8 @@ export default {
                     search: this.search,
                     tag: this.visibleTag,
                     rigEnv: this.rigEnv,
-                    onlyMe: this.onlyMe
+                    onlyMe: this.onlyMe,
+                    showYAPI: this.showYAPI
                 }
             }).then(res => {
                 this.apiData = res;

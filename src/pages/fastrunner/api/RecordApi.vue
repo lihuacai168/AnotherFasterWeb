@@ -171,12 +171,21 @@
 
 
                     <el-switch
-                        style="margin-left: 20px"
+                        style="margin-left: 10px"
                         v-model="onlyMe"
                         v-if="!addAPIFlag"
                         active-color="#13ce66"
                         inactive-color="#ff4949"
                         active-text="只看自己">
+                    </el-switch>
+
+                    <el-switch
+                        style="margin-left: 10px"
+                        v-model="showYAPI"
+                        v-if="!addAPIFlag"
+                        active-color="#13ce66"
+                        inactive-color="#ff4949"
+                        active-text="显示YAPI">
                     </el-switch>
 
                     <el-button
@@ -254,6 +263,7 @@
                     :visibleTag.sync="visibleTag"
                     :rigEnv.sync="rigEnv"
                     :only-me.sync="onlyMe"
+                    :showYAPI.sync="showYAPI"
                     :isSelectAPI.sync="isSelectAPI"
                     @click-pager="handleChangePage"
                 >
@@ -392,6 +402,7 @@ export default {
             visibleTag: '',
             rigEnv: '',
             onlyMe: true,
+            showYAPI: true,
             isSelectAPI: false,
             isSaveAs: false,
             YAPIformDataDefaultValue: YAPIformDataDefaultValue,
@@ -609,6 +620,7 @@ export default {
                             // TODO 改成直接调用子组件的getAPIList方法
                             this.currentNode = ''
                             this.onlyMe = false
+                            this.showYAPI = true
                         }
                     } else {
                         this.$message.error({
