@@ -1,6 +1,6 @@
 <template>
     <el-container>
-        <el-aside style="margin-top: 10px;">
+        <el-aside style="width: 280px; margin-top: 10px;">
             <div class="nav-api-side">
                 <div class="api-tree">
                     <el-input
@@ -37,7 +37,7 @@
             <div v-show="!editTestStepActivate" class="recordapi__header">
                 <div class="recordapi__header" :style="{flex:1}">
                     <div class="recordapi__header--item">
-                        <el-input placeholder="请输入接口名称" style="width: 340px; text-align: center" clearable
+                        <el-input placeholder="请输入接口名称" style="width: 360px; text-align: center" clearable
                                   @input="inputVal" :value="search" @keyup.enter.native="getAPIList">
                             <el-button slot="append" icon="el-icon-search" @click="getAPIList"></el-button>
                         </el-input>
@@ -67,14 +67,13 @@
                     <div class="recordapi__header--item">
                         <el-dropdown @command="tagChangeHandle">
                             <el-button type="primary">
-                                接口状态
+                                状态
                                 <i class="el-icon-arrow-down el-icon--right"></i>
                             </el-button>
                             <el-dropdown-menu slot="dropdown">
-                                <el-dropdown-item command="1">调试成功</el-dropdown-item>
-                                <el-dropdown-item command="0">还未调试</el-dropdown-item>
-                                <el-dropdown-item command="2">调试失败</el-dropdown-item>
-                                <el-dropdown-item command="3">自动成功</el-dropdown-item>
+                                <el-dropdown-item command="1">成功</el-dropdown-item>
+                                <el-dropdown-item command="0">未知</el-dropdown-item>
+                                <el-dropdown-item command="2">失败</el-dropdown-item>
                                 <el-dropdown-item command="">所有</el-dropdown-item>
                             </el-dropdown-menu>
                         </el-dropdown>
@@ -136,6 +135,11 @@
                                     <span class="block-method block_method_color"
                                           :class="`block_method_${item.method.toLowerCase()}`">
                                         {{ item.method.toUpperCase() }}
+                                    </span>
+                                    <span class="block-method block_method_color block_method_options"
+                                             v-if="item.creator==='yapi'"
+                                             :title="'从YAPI导入的接口'">
+                                            YAPI
                                     </span>
 
                                 <div class="edit__block--inner">
