@@ -133,6 +133,7 @@
 
             <!--Request json-->
             <editor v-model="jsonData"
+                    :key="timeStamp"
                     @init="editorInit"
                     lang="json"
                     theme="github"
@@ -189,6 +190,7 @@ export default {
                 this.jsonData = this.request.json_data;
                 this.paramsData = this.request.params;
             }
+            this.timeStamp = (new Date()).getTime()
         }
     },
 
@@ -434,7 +436,8 @@ export default {
                 label: 'params',
                 value: 'params'
             }],
-            dataType: 'json'
+            dataType: 'json',
+            timeStamp: "",
         }
     }
 }
