@@ -76,9 +76,30 @@
                         :visible.sync="dialogTreeVisible"
                         width="45%"
                         :modal-append-to-body="false"
+                        @close="onCloseRunCase"
+                        @open="onOpenRunCase"
                     >
                         <div>
                             <div>
+                                <el-row :gutter="3">
+                                    <el-col :span="8">
+                                       <span >&nbsp配置: </span>
+                                        <el-select
+                                            placeholder="请选择"
+                                            size="medium"
+                                            v-model="currentConfigId"
+                                            style="width: 200px;"
+                                        >
+                                            <el-option
+                                                v-for="item in configOptions"
+                                                :key="item.id"
+                                                :label="item.name"
+                                                :value="item.id"
+                                            >
+                                            </el-option>
+                                        </el-select>
+                                    </el-col>
+                                </el-row>
                                 <el-row :gutter="2">
                                     <el-col :span="8">
                                         <el-switch
@@ -446,7 +467,9 @@ export default {
             },
             currentPage: 1,
             caseType: '',
-            searchType: '1' // 1：用例名称搜索 2：api名称或者api url
+            searchType: '1', // 1：用例名称搜索 2：api名称或者api url
+            currentConfigId: '',
+            configOptions: [],
         }
     },
 
@@ -483,7 +506,8 @@ export default {
                     "project": this.project,
                     "relation": relation,
                     "async": this.asyncs,
-                    "name": this.reportName
+                    "name": this.reportName,
+                    "config_id": this.currentConfigId
                 }).then(resp => {
                     if (resp.hasOwnProperty("status")) {
                         this.$message.info({
@@ -703,9 +727,23 @@ export default {
         cellMouseEnter(row) {
             this.currentRow = row;
         },
-
+        getConfig() {
+            this.$api.getAllConfig(this.$route.params.id).then(resp => {
+                this.configOptions = resp;
+                this.configOptions.push({
+                    name: '请选择',
+                    id: 0
+                })
+            })
+        },
         cellMouseLeave(row) {
             this.currentRow = '';
+        },
+        onOpenRunCase(){
+            this.getConfig()
+        },
+        onCloseRunCase(){
+            this.currentConfigId = 0
         }
     },
     mounted() {
