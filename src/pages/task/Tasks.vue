@@ -53,6 +53,15 @@
                     >
 
                         <el-table-column
+                            label="任务ID"
+                            width="80"
+                        >
+                            <template slot-scope="scope">
+                                <div>{{ scope.row.id }}</div>
+                            </template>
+                        </el-table-column>
+
+                        <el-table-column
                             label="任务名称"
                             width="240"
                         >
@@ -85,11 +94,33 @@
                         </el-table-column>
 
                         <el-table-column
+                            width="170"
+                            label="上次执行时间"
+                        >
+                            <template slot-scope="scope">
+                                <div>
+                                    {{
+                                        scope.row.last_run_at ? scope.row.last_run_at : '' | timestampToTime
+                                    }}
+                                </div>
+                            </template>
+                        </el-table-column>
+
+                        <el-table-column
                             width="100"
                             label="通知策略"
                         >
                             <template slot-scope="scope">
                                 <div>{{ scope.row.kwargs.strategy }}</div>
+
+                            </template>
+                        </el-table-column>
+                        <el-table-column
+                            width="100"
+                            label="已运行次数"
+                        >
+                            <template slot-scope="scope">
+                                <div>{{ scope.row.total_run_count }}</div>
 
                             </template>
                         </el-table-column>
