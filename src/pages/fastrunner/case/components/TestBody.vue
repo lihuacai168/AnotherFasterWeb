@@ -9,16 +9,13 @@
                     clearable
                 >
                     <template slot="prepend">接口信息录入</template>
-
-                    <el-button
-                        slot="append"
-                        type="success"
-                        plain
-                        @click="save = !save"
-                    >Save
-                    </el-button>
-
                 </el-input>
+                <el-button
+                    slot="append"
+                    type="success"
+                    @click="save = !save"
+                    >Save
+                </el-button>
 
                 <el-button
                     slot="append"

@@ -422,6 +422,8 @@ export default {
                 case: step,
                 id: id
             };
+            // 编辑用例步骤时，也调用接口保存
+            this.handleClickSave(false)
         },
         rigEnvChangeHandle(command) {
             this.$emit('update:rigEnv', command);
@@ -467,7 +469,7 @@ export default {
             return true;
         },
 
-        addTestSuite() {
+        addTestSuite(addTestFinish) {
             var length = this.testData.length;
 
             if (this.testData[0].body.method === "config") {
@@ -483,9 +485,16 @@ export default {
                 tag: this.testTag
             }).then(resp => {
                 if (resp.success) {
-                    this.$emit("addSuccess");
+                    if(addTestFinish) {
+                        this.$emit("addSuccess");
+                    }
+                    this.$notify({
+                        message: resp.msg,
+                        type: 'success',
+                        duration: this.$store.state.duration
+                    })
                 } else {
-                    this.$message({
+                    this.$notify({
                         message: resp.msg,
                         type: 'error',
                         duration: this.$store.state.duration
@@ -494,7 +503,7 @@ export default {
             })
         },
 
-        updateTestSuite() {
+        updateTestSuite(addTestFinish) {
             var length = this.testData.length;
             if (this.testData[0].body.method === "config") {
                 length -= 1;
@@ -508,9 +517,16 @@ export default {
                 relation: this.relation
             }).then(resp => {
                 if (resp.success) {
-                    this.$emit("addSuccess");
+                    if(addTestFinish) {
+                        this.$emit("addSuccess")
+                    }
+                    this.$notify({
+                        message: resp.msg,
+                        type: 'success',
+                        duration: this.$store.state.duration
+                    })
                 } else {
-                    this.$message({
+                    this.$notify({
                         message: resp.msg,
                         type: 'error',
                         duration: this.$store.state.duration
@@ -519,12 +535,12 @@ export default {
             })
         },
 
-        handleClickSave() {
+        handleClickSave(addTestFinish=true) {
             if (this.validateData()) {
                 if (this.testId === '') {
-                    this.addTestSuite();
+                    this.addTestSuite(addTestFinish);
                 } else {
-                    this.updateTestSuite();
+                    this.updateTestSuite(addTestFinish);
                 }
             }
         },
