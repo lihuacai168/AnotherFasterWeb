@@ -153,7 +153,7 @@
                             <report :summary="summary"></report>
                         </el-dialog>
 
-                        <div style="max-height: 600px; overflow: auto"
+                        <div style="max-height: 1000px; overflow: auto"
                              @drop='drop($event)'
                              @dragover='allowDrop($event)'
                         >
@@ -693,7 +693,7 @@ export default {
 <style scoped>
 
 .test-list {
-    height: 590px;
+    height: 750px;
 }
 
 .block_test {
