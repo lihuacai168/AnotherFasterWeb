@@ -689,10 +689,11 @@ export default {
             })
         },
         resetSearch() {
-            this.searchType = "1",
+                this.searchType = "1",
                 this.search = "",
                 this.node = "",
                 this.caseType = "",
+                this.currentPage = 1,
                 this.$emit('update:onlyMe', true),
                 this.getTestList()
         },
@@ -718,7 +719,8 @@ export default {
                     search: this.search,
                     searchType: this.searchType,
                     caseType: this.caseType,
-                    onlyMe: this.onlyMe
+                    onlyMe: this.onlyMe,
+                    page: this.currentPage,
                 }
             }).then(resp => {
                 this.testData = resp;

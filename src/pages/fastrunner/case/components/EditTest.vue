@@ -91,6 +91,7 @@
                         slot="append"
                         type="success"
                         @click="handleClickSave"
+                        title="保存用例"
                     >Save
                     </el-button>
 
