@@ -83,7 +83,7 @@
                             <div>
                                 <el-row :gutter="3">
                                     <el-col :span="8">
-                                       <span >&nbsp配置: </span>
+                                        <span>&nbsp配置: </span>
                                         <el-select
                                             placeholder="请选择"
                                             size="medium"
@@ -223,8 +223,13 @@
                             width="400"
                         >
                             <template slot-scope="scope">
-                                <div>{{ scope.row.name }}</div>
+                                <div>{{ scope.row.name }}
+                                    <i class="el-icon-success " style="color: green" v-if="scope.row.tasks.length > 0 "
+                                      :title="'已加入定时任务: ' + scope.row.tasks.map(task => task.name).join('，')">
+                                    </i>
+                                </div>
                             </template>
+
                         </el-table-column>
 
                         <el-table-column
@@ -689,7 +694,7 @@ export default {
             })
         },
         resetSearch() {
-                this.searchType = "1",
+            this.searchType = "1",
                 this.search = "",
                 this.node = "",
                 this.caseType = "",
@@ -741,10 +746,10 @@ export default {
         cellMouseLeave(row) {
             this.currentRow = '';
         },
-        onOpenRunCase(){
+        onOpenRunCase() {
             this.getConfig()
         },
-        onCloseRunCase(){
+        onCloseRunCase() {
             this.currentConfigId = 0
         }
     },

@@ -131,6 +131,9 @@
                                 <div class="block block_options">
                                     <span class="block-method block_method_options block_method_color">Case</span>
                                     <span class="block_name">{{ item.name }}</span>
+                                    <i class="el-icon-success " style="color: green" v-if="item.tasks.length > 0 "
+                                      :title="'已加入定时任务: ' + item.tasks.map(task => task.name).join('，')">
+                                    </i>
                                 </div>
                             </div>
                         </el-col>
@@ -264,7 +267,6 @@ export default {
             for (let value of this.testData) {
                 task.push(value.id);
             }
-            debugger
             var form = this.ruleForm;
             form["data"] = task;
             form["project"] = this.$route.params.id;
@@ -334,7 +336,6 @@ export default {
             // 用map遍历args的所有caseId,如果和用例集中的id相等,就返回该用例的全部信息
             // 用map,filter过滤,case的数据在第二页时,会导致name=undefined
             // this.testData = this.args.map(caseId=> this.suiteData.results.filter(testCase=> testCase.id === caseId)[0]);
-            debugger
         },
         resetForm(formName) {
             this.$refs[formName].resetFields();
