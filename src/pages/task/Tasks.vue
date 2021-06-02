@@ -95,16 +95,30 @@
 
                         <el-table-column
                             width="170"
-                            label="上次执行时间"
+                            label="Gitlab项目id"
                         >
                             <template slot-scope="scope">
                                 <div>
                                     {{
-                                        scope.row.last_run_at ? scope.row.last_run_at : '' | timestampToTime
+                                        scope.row.kwargs.ci_project_ids
                                     }}
                                 </div>
                             </template>
                         </el-table-column>
+
+<!--                        <el-table-column-->
+<!--                            width="170"-->
+<!--                            label="上次执行时间"-->
+<!--                        >-->
+<!--                            <template slot-scope="scope">-->
+<!--                                <div>-->
+<!--                                    {{-->
+<!--                                        scope.row.last_run_at ? scope.row.last_run_at : '' | timestampToTime-->
+<!--                                    }}-->
+<!--                                </div>-->
+<!--                            </template>-->
+<!--                        </el-table-column>-->
+
 
                         <el-table-column
                             width="100"
@@ -240,6 +254,7 @@ export default {
             ruleForm: {
                 switch: true,
                 crontab: '',
+                ci_project_ids: '',
                 strategy: '始终发送',
                 receiver: '',
                 mail_cc: '',
@@ -265,7 +280,8 @@ export default {
                 sensitive_keys: '',
                 self_error: '',
                 fail_count: 1,
-                webhook: ''
+                webhook: '',
+                ci_project_ids: '',
             };
             this.args = [];
         },
@@ -333,6 +349,7 @@ export default {
             this.ruleForm["self_error"] = index_data.kwargs.self_error;
             this.ruleForm["sensitive_keys"] = index_data.kwargs.sensitive_keys;
             this.ruleForm["webhook"] = index_data.kwargs.webhook;
+            this.ruleForm["ci_project_ids"] = index_data.kwargs.ci_project_ids;
             this.ruleForm["name"] = index_data.name;
             this.ruleForm["switch"] = index_data.enabled;
             this.ruleForm["updater"] = this.$store.state.user;
@@ -358,6 +375,7 @@ export default {
                 fail_count: '',
                 sensitive_keys: '',
                 webhook: '',
+                ci_project_ids: '',
             }
         },
         getTaskList() {

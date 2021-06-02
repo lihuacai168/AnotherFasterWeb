@@ -19,6 +19,12 @@
                                           placeholder="请输入cortab表达式，例如 2 12 * * *"></el-input>
                             </el-form-item>
 
+                            <el-form-item label="Gitlab项目id" prop="ci_project_ids">
+                                <el-input clearable v-model="ruleForm.ci_project_ids"
+                                          placeholder="请输入Gitlab项目id,多个用逗号分隔，例如: 1,2"></el-input>
+
+                            </el-form-item>
+
                             <el-form-item label="任务状态" prop="switch">
                                 <el-switch v-model="ruleForm.switch"></el-switch>
                             </el-form-item>
@@ -202,6 +208,7 @@
 
 <script>
 import draggable from 'vuedraggable'
+import {isNumArray} from '../../validator'
 
 export default {
 
@@ -225,6 +232,7 @@ export default {
     components: {
         draggable
     },
+
 
     data() {
         return {
@@ -250,6 +258,10 @@ export default {
                 ],
                 crontab: [
                     {required: true, message: '请输入正确的crontab表达式', trigger: 'blur'}
+                ],
+                ci_project_ids: [
+                   {required: false, message: '请输入正确的ci_project_ids', trigger: 'blur'},
+                    { validator: isNumArray, trigger: 'blur' }
                 ]
 
             },
@@ -262,6 +274,7 @@ export default {
             this.next = true;
             this.testData[this.currentTest]["kwargs"] = kwargsForm;
         },
+
         saveTask() {
             var task = [];
             for (let value of this.testData) {
