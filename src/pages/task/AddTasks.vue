@@ -288,6 +288,7 @@ export default {
                     if (!resp.success) {
                         this.$message.error(resp.msg)
                     } else {
+                        this.$message.error(resp.msg)
                         this.$emit("changeStatus", false);
                     }
                 })
@@ -296,6 +297,8 @@ export default {
                     if (resp.status === 200) {
                         this.$notify.success('更新定时任务成功');
                         this.$emit("changeStatus", false);
+                    }else {
+                        this.$notify.error(resp.msg)
                     }
                 })
             }

@@ -296,7 +296,7 @@ export const updateVariables = (url, params) => {
 };
 
 export const updateTask = (url, params, data) => {
-    return axios({url: '/api/fastrunner/schedule/' + url + '/', method: 'PUT', params: params, data: data})
+    return axios({url: '/api/fastrunner/schedule/' + url + '/', method: 'PUT', params: params, data: data}).then(res => res.data)
 };
 
 export const patchTask = (url, params) => {
