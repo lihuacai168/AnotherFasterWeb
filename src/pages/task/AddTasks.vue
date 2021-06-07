@@ -285,18 +285,18 @@ export default {
             form["project"] = this.$route.params.id;
             if (this.scheduleId === '') {
                 this.$api.addTask(form).then(resp => {
-                    if (!resp.success) {
-                        this.$message.error(resp.msg)
-                    } else {
-                        this.$message.error(resp.msg)
+                    if (resp.success) {
+                        this.$notify.success(resp.msg)
                         this.$emit("changeStatus", false);
+                    } else {
+                        this.$notify.error(resp.msg)
                     }
                 })
             } else {
                 this.$api.updateTask(this.scheduleId, {project: this.$route.params.id}, form).then(resp => {
-                    if (resp.status === 200) {
-                        this.$notify.success('更新定时任务成功');
+                    if (resp.success) {
                         this.$emit("changeStatus", false);
+                        this.$notify.success('更新定时任务成功');
                     }else {
                         this.$notify.error(resp.msg)
                     }
