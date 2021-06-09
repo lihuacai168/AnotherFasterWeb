@@ -93,6 +93,10 @@
                 v-model="activeTag"
             >
                 <el-tab-pane label="Header" name="first">
+                    <span slot="label">
+                        Header
+                        <el-badge slot="label" :value="handleBadgeValue(response.body.header, 'key')"></el-badge>
+                    </span>
                     <headers
                         :save="save"
                         v-on:header="handleHeader"
@@ -110,6 +114,10 @@
                 </el-tab-pane>
 
                 <el-tab-pane label="Extract" name="third">
+                    <span slot="label">
+                        Extract
+                        <el-badge slot="label" :value="handleBadgeValue(response.body.extract, 'key')"></el-badge>
+                    </span>
                     <extract
                         :save="save"
                         v-on:extract="handleExtract"
@@ -119,6 +127,10 @@
                 </el-tab-pane>
 
                 <el-tab-pane label="Validate" name="fourth">
+                    <span slot="label">
+                        Validate
+                        <el-badge slot="label" :value="handleBadgeValue(response.body.validate, 'actual')"></el-badge>
+                    </span>
                     <validate
                         :save="save"
                         v-on:validate="handleValidate"
@@ -128,17 +140,25 @@
                     </validate>
                 </el-tab-pane>
 
+
                 <el-tab-pane label="Variables" name="five">
+                    <span slot="label">
+                        Variables
+                        <el-badge slot="label" :value="handleBadgeValue(response.body.variables, 'key')"></el-badge>
+                    </span>
                     <variables
                         :save="save"
                         v-on:variables="handleVariables"
                         :variables="response ? response.body.variables : []"
                     >
-
                     </variables>
                 </el-tab-pane>
 
                 <el-tab-pane label="Hooks" name="six">
+                    <span slot="label">
+                        Hooks
+                        <el-badge slot="label" :value="handleHooksBadge(response.body.hooks)"></el-badge>
+                    </span>
                     <hooks
                         :save="save"
                         v-on:hooks="handleHooks"
@@ -214,6 +234,30 @@ export default {
         },
         handleVariables(variables) {
             this.variables = variables;
+        },
+
+        // 计算标记的数值
+        handleBadgeValue(arr, countKey) {
+            let res = 0
+            for(const v of arr){
+                if(v[countKey]){
+                    res += 1
+                }
+            }
+            return res
+        },
+        // 计算hook数值
+        handleHooksBadge(hook){
+            let res = 0
+            for (const hookElement of hook) {
+                if(hookElement["setup"]){
+                    res +=1
+                }
+                if(hookElement["teardown"]){
+                    res += 1
+                }
+            }
+            return res
         },
         handleHooks(hooks) {
             this.hooks = hooks;
