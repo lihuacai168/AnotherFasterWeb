@@ -2,6 +2,8 @@
 // (runtime-only or standalone) has been set in webpack.base.conf with an alias.
 import Vue from 'vue'
 import ElementUI from 'element-ui'
+import VJsoneditor from 'v-jsoneditor'
+import VueClipboard from 'vue-clipboard2'
 import echarts from 'echarts'
 import 'element-ui/lib/theme-chalk/index.css'
 import App from './App'
@@ -18,7 +20,8 @@ Vue.config.productionTip = false
 Vue.use(ElementUI)
 Vue.prototype.$api = api
 Vue.prototype.$echarts = echarts
-
+Vue.use(VJsoneditor)
+Vue.use(VueClipboard)
 
 Vue.filter('datetimeFormat', function (time, format = 'YY-MM-DD hh:mm:ss') {
     let date = new Date(time);

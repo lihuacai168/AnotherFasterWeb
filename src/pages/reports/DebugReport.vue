@@ -94,11 +94,16 @@
                     v-text="handleContent(props.row.meta_data.response.content)"
                 ></pre>
                             </el-tab-pane>
+                            <el-tab-pane label="Json">
+                                <v-jsoneditor ref="jsonEditor" v-model="props.row.meta_data.response.json" :options="options" :plus="false"
+                                              @error="onError">
+                                </v-jsoneditor>
+                            </el-tab-pane>
                             <el-tab-pane label="Response">
                                 <pre class="code-block" v-text="handleResponse(props.row.meta_data.response)"></pre>
                             </el-tab-pane>
                             <el-tab-pane label="Validators" v-if="props.row.meta_data.validators.length !== 0">
-<!--                                <pre class="code-block" v-html="props.row.meta_data.validators"></pre>-->
+                                <!--                                <pre class="code-block" v-html="props.row.meta_data.validators"></pre>-->
                                 <el-table
                                     :data="props.row.meta_data.validators"
                                     stripe
@@ -178,6 +183,7 @@
 
 <script>
 import ResContent from "./components/ResContent";
+import VJsoneditor from 'v-jsoneditor'
 
 export default {
     name: "DebugReport",
@@ -187,9 +193,49 @@ export default {
         },
     },
     components: {
-        ResContent
+        ResContent,
+        VJsoneditor
+    },
+    data() {
+        let self = this
+        return {
+            jsonPath: "",
+            options: {
+                onEvent: function (node, event) {
+                    if (event.type === 'click') {
+                        let arr = node.path
+                        arr.unshift("content")
+                        self.jsonPath = arr.join(".")
+                        self.copyData()
+                    }
+                },
+                mode: 'view',
+                modes: ['code', 'tree', 'view', 'preview'], // allowed modes
+            },
+            a: {},
+        }
     },
     methods: {
+        copyData() {
+            this.$copyText(this.jsonPath).then(e => {
+                this.$notify.success({
+                    title: '复制提取路径成功',
+                    message: this.jsonPath,
+                    duration: 2000
+                });
+            }, function (e) {
+                this.$notify.error({
+                    title: '复制提取路径错误',
+                    message: e,
+                    duration: 2000
+                });
+            })
+        },
+
+
+        onError() {
+            console.log('error')
+        },
         handleRequest(request) {
             const keys = ["start_timestamp"];
 
@@ -209,6 +255,11 @@ export default {
                 content = JSON.parse(content);
             } catch (e) {
             }
+            // TODO 编辑器默认展开所有的json节点，修复关闭tab-pane后，编辑器内容被清空
+            // if (this.$refs.jsonEditor) {
+            //     console.log(this.$refs.jsonEditor[0].editor, '====123')
+            //     // this.$refs.jsonEditor[0].editor.expandAll()
+            // }
 
             return content;
         },
@@ -229,7 +280,6 @@ export default {
             keys.forEach(function (item) {
                 delete response[item];
             });
-
             return response;
         },
     },
