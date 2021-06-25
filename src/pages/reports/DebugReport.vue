@@ -136,10 +136,7 @@
                             <el-tab-pane label="Exception" v-if="props.row.attachment !== ''">
                                 <pre class="code-block" v-html="props.row.attachment"></pre>
                             </el-tab-pane>
-                            <el-tab-pane label="Extract" :lazy="true"
-                                         v-if="props.row.meta_data.response.content !== null">
-                                <ResContent :data="props.row.meta_data.response.content"></ResContent>
-                            </el-tab-pane>
+
                         </el-tabs>
                     </template>
                 </el-table-column>
@@ -182,7 +179,6 @@
 </template>
 
 <script>
-import ResContent from "./components/ResContent";
 import VJsoneditor from 'v-jsoneditor'
 
 export default {
@@ -193,7 +189,6 @@ export default {
         },
     },
     components: {
-        ResContent,
         VJsoneditor
     },
     data() {
