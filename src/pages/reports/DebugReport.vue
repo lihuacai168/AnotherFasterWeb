@@ -77,6 +77,8 @@
             </div>
             <el-table
                 :data="item.records"
+                @expand-change="expandChange"
+                :row-class-name="tableRowClassName"
                 style="width: 100%"
                 border
                 :header-cell-style="{textAlign:'center', background: '#F8F8FA'}"
@@ -84,21 +86,18 @@
             >
                 <el-table-column type="expand" fixed>
                     <template slot-scope="props">
-                        <el-tabs>
+                        <el-tabs @tab-click="handleClick">
                             <el-tab-pane label="Request">
                                 <pre class="code-block" v-html="handleRequest(props.row.meta_data.request)"></pre>
                             </el-tab-pane>
-                            <el-tab-pane label="Content" v-if="props.row.meta_data.response.content !== null">
-                <pre
-                    class="code-block"
-                    v-text="handleContent(props.row.meta_data.response.content)"
-                ></pre>
-                            </el-tab-pane>
-                            <el-tab-pane label="Json">
-                                <v-jsoneditor ref="jsonEditor" v-model="props.row.meta_data.response.json" :options="options" :plus="false"
+
+                            <el-tab-pane label="Content" v-if="props.row.meta_data.response.jsonCopy !== null">
+                                <v-jsoneditor ref="jsonEditor" v-model="props.row.meta_data.response.jsonCopy"
+                                              :options="options" :plus="false"
                                               @error="onError">
                                 </v-jsoneditor>
                             </el-tab-pane>
+
                             <el-tab-pane label="Response">
                                 <pre class="code-block" v-text="handleResponse(props.row.meta_data.response)"></pre>
                             </el-tab-pane>
@@ -137,7 +136,8 @@
                             <el-tab-pane label="Exception" v-if="props.row.attachment !== ''">
                                 <pre class="code-block" v-html="props.row.attachment"></pre>
                             </el-tab-pane>
-                            <el-tab-pane label="Extract" v-if="props.row.meta_data.response.content !== null">
+                            <el-tab-pane label="Extract" :lazy="true"
+                                         v-if="props.row.meta_data.response.content !== null">
                                 <ResContent :data="props.row.meta_data.response.content"></ResContent>
                             </el-tab-pane>
                         </el-tabs>
@@ -200,6 +200,7 @@ export default {
         let self = this
         return {
             jsonPath: "",
+            expandedRows: [],
             options: {
                 onEvent: function (node, event) {
                     if (event.type === 'click') {
@@ -210,12 +211,26 @@ export default {
                     }
                 },
                 mode: 'view',
-                modes: ['code', 'tree', 'view', 'preview'], // allowed modes
+                modes: ['view', 'code'], // allowed modes
             },
-            a: {},
         }
     },
     methods: {
+        expandChange(row, expandedRow) {
+            this.expandedRows = expandedRow.length
+        },
+        tableRowClassName({row, rowIndex}) {
+            row.row_index = rowIndex
+        },
+        handleClick(tab, event) {
+            // TODO 修复产生2个editor
+            if (tab.label === "Content") {
+                for (let i = 0; i < this.expandedRows; i++) {
+                    console.log(i)
+                    this.$refs.jsonEditor[i * 2].editor.expandAll()
+                }
+            }
+        },
         copyData() {
             this.$copyText(this.jsonPath).then(e => {
                 this.$notify.success({
@@ -255,12 +270,6 @@ export default {
                 content = JSON.parse(content);
             } catch (e) {
             }
-            // TODO 编辑器默认展开所有的json节点，修复关闭tab-pane后，编辑器内容被清空
-            // if (this.$refs.jsonEditor) {
-            //     console.log(this.$refs.jsonEditor[0].editor, '====123')
-            //     // this.$refs.jsonEditor[0].editor.expandAll()
-            // }
-
             return content;
         },
 
