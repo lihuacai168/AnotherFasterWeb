@@ -24,9 +24,6 @@
                             在线运行
                         </el-button>
                     </el-col>
-                    <el-col :span="9">
-                        <h2>调试控制台</h2>
-                    </el-col>
                 </el-row>
             </div>
 
@@ -35,32 +32,32 @@
         <el-container>
             <el-main style="padding: 0; margin-left: 10px">
                 <el-row>
-                    <el-col :span="15">
-                        <editor
-                            v-model="code.code"
-                            @init="editorInit"
-                            lang="python"
-                            theme="monokai"
-                            width="100%"
+                    <el-col :span="24">
+                        <MonacoEditor
+                            ref="editor"
                             :height="codeHeight"
-                            :options="{
-                                 enableSnippets:true,
-                                 enableBasicAutocompletion: true,
-                                 enableLiveAutocompletion: true
-                             }"
+                            language="python"
+                            :code="code.code"
+                            :options="options"
+                            @mounted="onMounted"
+                            @codeChange="onCodeChange"
+                            :key="timeStamp"
                         >
-                        </editor>
+                        </MonacoEditor>
+
                     </el-col>
 
                     <el-col :span="9">
-                        <editor
-                            v-model="resp.msg"
-                            lang="text"
-                            theme="monokai"
-                            width="100%"
+                        <el-drawer
+                            style="margin-top: 100px"
                             :height="codeHeight"
-                        >
-                        </editor>
+                            :destroy-on-close="true"
+                            :with-header="false"
+                            :visible.sync="isShowDebug"
+                            >
+                            <RunCodeResult :msg="resp.msg"></RunCodeResult>
+                        </el-drawer>
+
                     </el-col>
 
 
@@ -73,10 +70,21 @@
 </template>
 
 <script>
+import MonacoEditor from 'vue-monaco-editor'
+import RunCodeResult from "./components/RunCodeResult";
+
 export default {
+    components: {
+        MonacoEditor,
+        RunCodeResult,
+    },
     data() {
         return {
-            codeHeight: 500,
+            timeStamp: "",
+            isShowDebug: false,
+            options: {
+                selectOnLineNumbers: false
+            },
             code: {
                 code: '',
                 id: ''
@@ -88,24 +96,26 @@ export default {
     },
     name: "DebugTalk",
     methods: {
+        onMounted(editor) {
+            debugger
+            // TODO python代码自带补全，代码折叠
+            this.editor = editor;
+        },
+        onCodeChange(editor) {
+            this.code.code = editor.getValue()
+            editor.trigger('随便写点儿啥', 'editor.action.triggerSuggest', {});
+        },
         handleRunCode() {
             this.resp.msg = '';
             this.$api.runDebugtalk(this.code).then(resp => {
                 this.resp = resp;
             })
         },
-
         handleConfirm() {
             this.$api.updateDebugtalk(this.code).then(resp => {
                 this.getDebugTalk();
                 this.$message.success("代码保存成功");
             })
-        },
-        editorInit() {
-            require('brace/ext/language_tools');
-            require('brace/mode/python');
-            require('brace/theme/monokai');
-            require('brace/snippets/python');
         },
         getDebugTalk() {
             this.$api.getDebugtalk(this.$route.params.id).then(res => {
@@ -113,25 +123,28 @@ export default {
             })
         }
     },
-    components: {
-        editor: require('vue2-ace-editor')
+    watch: {
+        code() {
+            this.timeStamp = (new Date()).getTime()
+        },
+        resp() {
+            this.isShowDebug = true
+        }
     },
+
+    computed: {
+
+        codeHeight() {
+            return window.screen.height - 248
+        }
+    },
+
     mounted() {
         this.getDebugTalk();
-        this.codeHeight = window.screen.height - 248;
     }
 }
 </script>
 
 <style scoped>
-
-.ace_editor {
-    position: relative;
-    overflow: hidden;
-    font: 18px/normal 'Monaco', 'Menlo', 'Ubuntu Mono', 'Consolas', 'source-code-pro', monospace !important;
-    direction: ltr;
-    text-align: left;
-    -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
-}
 
 </style>
