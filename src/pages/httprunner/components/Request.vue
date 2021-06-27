@@ -131,17 +131,13 @@
                 </el-table-column>
             </el-table>
 
-            <!--Request json-->
-            <editor v-model="jsonData"
-                    :key="timeStamp"
-                    @init="editorInit"
-                    lang="json"
-                    theme="github"
-                    width="100%"
-                    :height="height"
-                    v-show="dataType === 'json' "
+            <v-jsoneditor v-model="editorJsonData"
+                          v-show="dataType === 'json'"
+                          :height="height"
+                          :options="options" :plus="true"
+                          ref="jsonEditor11"
             >
-            </editor>
+            </v-jsoneditor>
 
         </div>
 
@@ -151,6 +147,8 @@
 </template>
 
 <script>
+import VJsoneditor from 'v-jsoneditor'
+
 export default {
     props: {
         save: Boolean,
@@ -158,49 +156,95 @@ export default {
             require: false
         }
     },
-    computed: {
-        height() {
-            return window.screen.height - 464
+    data() {
+        return {
+            options: {
+                mode: 'code',
+                modes: ['code', 'tree'], // allowed modes
+            },
+            editorJsonData: {},
+            fileList: [],
+            currentIndex: 0,
+            currentRow: '',
+            formData: [{
+                key: '',
+                value: '',
+                type: 1,
+                desc: ''
+            }],
+            paramsData: [{
+                key: '',
+                value: '',
+                type: '',
+                desc: ''
+            }],
+
+            dataTypeOptions: [{
+                label: 'String',
+                value: 1
+            }, {
+                label: 'Integer',
+                value: 2
+            }, {
+                label: 'Float',
+                value: 3
+            }, {
+                label: 'Boolean',
+                value: 4
+            }, {
+                label: 'File',
+                value: 5
+            }],
+
+            dataOptions: [{
+                label: 'data',
+                value: '表单',
+            }, {
+                label: 'json',
+                value: 'json',
+            }, {
+                label: 'params',
+                value: 'params'
+            }],
+            dataType: 'json',
+            timeStamp: "",
         }
     },
 
-    name: "Request",
-    components: {
-        editor: require('vue2-ace-editor'),
+    computed: {
+        height() {
+            return (window.screen.height - 464).toString() + "px"
+        }
     },
 
+    mounted() {
+        this.editorJsonData = this.parseJson()
+    },
+    name: "Request",
+    components: {
+        VJsoneditor,
+    },
 
     watch: {
         save: function () {
             this.$emit('request', {
                 form: this.parseForm(),
-                json: this.parseJson(),
+                json: this.editorJsonData,
                 params: this.parseParams(),
                 files: this.parseFile()
-            }, {
-                data: this.formData,
-                params: this.paramsData,
-                json_data: this.jsonData
             });
+            this.editorJsonData = {}
         },
 
         request: function () {
             if (this.request.length !== 0) {
                 this.formData = this.request.data;
-                this.jsonData = this.request.json_data;
+                this.editorJsonData = this.parseJson();
                 this.paramsData = this.request.params;
             }
-            this.timeStamp = (new Date()).getTime()
         }
     },
-
     methods: {
-        editorInit() {
-            require('brace/ext/language_tools');
-            require('brace/mode/json');
-            require('brace/theme/github');
-            require('brace/snippets/json');
-        },
 
         uploadSuccess(response, file, fileList) {
             let size = file.size;
@@ -320,9 +364,9 @@ export default {
 
         parseJson() {
             let json = {};
-            if (this.jsonData !== '') {
+            if (this.request.json_data !== '') {
                 try {
-                    json = JSON.parse(this.jsonData);
+                    json = JSON.parse(this.request.json_data);
                 } catch (err) {
                     this.$notify.error({
                         title: 'json错误',
@@ -390,67 +434,17 @@ export default {
         },
     },
 
-    data() {
-        return {
-            fileList: [],
-            currentIndex: 0,
-            currentRow: '',
-            jsonData: '',
-            formData: [{
-                key: '',
-                value: '',
-                type: 1,
-                desc: ''
-            }],
-            paramsData: [{
-                key: '',
-                value: '',
-                type: '',
-                desc: ''
-            }],
-
-            dataTypeOptions: [{
-                label: 'String',
-                value: 1
-            }, {
-                label: 'Integer',
-                value: 2
-            }, {
-                label: 'Float',
-                value: 3
-            }, {
-                label: 'Boolean',
-                value: 4
-            }, {
-                label: 'File',
-                value: 5
-            }],
-
-            dataOptions: [{
-                label: 'data',
-                value: '表单',
-            }, {
-                label: 'json',
-                value: 'json',
-            }, {
-                label: 'params',
-                value: 'params'
-            }],
-            dataType: 'json',
-            timeStamp: "",
-        }
-    }
 }
 </script>
 
 <style scoped>
-.ace_editor {
-    position: relative;
-    overflow: hidden;
-    font: 18px/normal 'Monaco', 'Menlo', 'Ubuntu Mono', 'Consolas', 'source-code-pro', monospace !important;
-    direction: ltr;
-    text-align: left;
-    -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
-}
+/*.ace_editor {*/
+/*    position: relative;*/
+/*    overflow: hidden;*/
+/*    font: 18px/normal 'Monaco', 'Menlo', 'Ubuntu Mono', 'Consolas', 'source-code-pro', monospace !important;*/
+/*    direction: ltr;*/
+/*    text-align: left;*/
+/*    -webkit-tap-highlight-color: rgba(0, 0, 0, 0);*/
+/*}*/
 
 </style>

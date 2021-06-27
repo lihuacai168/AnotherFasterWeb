@@ -95,7 +95,7 @@
                 <el-tab-pane label="Header" name="first">
                     <span slot="label">
                         Header
-                        <el-badge slot="label" :value="handleBadgeValue(response.body.header, 'key')"></el-badge>
+                        <el-badge slot="label" :value="handleBadgeValue(response.body.header ? response.body.header: [], 'key')"></el-badge>
                     </span>
                     <headers
                         :save="save"
@@ -221,9 +221,11 @@ export default {
         },
 
         handleHeader(header) {
+            debugger
             this.header = header;
         },
         handleRequest(request) {
+            debugger
             this.request = request;
         },
         handleValidate(validate) {
