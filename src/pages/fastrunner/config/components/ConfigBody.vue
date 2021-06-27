@@ -51,14 +51,6 @@
                     </headers>
                 </el-tab-pane>
 
-                <el-tab-pane label="Request" name="second">
-                    <request
-                        :save="save"
-                        v-on:request="handleRequest"
-                        :request="response ? response.body.request: []"
-                    >
-                    </request>
-                </el-tab-pane>
 
                 <el-tab-pane label="Variables" name="third">
                     <variables
@@ -96,7 +88,6 @@
 
 <script>
 import Headers from '../../../httprunner/components/Headers'
-import Request from '../../../httprunner/components/Request'
 import Variables from '../../../httprunner/components/Variables'
 import Hooks from '../../../httprunner/components/Hooks'
 import Parameters from '../../../httprunner/components/Parameters'
@@ -104,7 +95,6 @@ import Parameters from '../../../httprunner/components/Parameters'
 export default {
     components: {
         Headers,
-        Request,
         Variables,
         Hooks,
         Parameters
@@ -141,9 +131,6 @@ export default {
     methods: {
         handleHeader(header) {
             this.header = header;
-        },
-        handleRequest(request) {
-            this.request = request;
         },
 
         handleVariables(variables) {
