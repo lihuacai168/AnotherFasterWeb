@@ -227,13 +227,13 @@ export default {
 
     watch: {
         save: function () {
+            // Save SaveAs Send都会触发
             this.$emit('request', {
                 form: this.parseForm(),
                 json: this.editorJsonData,
                 params: this.parseParams(),
                 files: this.parseFile()
             });
-            this.editorJsonData = {}
         },
 
         request: function () {
@@ -364,6 +364,7 @@ export default {
 
         parseJson() {
             let json = {};
+            debugger
             if (this.request.json_data !== '') {
                 try {
                     json = JSON.parse(this.request.json_data);

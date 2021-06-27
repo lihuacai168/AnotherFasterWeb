@@ -221,11 +221,9 @@ export default {
         },
 
         handleHeader(header) {
-            debugger
             this.header = header;
         },
         handleRequest(request) {
-            debugger
             this.request = request;
         },
         handleValidate(validate) {
