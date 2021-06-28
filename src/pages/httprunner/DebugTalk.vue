@@ -47,14 +47,15 @@
 
                     </el-col>
 
-                    <el-col :span="9">
+                    <el-col :span="14">
                         <el-drawer
                             style="margin-top: 100px"
                             :height="codeHeight"
                             :destroy-on-close="true"
                             :with-header="false"
+                            :modal="false"
                             :visible.sync="isShowDebug"
-                            >
+                        >
                             <RunCodeResult :msg="resp.msg"></RunCodeResult>
                         </el-drawer>
 
@@ -72,18 +73,20 @@
 <script>
 import MonacoEditor from 'vue-monaco-editor'
 import RunCodeResult from "./components/RunCodeResult";
+import BaseMonacoEditor from "../monaco-editor/BaseMonacoEditor";
 
 export default {
     components: {
         MonacoEditor,
         RunCodeResult,
+        BaseMonacoEditor,
     },
     data() {
         return {
             timeStamp: "",
             isShowDebug: false,
             options: {
-                selectOnLineNumbers: false
+                selectOnLineNumbers: false,
             },
             code: {
                 code: '',
@@ -97,13 +100,11 @@ export default {
     name: "DebugTalk",
     methods: {
         onMounted(editor) {
-            debugger
-            // TODO python代码自带补全，代码折叠
             this.editor = editor;
         },
         onCodeChange(editor) {
             this.code.code = editor.getValue()
-            editor.trigger('随便写点儿啥', 'editor.action.triggerSuggest', {});
+            // editor.trigger('随便写点儿啥', 'editor.action.triggerSuggest', {});
         },
         handleRunCode() {
             this.resp.msg = '';

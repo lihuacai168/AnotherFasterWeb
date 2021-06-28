@@ -26,6 +26,9 @@ export default {
             options: {
                 selectOnLineNumbers: false
             },
+            minimap: {
+                enabled: false
+            }
         }
     },
     name: "DebugResult",
