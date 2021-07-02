@@ -233,6 +233,11 @@ export default {
                 json: this.editorJsonData,
                 params: this.parseParams(),
                 files: this.parseFile()
+            }, {
+                // 编辑用例步骤用到
+                data: this.formData,
+                params: this.paramsData,
+                json_data: this.editorJsonData
             });
         },
 
@@ -363,11 +368,16 @@ export default {
         },
 
         parseJson() {
+            // TODO 初始化json太绕了，需要重新整理
             let json = {};
+            let jsonStr = this.request.json_data
+            if (typeof (jsonStr) === "object"){
+                return jsonStr
+            }
             debugger
-            if (this.request.json_data !== '') {
+            if (typeof (jsonStr) !== "undefined" && jsonStr !== '') {
                 try {
-                    json = JSON.parse(this.request.json_data);
+                    json = JSON.parse(jsonStr);
                 } catch (err) {
                     this.$notify.error({
                         title: 'json错误',

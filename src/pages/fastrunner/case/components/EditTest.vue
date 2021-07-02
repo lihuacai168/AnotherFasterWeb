@@ -588,7 +588,6 @@ export default {
             if (this.testData.length > 0 && this.testData[0].body.method === "config") {
                 config = this.testData[0].body;
             }
-            debugger
             this.$api.runSingleTest({
                 host: this.host,
                 config: config,
