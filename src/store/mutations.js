@@ -12,7 +12,6 @@ export default {
     },
     setProjectName(state, value) {
         if (value !== '' ){
-            console.log(value)
             value = ' / ' + value.replaceAll('/', '').replaceAll(' ', '')
         }
         state.projectName = value
