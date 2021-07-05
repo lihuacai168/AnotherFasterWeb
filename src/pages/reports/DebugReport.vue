@@ -111,7 +111,7 @@
                                     <el-table-column
                                         prop="check_result"
                                         label="是否通过"
-                                        width="180">
+                                        width="80">
                                     </el-table-column>
                                     <el-table-column
 
@@ -121,7 +121,9 @@
                                     </el-table-column>
                                     <el-table-column
                                         prop="check_value"
-                                        label="实际值">
+                                        label="实际值"
+                                        :formatter="checkValueFormatter"
+                                    >
                                     </el-table-column>
                                     <el-table-column
                                         prop="comparator"
@@ -129,7 +131,9 @@
                                     </el-table-column>
                                     <el-table-column
                                         prop="expect"
-                                        label="期望值">
+                                        label="期望值"
+                                        :formatter="expectValueFormatter"
+                                    >
                                     </el-table-column>
                                 </el-table>
                             </el-tab-pane>
@@ -211,6 +215,30 @@ export default {
         }
     },
     methods: {
+        checkValueFormatter(row, column) {
+            return this.valueFormatter(row.check_value)
+        },
+        expectValueFormatter(row, column) {
+            return this.valueFormatter(row.expect)
+        },
+        valueFormatter(value) {
+            let parsedValue = ""
+            switch (typeof value) {
+                case "object":
+                    parsedValue = JSON.stringify(value)
+                    break
+                case "boolean":
+                    if(value === true){
+                        parsedValue = "True"
+                    }else {
+                        parsedValue = "False"
+                    }
+                    break
+                default:
+                    parsedValue = value
+            }
+            return parsedValue
+        },
         expandChange(row, expandedRow) {
             this.expandedRows = expandedRow.length
         },
