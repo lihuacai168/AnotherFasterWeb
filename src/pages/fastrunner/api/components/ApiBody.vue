@@ -95,7 +95,7 @@
                 <el-tab-pane label="Header" name="first">
                     <span slot="label">
                         Header
-                        <el-badge slot="label" :value="handleBadgeValue(response.body.header ? response.body.header: [], 'key')"></el-badge>
+                        <el-badge slot="label" :value="handleBadgeValue(response ? response.body.header: [], 'key')"></el-badge>
                     </span>
                     <headers
                         :save="save"
@@ -116,7 +116,7 @@
                 <el-tab-pane label="Extract" name="third">
                     <span slot="label">
                         Extract
-                        <el-badge slot="label" :value="handleBadgeValue(response.body.extract, 'key')"></el-badge>
+                        <el-badge slot="label" :value="handleBadgeValue(response ? response.body.extract: [], 'key')"></el-badge>
                     </span>
                     <extract
                         :save="save"
@@ -129,7 +129,7 @@
                 <el-tab-pane label="Validate" name="fourth">
                     <span slot="label">
                         Validate
-                        <el-badge slot="label" :value="handleBadgeValue(response.body.validate, 'actual')"></el-badge>
+                        <el-badge slot="label" :value="handleBadgeValue(response ? response.body.validate: [], 'actual')"></el-badge>
                     </span>
                     <validate
                         :save="save"
@@ -144,7 +144,7 @@
                 <el-tab-pane label="Variables" name="five">
                     <span slot="label">
                         Variables
-                        <el-badge slot="label" :value="handleBadgeValue(response.body.variables, 'key')"></el-badge>
+                        <el-badge slot="label" :value="handleBadgeValue(response ? response.body.variables : [], 'key')"></el-badge>
                     </span>
                     <variables
                         :save="save"
@@ -157,7 +157,7 @@
                 <el-tab-pane label="Hooks" name="six">
                     <span slot="label">
                         Hooks
-                        <el-badge slot="label" :value="handleHooksBadge(response.body.hooks)"></el-badge>
+                        <el-badge slot="label" :value="handleHooksBadge(response ? response.body.hooks: [])"></el-badge>
                     </span>
                     <hooks
                         :save="save"
