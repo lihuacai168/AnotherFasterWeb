@@ -195,15 +195,23 @@ export default {
     data() {
         let self = this
         return {
-            jsonPath: "",
+            jsonPathOrValue: "",
             expandedRows: [],
             options: {
                 onEvent: function (node, event) {
                     if (event.type === 'click') {
-                        let arr = node.path
-                        arr.unshift("content")
-                        self.jsonPath = arr.join(".")
-                        self.copyData()
+                        let value = node.value
+                        // 当前点击的位置有value，复制value
+                        if (value) {
+                            self.jsonPathOrValue = value
+                            self.copyData('复制json value成功')
+                        } else {
+                            // 当前点击的位置是key，复制key的jsonpath
+                            let arr = node.path
+                            arr.unshift("content")
+                            self.jsonPathOrValue = arr.join(".")
+                            self.copyData('复制jsonpath成功')
+                        }
                     }
                 },
                 mode: 'view',
@@ -230,9 +238,9 @@ export default {
                     parsedValue = JSON.stringify(value)
                     break
                 case "boolean":
-                    if(value === true){
+                    if (value === true) {
                         parsedValue = "True"
-                    }else {
+                    } else {
                         parsedValue = "False"
                     }
                     break
@@ -257,11 +265,11 @@ export default {
                 }
             }
         },
-        copyData() {
-            this.$copyText(this.jsonPath).then(e => {
+        copyData(title) {
+            this.$copyText(this.jsonPathOrValue).then(e => {
                 this.$notify.success({
-                    title: '复制提取路径成功',
-                    message: this.jsonPath,
+                    title: title,
+                    message: this.jsonPathOrValue,
                     duration: 2000
                 });
             }, function (e) {
