@@ -93,7 +93,8 @@
 
                             <el-tab-pane label="Content" v-if="props.row.meta_data.response.jsonCopy !== null">
                                 <v-jsoneditor ref="jsonEditor" v-model="props.row.meta_data.response.jsonCopy"
-                                              :options="options" :plus="false"
+                                              :options="options" :plus="true"
+                                              :height="height"
                                               @error="onError">
                                 </v-jsoneditor>
                             </el-tab-pane>
@@ -183,7 +184,6 @@
 </template>
 
 <script>
-import VJsoneditor from 'v-jsoneditor'
 
 export default {
     name: "DebugReport",
@@ -191,9 +191,6 @@ export default {
         summary: {
             require: true,
         },
-    },
-    components: {
-        VJsoneditor
     },
     data() {
         let self = this
@@ -212,6 +209,11 @@ export default {
                 mode: 'view',
                 modes: ['view', 'code'], // allowed modes
             },
+        }
+    },
+    computed: {
+        height() {
+            return (window.screen.height - 464).toString() + "px"
         }
     },
     methods: {
@@ -249,6 +251,7 @@ export default {
             // TODO 修复产生2个editor
             if (tab.label === "Content") {
                 for (let i = 0; i < this.expandedRows; i++) {
+                    debugger
                     console.log(i)
                     this.$refs.jsonEditor[i * 2].editor.expandAll()
                 }

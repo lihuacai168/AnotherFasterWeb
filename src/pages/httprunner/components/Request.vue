@@ -135,7 +135,6 @@
                           v-show="dataType === 'json'"
                           :height="height"
                           :options="options" :plus="true"
-                          ref="jsonEditor11"
             >
             </v-jsoneditor>
 
@@ -147,7 +146,6 @@
 </template>
 
 <script>
-import VJsoneditor from 'v-jsoneditor'
 
 export default {
     props: {
@@ -221,9 +219,6 @@ export default {
         this.editorJsonData = this.parseJson()
     },
     name: "Request",
-    components: {
-        VJsoneditor,
-    },
 
     watch: {
         save: function () {
