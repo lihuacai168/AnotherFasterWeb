@@ -39,13 +39,13 @@
 
             <div>
                 <el-input
-                    style="width: 600px; margin-top: 10px"
+                    style="width: 760px; margin-top: 10px"
                     placeholder="请输入接口请求地址"
                     v-model="url"
                     clearable
                 >
                     <el-select
-                        style="width: 125px"
+                        style="width: 100px"
                         slot="prepend"
                         v-model="method"
                     >
@@ -57,6 +57,8 @@
                         >
                         </el-option>
                     </el-select>
+                    <template slot="prepend" > <span style="margin-left: 20px">{{config.base_url}}</span></template>
+
 
                 </el-input>
 
@@ -338,7 +340,7 @@ export default {
                     name: this.name,
                     times: this.times,
                     project: this.project,
-                    config: this.config,
+                    config: this.config.name,
                     host: this.host
                 }).then(resp => {
                     this.summary = resp;

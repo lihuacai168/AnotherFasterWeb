@@ -127,12 +127,13 @@
                         size="small"
                         tyle="margin-left: -6px"
                         v-model="currentConfig"
+                        value-key="id"
                     >
                         <el-option
                             v-for="item in configOptions"
                             :key="item.id"
                             :label="item.name"
-                            :value="item.name">
+                            :value="item">
                         </el-option>
                     </el-select>
 
@@ -253,7 +254,7 @@
                     v-on:api="handleAPI"
                     :pNode="currentNode !== '' ? currentNode.id : '' "
                     :project="$route.params.id"
-                    :config="currentConfig"
+                    :config="currentConfig.name"
                     :host="currentHost"
                     :del="del"
                     :back="back"
@@ -449,7 +450,7 @@ export default {
                 });
                 const _config = this.configOptions.filter(item => item.is_default === true);
                 if (_config.length) {
-                    this.currentConfig = _config[0].name
+                    this.currentConfig = _config[0]
                 } else {
                     this.currentConfig = '请选择'
                 }
