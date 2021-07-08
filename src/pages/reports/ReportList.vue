@@ -87,6 +87,13 @@
 
         <el-container>
             <el-main style="padding: 0; margin-left: 10px;">
+                <el-dialog
+                    v-if="dialogTableVisible"
+                    :visible.sync="dialogTableVisible"
+                    width="70%"
+                >
+                    <report :summary="summary"></report>
+                </el-dialog>
                 <div style="position: fixed; bottom: 0; right:0; left: 220px; top: 120px">
                     <el-table
                         highlight-current-row
@@ -97,6 +104,7 @@
                         @cell-mouse-enter="cellMouseEnter"
                         @cell-mouse-leave="cellMouseLeave"
                         @selection-change="handleSelectionChange"
+                        v-loading="loading"
                     >
                         <el-table-column
                             type="selection"
@@ -222,9 +230,18 @@
                         <!--                        </el-table-column>-->
 
 
-                        <el-table-column>
+                        <el-table-column label="报告操作">
                             <template slot-scope="scope">
                                 <el-row v-show="currentRow === scope.row">
+                                    <el-button
+                                        type="info"
+                                        icon="el-icon-refresh-right"
+                                        circle size="mini"
+                                        title="重新运行失败用例"
+                                        v-show="scope.row.stat.failure_case_config_mapping_list !== undefined && scope.row.stat.failure_case_config_mapping_list[0].config_name !== undefined"
+                                        @click="handleRunFailCase(scope.row)"
+                                    >
+                                    </el-button>
                                     <el-button
                                         type="info"
                                         icon="el-icon-view"
@@ -255,10 +272,12 @@
 </template>
 
 <script>
+import Report from "./DebugReport";
 
 export default {
-
-
+    components: {
+        Report
+    },
     data() {
         return {
             search: '',
@@ -277,7 +296,10 @@ export default {
             reportData: {
                 count: 0,
                 results: []
-            }
+            },
+            dialogTableVisible: false,
+            summary: {},
+            loading: false,
         }
     },
 
@@ -339,6 +361,21 @@ export default {
                 }
             }).then(resp => {
                 this.reportData = resp;
+            })
+        },
+        handleRunFailCase(row){
+            this.loading = true
+            this.$api.runMultiTest({
+                    name: row.name,
+                    project: this.$route.params.id,
+                    case_config_mapping_list: row.stat.failure_case_config_mapping_list
+                }).then(resp => {
+                    this.getReportList()
+                    this.loading = false
+                    this.dialogTableVisible = true
+                    this.summary = resp
+                }).catch(resp => {
+                    this.loading = false
             })
         },
 
