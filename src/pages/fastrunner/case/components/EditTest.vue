@@ -91,7 +91,8 @@
                         slot="append"
                         type="success"
                         @click="handleClickSave"
-                        title="保存用例"
+                        :title="disabledSave ? '不能修改其他人的用例': '保存用例'"
+                        :disabled="disabledSave"
                     >Save
                     </el-button>
 
@@ -279,6 +280,7 @@
                 :config="config"
                 v-on:escEdit="editTestStepActivate = false"
                 v-on:getNewBody="handleNewBody"
+                :disabledSave="disabledSave"
             >
             </http-runner>
         </el-main>
@@ -353,8 +355,9 @@ export default {
         filterText(val) {
             this.$refs.tree2.filter(val);
         },
-        testStepResp() {
 
+        testStepResp() {
+            this.handleSavePermission()
             try {
                 this.testName = this.testStepResp.case.name;
                 this.testId = this.testStepResp.case.id;
@@ -381,6 +384,9 @@ export default {
                 2: '集成用例',
                 3: '监控脚本'
             },
+            isSuperuser: this.$store.state.is_superuser,
+            userName: this.$store.state.user,
+            disabledSave: true,
             suite_loading: false,
             loading: false,
             dialogTableVisible: false,
@@ -409,6 +415,15 @@ export default {
         }
     },
     methods: {
+        handleSavePermission() {
+            // 用例创建人和超级管理员可以编辑并保存用例
+            // 其他人只能打开用例，无法保存
+            if (this.isSuperuser || this.testStepResp.case.creator === this.userName) {
+                this.disabledSave = false
+            } else {
+                this.disabledSave = true
+            }
+        },
         inputVal(val) {
             this.$emit('update:search', val)
         },
@@ -486,7 +501,7 @@ export default {
                 tag: this.testTag
             }).then(resp => {
                 if (resp.success) {
-                    if(addTestFinish) {
+                    if (addTestFinish) {
                         this.$emit("addSuccess");
                     }
                     this.$notify({
@@ -518,7 +533,7 @@ export default {
                 relation: this.relation
             }).then(resp => {
                 if (resp.success) {
-                    if(addTestFinish) {
+                    if (addTestFinish) {
                         this.$emit("addSuccess")
                     }
                     this.$notify({
@@ -536,7 +551,7 @@ export default {
             })
         },
 
-        handleClickSave(addTestFinish=true) {
+        handleClickSave(addTestFinish = true) {
             if (this.validateData()) {
                 if (this.testId === '') {
                     this.addTestSuite(addTestFinish);

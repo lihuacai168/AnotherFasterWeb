@@ -369,7 +369,6 @@ export default {
             if (typeof (jsonStr) === "object"){
                 return jsonStr
             }
-            debugger
             if (typeof (jsonStr) !== "undefined" && jsonStr !== '') {
                 try {
                     json = JSON.parse(jsonStr);

@@ -14,7 +14,8 @@
                     slot="append"
                     type="success"
                     @click="save = !save"
-                    title="保存用例步骤"
+                    :disabled="disabledSave"
+                    :title="disabledSave ? '不能修改其他人的用例': '保存用例步骤'"
                     >Save
                 </el-button>
 
@@ -192,6 +193,10 @@ export default {
             require: true
         },
         host: {
+            require: true
+        },
+        disabledSave: {
+            type: Boolean,
             require: true
         }
     },

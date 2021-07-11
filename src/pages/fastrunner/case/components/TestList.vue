@@ -294,8 +294,7 @@
                                         type="info"
                                         icon="el-icon-edit"
                                         circle size="mini"
-                                        :title="userName === scope.row.creator || isSuperuser ? '编辑' : '只有用例创建者才能编辑'"
-                                        :disabled="userName != scope.row.creator && !isSuperuser"
+                                        title="编辑"
                                         @click="handleEditTest(scope.row.id)"
                                     ></el-button>
 
