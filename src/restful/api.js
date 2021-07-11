@@ -270,6 +270,10 @@ export const runSingleTest = params => {
     return axios.post('/api/fastrunner/run_test/', params).then(res => res.data)
 };
 
+export const runMultiTest = params => {
+    return axios.post('/api/fastrunner/run_multi_tests/', params).then(res => res.data)
+};
+
 export const runTestByPk = (url, params) => {
     return axios.get('/api/fastrunner/run_testsuite_pk/' + url + '/', params).then(res => res.data)
 };
