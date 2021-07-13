@@ -25,18 +25,41 @@
         </el-header>
 
         <el-container>
-            <el-header v-if="!addTasks" style="padding: 0; height: 50px; margin-top: 10px">
-                <div style="padding-top: 8px; padding-left: 30px;">
-                    <el-pagination
-                        :page-size="11"
-                        v-show="tasksData.count !== 0 "
-                        background
-                        @current-change="handleCurrentChange"
-                        :current-page.sync="currentPage"
-                        layout="total, prev, pager, next, jumper"
-                        :total="tasksData.count"
-                    >
-                    </el-pagination>
+            <el-header v-if="!addTasks" style="padding: 0; height: 500px; margin-top: 10px;">
+
+                <div style="padding-top: 2px; padding-left: 30px; display: flex">
+                    <div >
+                        <el-input placeholder="请输入任务名称" clearable v-model="searchTaskName"
+                                  @keyup.enter.native="getTaskList"
+                                  style="width: 400px">
+                            <el-button slot="append" icon="el-icon-search" @click="getTaskList"></el-button>
+                        </el-input>
+                        <span style="margin-left: 10px">创建人: </span>
+                        <el-select v-model="selectUser" placeholder="请选择创建人" filterable
+                                   :style="{width: '120px'}">
+                            <el-option v-for="(item, index) in users" :key="index"
+                                       :label="item.label"
+                                       :value="item.value" :disabled="item.disabled"></el-option>
+                        </el-select>
+                        <el-button
+                            type="primary"
+                            @click="resetSearch"
+                        >重置
+                        </el-button>
+                    </div>
+                    <div>
+                        <el-pagination
+                            style="margin-top: 2px"
+                            :page-size="11"
+                            v-show="tasksData.count !== 0 "
+                            background
+                            @current-change="handleCurrentChange"
+                            :current-page.sync="currentPage"
+                            layout="total, prev, pager, next, jumper"
+                            :total="tasksData.count"
+                        >
+                        </el-pagination>
+                    </div>
                 </div>
             </el-header>
             <el-main style="padding: 0; margin-left: 10px; margin-top: 10px;">
@@ -105,20 +128,6 @@
                                 </div>
                             </template>
                         </el-table-column>
-
-<!--                        <el-table-column-->
-<!--                            width="170"-->
-<!--                            label="上次执行时间"-->
-<!--                        >-->
-<!--                            <template slot-scope="scope">-->
-<!--                                <div>-->
-<!--                                    {{-->
-<!--                                        scope.row.last_run_at ? scope.row.last_run_at : '' | timestampToTime-->
-<!--                                    }}-->
-<!--                                </div>-->
-<!--                            </template>-->
-<!--                        </el-table-column>-->
-
 
                         <el-table-column
                             width="100"
@@ -199,6 +208,13 @@
                                         @click="handleEditSchedule(scope.row.id, scope.row)"
                                     ></el-button>
                                     <el-button
+                                        type="success"
+                                        icon="el-icon-document-copy"
+                                        title="复制"
+                                        circle size="mini"
+                                        @click="handleCopyTask(scope.row.id, scope.row.name)"
+                                    ></el-button>
+                                    <el-button
                                         type="primary"
                                         icon="el-icon-caret-right"
                                         title="手动触发任务"
@@ -264,6 +280,9 @@ export default {
                 fail_count: 1,
                 webhook: ''
             },
+            users: [],
+            selectUser: this.$store.state.user,
+            searchTaskName: ''
         }
     },
     methods: {
@@ -356,6 +375,27 @@ export default {
             this.ruleForm["creator"] = index_data.kwargs.creator;
             this.args = index_data.args;
         },
+        /*
+        复制定时任务
+         */
+        handleCopyTask(id, name){
+            this.$prompt('请输入任务名称', '提示', {
+                confirmButtonText: '确定',
+                inputPattern: /^[\s\S]*.*[^\s][\s\S]*$/,
+                inputErrorMessage: '任务名称不能为空',
+                inputValue: name
+            }).then(({value}) => {
+                this.$api.copyTask(id, {
+                    'name': value
+                }).then(resp => {
+                    if (resp.success) {
+                        this.getTaskList();
+                    } else {
+                        this.$message.error(resp.msg);
+                    }
+                })
+            })
+        },
         // changeStatus(value) {
         //     this.getTaskList();
         //     this.addTasks = value;
@@ -379,7 +419,13 @@ export default {
             }
         },
         getTaskList() {
-            this.$api.taskList({params: {project: this.$route.params.id}}).then(resp => {
+            this.$api.taskList({
+                params: {
+                    project: this.$route.params.id,
+                    creator: this.selectUser,
+                    task_name: this.searchTaskName
+                }
+            }).then(resp => {
                 this.tasksData = resp
             })
         },
@@ -390,9 +436,31 @@ export default {
         cellMouseLeave(row) {
             this.currentRow = '';
         },
+        getUserList() {
+            this.$api.getUserList().then(resp => {
+                    for (let i = 0; i < resp.length; i++) {
+                        this.users.push({"label": resp[i].username, "value": resp[i].username})
+                    }
+                    this.users.unshift({"label": "所有人", "value": ""})
+                }
+            )
+        },
+        resetSearch() {
+            this.searchTaskName = ""
+            this.selectUser = this.$store.state.user
+        }
     },
     name: "Tasks",
+    watch: {
+        selectUser() {
+            this.getTaskList()
+        },
+        searchTaskName() {
+            this.getTaskList()
+        }
+    },
     mounted() {
+        this.getUserList()
         this.getTaskList();
     }
 }
