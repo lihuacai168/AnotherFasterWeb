@@ -330,7 +330,11 @@ export default {
         back: Boolean,
         rigEnv: [String, Number],
         tag: [String, Number],
-        search: [String, Number]
+        search: [String, Number],
+        addTestActivate: {
+            require: true,
+            type: Boolean
+        }
     },
 
     name: "EditTest",
@@ -349,6 +353,9 @@ export default {
 
         },
         back() {
+            if(this.back){
+                this.testData = []
+            }
             this.editTestStepActivate = false;
         },
 
@@ -416,6 +423,10 @@ export default {
     },
     methods: {
         handleSavePermission() {
+            // 新增用例，所有人都能保存
+            if(this.addTestActivate === false){
+                this.disabledSave = false
+            }
             // 用例创建人和超级管理员可以编辑并保存用例
             // 其他人只能打开用例，无法保存
             if (this.isSuperuser || this.testStepResp.case.creator === this.userName) {

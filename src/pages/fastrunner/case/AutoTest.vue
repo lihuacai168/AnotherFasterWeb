@@ -224,6 +224,7 @@
                     :rigEnv.sync="rigEnv"
                     :tag.sync="tag"
                     :search.sync="search"
+                    :addTestActivate="addTestActivate"
                     v-on:addSuccess="handleBackList"
                 >
                 </edit-test>
