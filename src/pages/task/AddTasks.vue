@@ -19,6 +19,50 @@
                                           placeholder="请输入cortab表达式，例如 2 12 * * *"></el-input>
                             </el-form-item>
 
+                            <el-form-item label="运行配置" prop="config">
+                                <el-select
+                                    placeholder="请选择"
+                                    size="small"
+                                    tyle="margin-left: -6px"
+                                    v-model="ruleForm.config"
+                                    value-key="id"
+                                >
+                                    <el-option
+                                        v-for="item in configOptions"
+                                        :key="item.id"
+                                        :label="item.name"
+                                        :value="item.name">
+                                    </el-option>
+                                </el-select>
+                                <el-tooltip placement="top">
+                                    <div slot="content">指定任务运行的配置<br/>请选择: 使用用例中的配置 <br/>选择其他配置: 当前选择配置覆盖用例中的配置</div>
+                                    <span class="el-icon-question"></span>
+                                </el-tooltip>
+
+                            </el-form-item>
+
+                            <el-form-item label="CI环境" prop="ci_env">
+                                <el-select
+                                    placeholder="请选择"
+                                    size="small"
+                                    tyle="margin-left: -6px"
+                                    v-model="ruleForm.ci_env"
+                                    value-key="id"
+                                >
+                                    <el-option
+                                        v-for="item in CIEnvOptions"
+                                        :key="item"
+                                        :label="item"
+                                        :value="item">
+                                    </el-option>
+                                </el-select>
+                                <el-tooltip placement="top">
+                                    <div slot="content">CI触发环境<br/>Gitlab项目id且CI环境相等时，才会运行任务</div>
+                                    <span class="el-icon-question"></span>
+                                </el-tooltip>
+
+                            </el-form-item>
+
                             <el-form-item label="Gitlab项目id" prop="ci_project_ids">
                                 <el-input clearable v-model="ruleForm.ci_project_ids"
                                           placeholder="请输入Gitlab项目id,多个用逗号分隔，例如: 1,2"></el-input>
@@ -138,7 +182,7 @@
                                     <span class="block-method block_method_options block_method_color">Case</span>
                                     <span class="block_name">{{ item.name }}</span>
                                     <i class="el-icon-success " style="color: green" v-if="item.tasks.length > 0 "
-                                      :title="'已加入定时任务: ' + item.tasks.map(task => task.name).join('，')">
+                                       :title="'已加入定时任务: ' + item.tasks.map(task => task.name).join('，')">
                                     </i>
                                 </div>
                             </div>
@@ -222,6 +266,14 @@ export default {
         },
         scheduleId: {
             require: true
+        },
+        configOptions: {
+            require: true,
+            type: Array
+        },
+        CIEnvOptions: {
+            require: true,
+            type: Array
         }
     },
     watch: {
@@ -260,8 +312,8 @@ export default {
                     {required: true, message: '请输入正确的crontab表达式', trigger: 'blur'}
                 ],
                 ci_project_ids: [
-                   {required: false, message: '请输入正确的ci_project_ids', trigger: 'blur'},
-                    { validator: isNumArray, trigger: 'blur' }
+                    {required: false, message: '请输入正确的ci_project_ids', trigger: 'blur'},
+                    {validator: isNumArray, trigger: 'blur'}
                 ]
 
             },
@@ -297,7 +349,7 @@ export default {
                     if (resp.success) {
                         this.$emit("changeStatus", false);
                         this.$notify.success('更新定时任务成功');
-                    }else {
+                    } else {
                         this.$notify.error(resp.msg)
                     }
                 })
@@ -382,7 +434,8 @@ export default {
             }).then(resp => {
                 this.suiteData = resp;
             })
-        }
+        },
+
     },
     mounted() {
         this.getTree();

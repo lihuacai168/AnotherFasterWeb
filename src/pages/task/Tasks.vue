@@ -28,7 +28,7 @@
             <el-header v-if="!addTasks" style="padding: 0; height: 500px; margin-top: 10px;">
 
                 <div style="padding-top: 2px; padding-left: 30px; display: flex">
-                    <div >
+                    <div>
                         <el-input placeholder="请输入任务名称" clearable v-model="searchTaskName"
                                   @keyup.enter.native="getTaskList"
                                   style="width: 400px">
@@ -117,13 +117,40 @@
                         </el-table-column>
 
                         <el-table-column
-                            width="170"
-                            label="Gitlab项目id"
+                            width="70"
+                            label="CI项目"
                         >
                             <template slot-scope="scope">
                                 <div>
                                     {{
                                         scope.row.kwargs.ci_project_ids
+                                    }}
+                                </div>
+                            </template>
+                        </el-table-column>
+
+                        <el-table-column
+                            width="70"
+                            label="CI环境"
+                        >
+                            <template slot-scope="scope">
+                                <div>
+                                    {{
+                                        scope.row.kwargs.ci_env === '请选择' ? "" : scope.row.kwargs.ci_env
+                                    }}
+                                </div>
+                            </template>
+                        </el-table-column>
+
+                        <el-table-column
+                            width="180"
+                            label="运行配置"
+                        >
+
+                            <template slot-scope="scope">
+                                <div>
+                                    {{
+                                        scope.row.kwargs.config === '请选择' ? "用例配置" : scope.row.kwargs.config
                                     }}
                                 </div>
                             </template>
@@ -139,11 +166,11 @@
                             </template>
                         </el-table-column>
                         <el-table-column
-                            width="100"
-                            label="已运行次数"
+                            width="70"
+                            label="已运行"
                         >
                             <template slot-scope="scope">
-                                <div>{{ scope.row.total_run_count }}</div>
+                                <div>{{ scope.row.total_run_count }} 次</div>
 
                             </template>
                         </el-table-column>
@@ -242,6 +269,8 @@
                 v-if="addTasks"
                 v-on:changeStatus="changeStatus"
                 :ruleForm="ruleForm"
+                :configOptions="configOptions"
+                :CIEnvOptions="CIEnvOptions"
                 :args="args"
                 :scheduleId="scheduleId"
             >
@@ -278,11 +307,15 @@ export default {
                 sensitive_keys: '',
                 self_error: '',
                 fail_count: 1,
-                webhook: ''
+                webhook: '',
+                config: '请选择',
+                ci_env: '请选择',
             },
             users: [],
             selectUser: this.$store.state.user,
-            searchTaskName: ''
+            searchTaskName: '',
+            configOptions: [],
+            CIEnvOptions: ['请选择', 'dev', 'qa', 'qa1', 'uat', 'prod'],
         }
     },
     methods: {
@@ -301,8 +334,11 @@ export default {
                 fail_count: 1,
                 webhook: '',
                 ci_project_ids: '',
+                config: "请选择",
+                ci_env: "请选择"
             };
             this.args = [];
+            this.initConfig()
         },
         delTasks(id) {
             this.$confirm('此操作将永久删除该定时任务，是否继续?', '提示', {
@@ -374,11 +410,14 @@ export default {
             this.ruleForm["updater"] = this.$store.state.user;
             this.ruleForm["creator"] = index_data.kwargs.creator;
             this.args = index_data.args;
+            this.ruleForm["config"] = index_data.kwargs.config
+            this.ruleForm["ci_env"] = index_data.kwargs.ci_env
+            this.initConfig()
         },
         /*
         复制定时任务
          */
-        handleCopyTask(id, name){
+        handleCopyTask(id, name) {
             this.$prompt('请输入任务名称', '提示', {
                 confirmButtonText: '确定',
                 inputPattern: /^[\s\S]*.*[^\s][\s\S]*$/,
@@ -416,6 +455,8 @@ export default {
                 sensitive_keys: '',
                 webhook: '',
                 ci_project_ids: '',
+                config: '请选择',
+                ci_env: '请选择'
             }
         },
         getTaskList() {
@@ -448,7 +489,14 @@ export default {
         resetSearch() {
             this.searchTaskName = ""
             this.selectUser = this.$store.state.user
-        }
+        },
+
+        initConfig() {
+            this.$api.getAllConfig(this.$route.params.id).then(resp => {
+                this.configOptions = resp;
+                this.configOptions.unshift({name: '请选择'})
+            });
+        },
     },
     name: "Tasks",
     watch: {
@@ -457,9 +505,10 @@ export default {
         },
         searchTaskName() {
             this.getTaskList()
-        }
+        },
     },
     mounted() {
+        // this.initConfig()
         this.getUserList()
         this.getTaskList();
     }
