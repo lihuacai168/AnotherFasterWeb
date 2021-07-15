@@ -375,6 +375,7 @@ export default {
             this.$api.getTaskPaginationBypage({
                 params: {
                     page: this.currentPage,
+                    creator: this.selectUser,
                     project: this.$route.params.id
                 }
             }).then(resp => {
