@@ -208,7 +208,7 @@
                                         v-if="test.body.method !== 'config'"
                                     >
                                         <span
-                                            class="block-method block_method_test block_method_color">A P I</span>
+                                            class="block-method block_method_test block_method_color">Step_{{index}}</span>
                                         <input class="block-test-name"
                                                v-model="test.body.name"
                                         />
