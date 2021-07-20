@@ -732,7 +732,10 @@ export default {
             if (this.testData.length === 0) {
                 this.testData.push({body: {name: this.config, method: 'config'}})
             }
-            this.currentAPI && this.testData.push(this.currentAPI);
+            if (this.currentAPI) {
+                this.testData.push(this.currentAPI)
+                this.currentAPI = ''
+            }
         },
         allowDrop(event) {
             event.preventDefault();
