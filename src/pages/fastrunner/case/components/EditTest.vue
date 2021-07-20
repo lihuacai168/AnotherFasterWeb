@@ -1,6 +1,6 @@
 <template>
     <el-container>
-        <el-aside style="width: 280px; margin-top: 10px;">
+        <el-aside style="width: 260px; margin-top: 10px;">
             <div class="nav-api-side">
                 <div class="api-tree">
                     <el-input
@@ -37,9 +37,8 @@
             <div v-show="!editTestStepActivate" class="recordapi__header">
                 <div class="recordapi__header" :style="{flex:1}">
                     <div class="recordapi__header--item">
-                        <el-input placeholder="请输入接口名称" style="width: 360px; text-align: center" clearable
+                        <el-input placeholder="请输入接口名称" style="width: 350px; text-align: center" clearable
                                   @input="inputVal" :value="search" @keyup.enter.native="getAPIList">
-                            <el-button slot="append" icon="el-icon-search" @click="getAPIList"></el-button>
                         </el-input>
                     </div>
                     <div class="recordapi__header--item">
@@ -63,6 +62,14 @@
                                 <el-dropdown-item command="">所有</el-dropdown-item>
                             </el-dropdown-menu>
                         </el-dropdown>
+                    </div>
+                    <div class="recordapi__header--item">
+                        <el-select v-model="selectUser" placeholder="创建人" filterable
+                                   :style="{width: '120px'}">
+                            <el-option v-for="(item, index) in users" :key="index"
+                                       :label="item.label"
+                                       :value="item.value" :disabled="item.disabled"></el-option>
+                        </el-select>
                     </div>
 
                 </div>
@@ -124,9 +131,9 @@
                                           :class="`block_method_${item.method.toLowerCase()}`">
                                         {{ item.method.toUpperCase() }}
                                     </span>
-                                    <span class="block-method block_method_color block_method_options"
-                                             v-if="item.creator==='yapi'"
-                                             :title="'从YAPI导入的接口'">
+                                <span class="block-method block_method_color block_method_options"
+                                      v-if="item.creator==='yapi'"
+                                      :title="'从YAPI导入的接口'">
                                             YAPI
                                     </span>
 
@@ -353,7 +360,7 @@ export default {
 
         },
         back() {
-            if(this.back){
+            if (this.back) {
                 this.testData = []
             }
             this.editTestStepActivate = false;
@@ -381,7 +388,10 @@ export default {
 
         search() {
             this.getAPIList()
-        }
+        },
+        selectUser() {
+            this.getAPIList()
+        },
     },
 
     data() {
@@ -418,13 +428,15 @@ export default {
             },
 
             testData: [],
+            selectUser: this.$store.state.user,
+            users: [],
             // rigEnv: ''
         }
     },
     methods: {
         handleSavePermission() {
             // 新增用例，所有人都能保存
-            if(this.addTestActivate === false){
+            if (this.addTestActivate === false) {
                 this.disabledSave = false
             }
             // 用例创建人和超级管理员可以编辑并保存用例
@@ -662,8 +674,9 @@ export default {
             })
         },
         resetSearch() {
+            this.selectUser = this.$store.state.user,
             this.currentNode = '',
-                this.$emit('update:search', '');
+            this.$emit('update:search', '');
             this.$emit('update:tag', '');
             this.$emit('update:rigEnv', '');
             this.getAPIList();
@@ -676,7 +689,8 @@ export default {
                         project: this.project,
                         search: this.search,
                         rigEnv: this.rigEnv,
-                        tag: this.tag
+                        tag: this.tag,
+                        creator: this.selectUser
                     }
                 }).then(res => {
                     this.apiData = res;
@@ -723,11 +737,20 @@ export default {
         allowDrop(event) {
             event.preventDefault();
         },
-
+        getUserList() {
+            this.$api.getUserList().then(resp => {
+                    for (let i = 0; i < resp.length; i++) {
+                        this.users.push({"label": resp[i].username, "value": resp[i].username})
+                    }
+                    this.users.unshift({"label": "所有人", "value": ""})
+                }
+            )
+        },
     },
     mounted() {
         this.getTree();
         this.getAPIList();
+        this.getUserList()
     }
 }
 </script>
@@ -781,7 +804,7 @@ export default {
 }
 
 .recordapi__header--item {
-    margin: 0 8px;
+    margin: 0 2px;
 }
 
 .edit__block {
