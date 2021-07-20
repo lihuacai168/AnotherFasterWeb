@@ -339,7 +339,9 @@ export const addTask = params => {
     return axios.post('/api/fastrunner/schedule/', params).then(res => res.data)
 };
 
-
+export const copyTask = (task_id, params) => {
+    return axios.post('/api/fastrunner/schedule/' + task_id + '/', params).then(res => res.data)
+};
 export const taskList = params => {
     return axios.get('/api/fastrunner/schedule/', params).then(res => res.data)
 };
