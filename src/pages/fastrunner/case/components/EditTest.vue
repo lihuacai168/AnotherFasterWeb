@@ -153,7 +153,7 @@
                         </div>
 
                     </el-col>
-                    <el-col :span="12">
+                    <el-col :span="12" class="el-col">
                         <el-dialog
                             v-if="dialogTableVisible"
                             :visible.sync="dialogTableVisible"
@@ -757,6 +757,9 @@ export default {
 
 <style scoped>
 
+.el-col {
+    min-height: 1px;
+}
 .test-list {
     height: 750px;
 }
