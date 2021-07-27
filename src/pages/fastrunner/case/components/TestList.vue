@@ -252,13 +252,22 @@
                             </template>
                         </el-table-column>
 
-                        <el-table-column
-                            label="更新时间"
-                            width="200"
+<!--                        <el-table-column-->
+<!--                            label="更新时间"-->
+<!--                            width="200"-->
+<!--                        >-->
+<!--                            <template slot-scope="scope">-->
+<!--                                <div>{{ scope.row.update_time|datetimeFormat }}</div>-->
 
+<!--                            </template>-->
+<!--                        </el-table-column>-->
+
+                        <el-table-column
+                            label="创建时间"
+                            width="200"
                         >
                             <template slot-scope="scope">
-                                <div>{{ scope.row.update_time|datetimeFormat }}</div>
+                                <div>{{ scope.row.create_time|datetimeFormat }}</div>
 
                             </template>
                         </el-table-column>
