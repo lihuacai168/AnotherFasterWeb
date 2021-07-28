@@ -524,6 +524,7 @@ export default {
                 tag: this.testTag
             }).then(resp => {
                 if (resp.success) {
+                    this.testId = resp.test_id
                     if (addTestFinish) {
                         this.$emit("addSuccess");
                     }
