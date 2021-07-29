@@ -361,6 +361,8 @@ export default {
         },
         back() {
             if (this.back) {
+                this.testId = ""
+                this.testName = ""
                 this.testData = []
             }
             this.editTestStepActivate = false;
@@ -441,7 +443,7 @@ export default {
             }
             // 用例创建人和超级管理员可以编辑并保存用例
             // 其他人只能打开用例，无法保存
-            if (this.isSuperuser || this.testStepResp.case.creator === this.userName) {
+            if (this.isSuperuser || (this.testStepResp.case !== undefined && this.testStepResp.case.creator === this.userName)) {
                 this.disabledSave = false
             } else {
                 this.disabledSave = true

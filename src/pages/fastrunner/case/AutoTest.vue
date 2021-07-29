@@ -312,6 +312,7 @@ export default {
 
         handleBackList() {
             this.addTestActivate = true;
+            this.testStepResp = []
             this.back = !this.back;
         },
 
