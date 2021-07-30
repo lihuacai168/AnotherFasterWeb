@@ -305,6 +305,10 @@ export default {
             }, {
                 value: 'contained_by'
             }, {
+                value: 'list_any_item_contains'
+            }, {
+                value: 'list_all_item_contains'
+            }, {
                 value: 'type_match'
             }, {
                 value: 'regex_match'
