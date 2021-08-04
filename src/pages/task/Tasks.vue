@@ -312,7 +312,7 @@ export default {
                 ci_env: '请选择',
             },
             users: [],
-            selectUser: this.$store.state.user,
+            selectUser: '',
             searchTaskName: '',
             configOptions: [],
             CIEnvOptions: ['请选择', 'dev', 'qa', 'qa1', 'uat', 'prod'],
@@ -489,7 +489,7 @@ export default {
         },
         resetSearch() {
             this.searchTaskName = ""
-            this.selectUser = this.$store.state.user
+            this.selectUser = ""
         },
 
         initConfig() {
