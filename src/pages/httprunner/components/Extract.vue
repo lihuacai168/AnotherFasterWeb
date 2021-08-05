@@ -64,6 +64,8 @@
 </template>
 
 <script>
+import bus from '../../../util/bus.js'
+
 export default {
     props: {
         save: Boolean,
@@ -144,7 +146,19 @@ export default {
             }]
         }
     },
-    name: "Extract"
+    name: "Extract",
+    mounted() {
+        bus.$on("extractRequest", (extractOjb) => {
+            // 当抽取列表为空时，先删除第一个
+            if (this.tableData.length === 1 && this.tableData[0].key === '' && this.tableData[0].value === '' ) {
+                this.tableData.pop()
+            }
+            this.tableData.push(extractOjb)
+        })
+    },
+    beforeDestroy() {
+        bus.$off("extractRequest")
+    }
 }
 </script>
 

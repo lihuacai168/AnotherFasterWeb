@@ -135,6 +135,7 @@
                           v-show="dataType === 'json'"
                           :height="height"
                           :options="options" :plus="true"
+                          ref="requestEditor"
             >
             </v-jsoneditor>
 
@@ -146,6 +147,7 @@
 </template>
 
 <script>
+import bus from '../../../util/bus.js'
 
 export default {
     props: {
@@ -155,8 +157,29 @@ export default {
         }
     },
     data() {
+        let self = this
         return {
             options: {
+                onModeChange(newMode, oldMode) {
+                    if (newMode === 'tree') {
+                        self.$refs.requestEditor.editor.expandAll()
+                    }
+                },
+                onEvent: function (node, event) {
+                    if (event.type === 'click' && event.altKey) {
+                        // 左键点击 + alt 提取请求参数jsonpath插入到extract
+                        let arr = node.path
+                        arr.unshift("request.body")
+                        let jsonPath = arr.join(".")
+                        self.notifyCopyRequest(jsonPath, 'Extract插入')
+                        const extractOjb = {
+                            "key": arr[arr.length - 1],
+                            "value": jsonPath,
+                            "desc": "",
+                        }
+                        bus.$emit("extractRequest", extractOjb)
+                    }
+                },
                 mode: 'code',
                 modes: ['code', 'tree'], // allowed modes
             },
@@ -366,7 +389,7 @@ export default {
             // TODO 初始化json太绕了，需要重新整理
             let json = {};
             let jsonStr = this.request.json_data
-            if (typeof (jsonStr) === "object"){
+            if (typeof (jsonStr) === "object") {
                 return jsonStr
             }
             if (typeof (jsonStr) !== "undefined" && jsonStr !== '') {
@@ -437,6 +460,14 @@ export default {
             }
             return tempValue;
         },
+
+        notifyCopyRequest(jsonpath, title) {
+            this.$notify.success({
+                title: title,
+                message: jsonpath,
+                duration: 2000
+            });
+        }
     },
 
 }
