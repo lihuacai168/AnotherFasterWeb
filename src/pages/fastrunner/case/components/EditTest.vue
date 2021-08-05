@@ -215,7 +215,7 @@
 
 
                                         <el-button
-                                            style="position: absolute; right: 120px; top: 8px"
+                                            style="position: absolute; right: 156px; top: 8px"
                                             v-show="currentTest === index"
                                             type="info"
                                             icon="el-icon-edit"
@@ -247,6 +247,17 @@
                                         >
                                         </el-button>
 
+
+                                        <el-button
+                                            style="position: absolute; right: 120px; top: 8px"
+                                            v-show="currentTest === index"
+                                            type="danger"
+                                            icon="el-icon-document-copy"
+                                            title="复制当前步骤"
+                                            circle size="mini"
+                                            @click="handleCopyStep(index)"
+                                        >
+                                        </el-button>
 
                                         <el-button
                                             style="position: absolute; right: 12px; top: 8px"
@@ -752,6 +763,11 @@ export default {
                 }
             )
         },
+        handleCopyStep(index) {
+            let copyStepObj = JSON.parse(JSON.stringify(this.testData[index]))
+            copyStepObj.is_copy = true
+            this.testData.splice(index,0, copyStepObj)
+        }
     },
     mounted() {
         this.getTree();
