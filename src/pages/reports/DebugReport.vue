@@ -198,6 +198,11 @@ export default {
             jsonPathOrValue: "",
             expandedRows: [],
             options: {
+                onModeChange(newMode, oldMode) {
+                    if (newMode === 'view') {
+                        self.$refs.jsonEditor[0].editor.expandAll()
+                    }
+                },
                 onEvent: function (node, event) {
                     if (event.type === 'click') {
                         let value = node.value
