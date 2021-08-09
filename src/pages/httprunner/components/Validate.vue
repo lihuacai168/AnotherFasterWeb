@@ -14,7 +14,7 @@
             label="实际返回值"
             width="300">
             <template slot-scope="scope">
-                <el-input clearable v-model="scope.row.actual" placeholder="实际返回值"></el-input>
+                <el-input clearable v-model.trim="scope.row.actual" placeholder="实际返回值"></el-input>
             </template>
         </el-table-column>
 
@@ -64,7 +64,7 @@
             label="期望返回值"
             width="325">
             <template slot-scope="scope">
-                <el-input clearable v-model="scope.row.expect" placeholder="期望返回值"></el-input>
+                <el-input clearable v-model.trim="scope.row.expect" placeholder="期望返回值"></el-input>
 
             </template>
         </el-table-column>
