@@ -233,11 +233,11 @@
                         </el-table-column>
 
                         <el-table-column
-                            label="API个数"
-                            width="100"
+                            label="步骤"
+                            width="50"
                         >
                             <template slot-scope="scope">
-                                <div>{{ scope.row.length }} 个</div>
+                                <div style="text-align:center">{{ scope.row.length }}</div>
                             </template>
                         </el-table-column>
 
@@ -252,29 +252,28 @@
                             </template>
                         </el-table-column>
 
-<!--                        <el-table-column-->
-<!--                            label="更新时间"-->
-<!--                            width="200"-->
-<!--                        >-->
-<!--                            <template slot-scope="scope">-->
-<!--                                <div>{{ scope.row.update_time|datetimeFormat }}</div>-->
-
-<!--                            </template>-->
-<!--                        </el-table-column>-->
+                        <el-table-column
+                            label="更新时间"
+                            width="105"
+                        >
+                            <template slot-scope="scope">
+                                <div>{{ scope.row.update_time|datetimeFormat('MM-DD hh:mm')}}</div>
+                            </template>
+                        </el-table-column>
 
                         <el-table-column
                             label="创建时间"
-                            width="200"
+                            width="105"
                         >
                             <template slot-scope="scope">
-                                <div>{{ scope.row.create_time|datetimeFormat }}</div>
+                                <div>{{ scope.row.create_time|datetimeFormat('MM-DD hh:mm') }}</div>
 
                             </template>
                         </el-table-column>
 
                         <el-table-column
                             label="创建人"
-                            width="100"
+                            width="70"
 
                         >
                             <template slot-scope="scope">
@@ -285,7 +284,7 @@
 
                         <el-table-column
                             label="更新人"
-                            width="100"
+                            width="70"
 
                         >
                             <template slot-scope="scope">
