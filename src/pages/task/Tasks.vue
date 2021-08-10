@@ -310,6 +310,7 @@ export default {
                 webhook: '',
                 config: '请选择',
                 ci_env: '请选择',
+                is_parallel: false,
             },
             users: [],
             selectUser: '',
@@ -335,7 +336,8 @@ export default {
                 webhook: '',
                 ci_project_ids: '',
                 config: "请选择",
-                ci_env: "请选择"
+                ci_env: "请选择",
+                is_parallel: false,
             };
             this.args = [];
             this.initConfig()
@@ -413,6 +415,7 @@ export default {
             this.args = index_data.args;
             this.ruleForm["config"] = index_data.kwargs.config
             this.ruleForm["ci_env"] = index_data.kwargs.ci_env
+            this.ruleForm["is_parallel"] = index_data.kwargs.is_parallel
             this.initConfig()
         },
         /*
@@ -457,7 +460,8 @@ export default {
                 webhook: '',
                 ci_project_ids: '',
                 config: '请选择',
-                ci_env: '请选择'
+                ci_env: '请选择',
+                is_parallel: false,
             }
         },
         getTaskList() {

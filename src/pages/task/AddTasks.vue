@@ -73,6 +73,18 @@
                                 <el-switch v-model="ruleForm.switch"></el-switch>
                             </el-form-item>
 
+                            <el-form-item label="运行模式" prop="is_parallel">
+                                <template>
+                                    <el-radio v-model="ruleForm.is_parallel" :label=false>串行</el-radio>
+                                    <el-radio v-model="ruleForm.is_parallel" :label=true>并行</el-radio>
+                                    <el-tooltip placement="top">
+                                        <div slot="content">用例运行模式<br/>任务中的用例默认是一个接着一个运行；并行时，同时执行用例, 不分先后</div>
+                                        <span class="el-icon-question"></span>
+                                    </el-tooltip>
+
+                                </template>
+                            </el-form-item>
+
                             <el-form-item label="通知策略" prop="strategy">
                                 <el-radio-group v-model="ruleForm.strategy">
                                     <el-radio label="始终发送"></el-radio>
