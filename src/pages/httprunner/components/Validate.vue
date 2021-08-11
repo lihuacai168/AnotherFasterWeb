@@ -64,7 +64,7 @@
             label="期望返回值"
             width="325">
             <template slot-scope="scope">
-                <el-input clearable v-model.trim="scope.row.expect" placeholder="期望返回值"></el-input>
+                <el-input clearable v-model.trim="scope.row.expect === null ? 'None' : scope.row.expect" placeholder="期望返回值"></el-input>
 
             </template>
         </el-table-column>
@@ -215,8 +215,23 @@ export default {
                         }
                     }
                     break;
+                case 7:
+                    // None 转 null
+                    if (value === 'None') {
+                        tempValue = null
+                    } else if (value.indexOf("$") != -1) {
+                        tempValue = value
+                    } else {
+                        this.$notify.error({
+                            title: '类型转换错误',
+                            message: msg,
+                            duration: 2000
+                        });
+                        return 'exception'
+                    }
+                    break
             }
-            if (tempValue !== 0 && !tempValue && type !== 4 && type !== 1) {
+            if (tempValue !== 0 && !tempValue && type !== 4 && type !== 1 && type !== 7) {
                 this.$notify.error({
                     title: '类型转换错误',
                     message: msg,
@@ -274,7 +289,11 @@ export default {
             }, {
                 label: 'Dict',
                 value: 6
-            }],
+            }, {
+                label: 'None',
+                value: 7
+            }
+            ],
 
             validateOptions: [{
                 value: 'equals'
