@@ -322,6 +322,8 @@ export default {
             }, {
                 value: 'contains'
             }, {
+                value: 'not_contains'
+            }, {
                 value: 'contained_by'
             }, {
                 value: 'list_any_item_contains'
