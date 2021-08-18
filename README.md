@@ -17,7 +17,7 @@ npm run dev
 测试
 -----------
 
-1. open url(recommend chrome): http://localhost:8080/#/fastrunner/register
+1. open url(recommend chrome): http://localhost:8080/fastrunner/login
 
 ## Docker 部署 nginx模式
 --------------
@@ -26,4 +26,4 @@ npm run dev
 3. 执行npm install, npm run build # 生成生产环境包
 3. docker build -t fasterweb:latest .    # 构建docker镜像
 4. docker run -d --name fasterweb --net=host --restart always fasterweb:latest  # 后台运行docker容器
-5. open url: http://宿主机ip:8080/fastrunner/register
+5. open url: http://宿主机ip:8080/fastrunner/login
