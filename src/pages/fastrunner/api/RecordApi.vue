@@ -571,9 +571,9 @@ export default {
             this.isSaveAs = false
         },
 
-        getProjectDetail() {
+        getYapiInfo() {
             const pk = this.$route.params.id;
-            this.$api.getProjectDetail(pk).then(res => {
+            this.$api.getProjectYapiInfo(pk).then(res => {
                 this.projectInfo = res
                 if (res.yapi_base_url !== '') {
                     this.YAPIformData.yapi_base_url = res.yapi_base_url
@@ -639,7 +639,7 @@ export default {
         this.getTree();
         this.getConfig();
         this.getHost();
-        this.getProjectDetail();
+        this.getYapiInfo();
     }
 }
 </script>

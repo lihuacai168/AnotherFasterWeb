@@ -92,6 +92,10 @@ export const getProjectDetail = pk => {
     return axios.get('/api/fastrunner/project/' + pk + '/').then(res => res.data)
 };
 
+export const getProjectYapiInfo = pk => {
+    return axios.get('/api/fastrunner/project/yapi/' + pk + '/').then(res => res.data)
+};
+
 export const getVisit = params => {
     return axios.get('/api/fastrunner/visit/', params).then(res => res.data)
 };

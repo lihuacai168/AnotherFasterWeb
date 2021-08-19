@@ -9,7 +9,7 @@
             </li>
         </ul>
 
-        <ul class="project_detail">
+        <ul class="project_detail" style="display: none">
             <li class="pull-left">
                 <p class="title-p"><i class="iconfont">&#xe74a;</i> &nbsp;{{ projectInfo.api_count }} 个接口</p>
                 <p class="desc-p">接口总数</p>
@@ -29,11 +29,11 @@
             </li>
 
         </ul>
-        <ul class="project_detail">
-<!--            <li class="pull-left">-->
-<!--                <p class="title-p"><i class="iconfont">&#xe609;</i> &nbsp;{{ projectInfo.host_count }} 套环境</p>-->
-<!--                <p class="desc-p">环境总数</p>-->
-<!--            </li>            -->
+        <ul class="project_detail" style="display: none">
+            <!--            <li class="pull-left">-->
+            <!--                <p class="title-p"><i class="iconfont">&#xe609;</i> &nbsp;{{ projectInfo.host_count }} 套环境</p>-->
+            <!--                <p class="desc-p">环境总数</p>-->
+            <!--            </li>            -->
             <li class="pull-left">
                 <p class="title-p"><i class="iconfont">&#xe609;</i> &nbsp;{{ projectInfo.api_cover_rate }}% 接口覆盖率</p>
                 <p class="desc-p">用例步骤和接口总数的比例</p>
@@ -53,56 +53,247 @@
             </li>
         </ul>
 
-        <div id="myChart"
-             :style="{width: '100%', height: '300px', 'overflow-x': 'hidden', 'overflow-y': 'hidden'}"></div>
+        <div style="display: flex; justify-content: space-around; ">
+            <el-card style="width: 30%">
+                <div slot="header">
+                    <span>API</span>
+                    <i class="iconfont">&#xe74a;</i>
+                </div>
+                <el-row type="flex">
+                   <el-col :span="16">
+                       <ApexCharts :options="apiPieOptions" :series="apiPieSeries"></ApexCharts>
+                   </el-col>
+                </el-row>
+                <el-row type="flex" justify="end">
+                    <el-col :span="12">
+                        <ApexCharts :options="apiCoverRateOptions" :series="apiCoverRateSeries"></ApexCharts>
+                    </el-col>
+                </el-row>
+            </el-card>
 
+            <el-card style="width: 30%">
+                <div slot="header">
+                    <span>Case</span>
+                    <i class="iconfont">&#xe6da;</i>
+                </div>
+                <ApexCharts :options="casePieOptions" :series="casePieSeries"></ApexCharts>
+            </el-card>
+            <el-card style="width: 30%">
+                <div slot="header">
+                    <span>Report</span>
+                    <i class="iconfont">&#xe66e;</i>
+                </div>
+                <ApexCharts :options="reportPieOptions" :series="reportPieSeries"></ApexCharts>
+            </el-card>
 
+        </div>
+
+        <div style="display: flex; justify-content: space-around;  margin-top: 20px;">
+            <el-card style="width: 30%;">
+                <div slot="header">
+                    <span>API每日创建</span>
+                    <i class="iconfont">&#xe74a;</i>
+                </div>
+
+                <ApexCharts type="area" :options="apiAreaOptions" :series="apiAreaSeries"></ApexCharts>
+            </el-card>
+            <el-card style="width: 30%">
+                <div slot="header">
+                    <span>Case每日创建</span>
+                    <i class="iconfont">&#xe6da;</i>
+                </div>
+                <ApexCharts type="area" :options="caseAreaOptions" :series="caseAreaSeries"></ApexCharts>
+            </el-card>
+            <el-card style="width: 30%">
+                <div slot="header">
+                    <span>Report每日创建</span>
+                    <i class="iconfont">&#xe66e;</i>
+<!--                    TODO 日期选择-->
+<!--                    <el-button style="float: right; padding: 3px 0" type="text">操作按钮</el-button>-->
+                </div>
+                <ApexCharts type="area" :options="reportAreaOptions" :series="reportAreaSeries"></ApexCharts>
+            </el-card>
+
+        </div>
     </div>
 </template>
 
 <script>
+
 export default {
     name: "ProjectDetail",
     data() {
         return {
+
             visitInfo: {},
-            projectInfo: {}
+            projectInfo: {},
+            apiPieOptions: {
+                plotOptions: {
+                    pie: {
+                        donut: {
+                            size: '50%',
+                            labels: {
+                                show: true,
+                                total: {
+                                    show: true,
+                                    showAlways: true,
+                                    label: 'Total',
+                                }
+                            },
+                        }
+                    }
+                },
+                show: true,
+                chart: {
+                    id: "apiPie",
+                    type: "donut",
+                },
+                // 饼图右上角的分类，会被接口返回值的覆盖
+                labels: ['手动创建的API', '从YAPI导入API',]
+            },
+            apiCoverRateSeries: [],
+            apiCoverRateOptions: {
+                chart: {
+                    height: 20,
+                    type: "radialBar"
+                },
+                plotOptions: {
+                    radialBar: {
+                        hollow: {
+                            margin: 15,
+                            size: "50%"
+                        },
+                        dataLabels: {
+                            showOn: "always",
+                            name: {
+                                offsetY: 0,
+                                show: true,
+                                color: "#888",
+                                fontSize: "13px"
+                            },
+                            value: {
+                                color: "#111",
+                                fontSize: "16px",
+                                show: true
+                            }
+                        }
+                    }
+                },
+                stroke: {
+                    lineCap: "round",
+                },
+                labels: ["接口覆盖率"]
+            },
+            casePieOptions: {
+                plotOptions: {
+                    pie: {
+                        donut: {
+                            size: '50%',
+                            labels: {
+                                show: true,
+                                total: {
+                                    show: true,
+                                    showAlways: true,
+                                    label: 'Total',
+                                }
+                            },
+                        }
+                    }
+                },
+                show: true,
+                chart: {
+                    id: "casePie",
+                    type: "donut",
+                },
+                // 饼图右上角的分类，会被接口返回值的覆盖
+                labels: ['冒烟用例', '集成用例', '监控脚本',]
+            },
+            reportPieOptions: {
+                plotOptions: {
+                    pie: {
+                        donut: {
+                            size: '50%',
+                            labels: {
+                                show: true,
+                                total: {
+                                    show: true,
+                                    showAlways: true,
+                                    label: 'Total',
+                                }
+                            },
+                        }
+                    }
+                },
+                show: true,
+                chart: {
+                    type: "donut",
+                },
+                // 饼图右上角的分类，会被接口返回值的覆盖
+                labels: ['调试', '异步', '定时', '部署',]
+            },
+            apiPieSeries: [],
+            casePieSeries: [],
+            reportPieSeries: [],
+            visitChartOptions: {
+                chart: {
+                    id: 'vuechart-example',
+                },
+                xaxis: {
+                    categories: []
+                }
+            },
+            apiAreaOptions: {
+                chart: {
+                    foreColor: "#aaa",
+                    id: 'apiArea',
+                },
+                xaxis: {
+                    categories: []
+                }
+            },
+            caseAreaOptions: {
+                chart: {
+                    id: 'caseArea',
+                },
+                xaxis: {
+                    categories: []
+                }
+            },
+            reportAreaOptions: {
+                chart: {
+                    id: 'reportArea',
+                },
+                xaxis: {
+                    categories: []
+                }
+            },
+            visitSeries: [{
+                name: '访问量',
+                data: []
+            }],
+            apiAreaSeries: [{
+                name: 'API创建数量',
+                data: []
+            }],
+            caseAreaSeries: [{
+                name: 'Case创建数量',
+                data: []
+            }],
+            reportAreaSeries: [{
+                name: 'Report创建数量',
+                data: []
+            }],
         }
     },
     methods: {
-        drawLine() {
-            // 基于准备好的dom，初始化echarts实例
-            let myChart = this.$echarts.init(document.getElementById('myChart'))
-
-            console.log("drawLine: " + this.visitInfo["count"])
-            debugger
-            // 绘制图表
-            myChart.setOption({
-                title: {text: '近七天用户访问量'},
-                tooltip: {},
-                xAxis: {
-                    data: this.visitInfo["create_time"]
-
-                },
-                yAxis: {type: 'value'},
-                series: [{
-                    name: '访问量',
-                    type: 'bar',
-                    data: this.visitInfo["count"]
-                }]
-            });
-        },
-
         getVisitData() {
             const project = this.$route.params.id;
-            debugger
             this.$api.getVisit({
                 params: {
                     project: project
                 }
             }).then(res => {
-                this.visitInfo = res
-                this.drawLine();
+                this.visitChartOptions = {...this.visitChartOptions, ...{xaxis: {categories: res.recent7days}}}
             })
         },
         success(resp) {
@@ -119,10 +310,40 @@ export default {
             });
         },
 
+        handleArea() {
+            const res = this.projectInfo.daily_create_count
+            const apiDays = res.api.days
+            const caseDays = res.case.days
+            const reportDays = res.report.days
+            const apiCount = res.api.count
+            const caseCount = res.case.count
+            const reportCount = res.report.count
+            this.apiAreaOptions = {...this.apiAreaOptions, ...{xaxis: {categories: apiDays}}}
+            this.caseAreaOptions = {...this.caseAreaOptions, ...{xaxis: {categories: caseDays}}}
+            this.reportAreaOptions = {...this.reportAreaOptions, ...{xaxis: {categories: reportDays}}}
+            this.apiAreaSeries[0].data = apiCount
+            this.caseAreaSeries[0].data = caseCount
+            this.reportAreaSeries[0].data = reportCount
+
+            this.apiCoverRateSeries.push(this.projectInfo.api_cover_rate)
+        },
+        handlePie() {
+            const pi = this.projectInfo
+            this.apiPieSeries = pi.api_count_by_create_type.count
+            this.apiPieOptions = {...this.apiPieOptions, ...{labels: pi.api_count_by_create_type.type}}
+
+            this.casePieSeries = pi.case_count_by_tag.count
+            this.casePieOptions = {...this.casePieOptions, ...{labels: pi.case_count_by_tag.tag}}
+
+            this.reportPieSeries = pi.report_count_by_type.count
+            this.reportPieOptions = {...this.reportPieOptions, ...{labels: pi.report_count_by_type.type}}
+        },
         getProjectDetail() {
             const pk = this.$route.params.id;
             this.$api.getProjectDetail(pk).then(res => {
                 this.projectInfo = res
+                this.handleArea()
+                this.handlePie()
             })
         }
     },

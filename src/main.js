@@ -5,6 +5,7 @@ import ElementUI from 'element-ui'
 import VJsoneditor from 'v-jsoneditor'
 import VueClipboard from 'vue-clipboard2'
 import echarts from 'echarts'
+import VueApexCharts from 'vue-apexcharts'
 import 'element-ui/lib/theme-chalk/index.css'
 import App from './App'
 import router from './router'
@@ -22,6 +23,9 @@ Vue.prototype.$api = api
 Vue.prototype.$echarts = echarts
 Vue.use(VJsoneditor)
 Vue.use(VueClipboard)
+Vue.use(VueApexCharts)
+
+Vue.component('ApexCharts', VueApexCharts)
 
 Vue.filter('datetimeFormat', datetimeObj2str);
 Vue.filter("timestampToTime", timestamp2time);
