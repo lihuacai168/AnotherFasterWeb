@@ -11,6 +11,12 @@
                                @click="dialogVisible = true">
                         添加项目
                     </el-button>
+                    <el-button type="success"
+                               size="small"
+                               icon="el-icon-data-line"
+                               @click="dashBoardVisible = true">
+                        项目看板
+                    </el-button>
 
                     <el-button style="margin-left: 50px"
                                type="info"
@@ -81,6 +87,18 @@
                 </div>
             </div>
         </el-header>
+
+
+        <el-drawer
+            style="margin-top: 10px"
+            :destroy-on-close="true"
+            :with-header="false"
+            :modal="false"
+            size="89%"
+            :visible.sync="dashBoardVisible"
+        >
+        <ProjectDashBoard ></ProjectDashBoard>
+        </el-drawer>
 
         <el-container>
             <el-main style="padding: 0; margin-left: 10px">
@@ -172,17 +190,19 @@
                                     <el-form-item label="项目描述" prop="desc">
                                         <el-input v-model="projectForm.desc" clearable></el-input>
                                     </el-form-item>
-                            <el-form ref="elForm" :model="projectForm" :rules="rules" size="medium" label-width="100px">
-                                <el-form-item label="负责人" prop="responsible">
-                                    <el-select v-model="projectForm.responsible" placeholder="请选择项目负责人" filterable
-                                               clearable
-                                               :style="{width: '100%'}">
-                                        <el-option v-for="(item, index) in responsibleOptions" :key="index"
-                                                   :label="item.label"
-                                                   :value="item.value" :disabled="item.disabled"></el-option>
-                                    </el-select>
-                                </el-form-item>
-                            </el-form>
+                                    <el-form ref="elForm" :model="projectForm" :rules="rules" size="medium"
+                                             label-width="100px">
+                                        <el-form-item label="负责人" prop="responsible">
+                                            <el-select v-model="projectForm.responsible" placeholder="请选择项目负责人"
+                                                       filterable
+                                                       clearable
+                                                       :style="{width: '100%'}">
+                                                <el-option v-for="(item, index) in responsibleOptions" :key="index"
+                                                           :label="item.label"
+                                                           :value="item.value" :disabled="item.disabled"></el-option>
+                                            </el-select>
+                                        </el-form-item>
+                                    </el-form>
                                     <el-form-item label="YAPI地址" prop="yapi_base_url">
                                         <el-input v-model="projectForm.yapi_base_url" clearable></el-input>
                                     </el-form-item>
@@ -212,17 +232,22 @@
         </el-container>
     </el-container>
 
-
 </template>
 
 <script>
+import ProjectDashBoard from "./ProjectDashBoard";
+
 
 export default {
+    components: {
+        ProjectDashBoard
+    },
     data() {
         return {
             isSuperuser: this.$store.state.is_superuser,
             userName: this.$store.state.user,
             dialogVisible: false,
+            dashBoardVisible: false,
             editVisible: false,
             projectData: {
                 results: []
@@ -245,11 +270,11 @@ export default {
                     {required: true, message: '简要描述下该项目', trigger: 'blur'},
                     {min: 1, max: 100, message: '最多不超过100个字符', trigger: 'blur'}
                 ],
-                        responsible: [{
-          required: true,
-          message: '请选择项目负责人',
-          trigger: 'change'
-        }],
+                responsible: [{
+                    required: true,
+                    message: '请选择项目负责人',
+                    trigger: 'change'
+                }],
                 yapi_base_url: [
                     {required: false, message: 'YAPI openapi的url', trigger: 'blur'},
                 ],
@@ -365,10 +390,10 @@ export default {
             this.projectForm.yapi_openapi_token = '';
             this.projectForm.yapi_base_url = '';
         },
-        getUserList(){
+        getUserList() {
             this.$api.getUserList().then(resp => {
-                for (let i = 0; i < resp.length; i++) {
-                    this.responsibleOptions.push({"label": resp[i].username, "value": resp[i].username})
+                    for (let i = 0; i < resp.length; i++) {
+                        this.responsibleOptions.push({"label": resp[i].username, "value": resp[i].username})
                     }
                 }
             )
