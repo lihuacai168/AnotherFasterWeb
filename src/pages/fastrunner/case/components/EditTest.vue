@@ -556,7 +556,7 @@ export default {
             })
         },
 
-        updateTestSuite(addTestFinish) {
+        updateTestSuite(addTestFinish, refresh=false) {
             var length = this.testData.length;
             if (this.testData[0].body.method === "config") {
                 length -= 1;
@@ -569,6 +569,11 @@ export default {
                 project: this.project,
                 relation: this.relation
             }).then(resp => {
+                // 刷新用例步骤
+                // 注意需要等到用例已经更新完成后
+                if(refresh){
+                    this.refreshStep()
+                }
                 if (resp.success) {
                     if (addTestFinish) {
                         this.$emit("addSuccess")
@@ -763,10 +768,17 @@ export default {
                 }
             )
         },
+
+        refreshStep(){
+            this.$api.editTest(this.testId).then(resp => {
+                this.testData = JSON.parse(JSON.stringify(resp.step))
+            })
+        },
         handleCopyStep(index) {
             let copyStepObj = JSON.parse(JSON.stringify(this.testData[index]))
             copyStepObj.is_copy = true
-            this.testData.splice(index,0, copyStepObj)
+            this.testData.splice(index+1,0, copyStepObj)
+            this.updateTestSuite(false, true)
         }
     },
     mounted() {
