@@ -259,7 +259,7 @@
                     :del="del"
                     :back="back"
                     :run="run"
-                    :move="move"
+                    :move.sync="move"
                     :listCurrentPage.sync="listCurrentPage"
                     :visibleTag.sync="visibleTag"
                     :rigEnv.sync="rigEnv"

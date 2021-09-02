@@ -156,8 +156,8 @@ export const delAPI = url => {
     return axios.delete('/api/fastrunner/api/' + url + '/').then(res => res.data)
 };
 
-export const tagAPI = (url, params) => {
-    return axios.patch('/api/fastrunner/api/tag/' + url + '/', params).then(res => res.data)
+export const tagAPI = params => {
+    return axios.patch('/api/fastrunner/api/tag/', params).then(res => res.data)
 };
 
 export const syncCaseStep = (url, params) => {

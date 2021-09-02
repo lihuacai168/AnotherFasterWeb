@@ -208,6 +208,23 @@
                             width="42"
                         >
                         </el-table-column>
+                        <el-table-column
+                            width="25"
+                        >
+                            <template slot-scope="scope">
+                                <el-dropdown @command="dropdownMenuChangeHandle">
+                                    <span><i class="el-icon-more"></i></span>
+                                    <el-dropdown-menu slot="dropdown">
+                                        <el-dropdown-item disabled style="background-color: #e2e2e2">选中({{ selectAPI.length }} 条)</el-dropdown-item>
+                                        <el-dropdown-item :disabled="selectAPI.length === 0" command="success">更新为成功</el-dropdown-item>
+                                        <el-dropdown-item :disabled="selectAPI.length === 0" command="fail">更新为失败</el-dropdown-item>
+                                        <el-dropdown-item :disabled="selectAPI.length === 0" command="deprecated">更新为废弃</el-dropdown-item>
+                                        <el-dropdown-item :disabled="selectAPI.length === 0" command="move">移动API</el-dropdown-item>
+                                    </el-dropdown-menu>
+                                </el-dropdown>
+                            </template>
+
+                        </el-table-column>
 
                         <el-table-column
                             min-width="325"
@@ -474,6 +491,42 @@ export default {
             this.$emit('update:visibleTag', command);
             this.getAPIList();
         },
+        dropdownMenuChangeHandle(command) {
+            let tag = -1
+            switch (command) {
+                case 'success':
+                    tag = 1
+                    break;
+                case 'fail':
+                    tag = 2
+                    break;
+                case 'deprecated':
+                    tag = 4
+                    break;
+                case 'move':
+                    this.$emit("update:move", !this.move)
+                    break;
+            }
+            if (command !== 'move') {
+                console.log("!=move...")
+                let api_ids = []
+                for (let selectAPIElement of this.selectAPI) {
+                    api_ids.push(selectAPIElement.id)
+                }
+                this.$api.tagAPI({
+                    tag: tag,
+                    api_ids: api_ids,
+                }).then(resp => {
+                    this.selectAPI = []
+                    this.checked = false
+                    if (resp.success) {
+                        this.getAPIList();
+                    } else {
+                        this.$message.error(resp.msg);
+                    }
+                })
+            }
+        },
         rigEnvChangeHandle(command) {
             // this.rigEnv = command;
             this.$emit('update:rigEnv', command);
@@ -571,6 +624,8 @@ export default {
                     "relation": relation[0],
                     "api": this.selectAPI
                 }).then(resp => {
+                    this.selectAPI = []
+                    this.checked = false
                     if (resp.success) {
                         this.$message.success({
                             message: '移动API成功',
