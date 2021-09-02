@@ -302,25 +302,6 @@
                                         trigger="hover"
                                     >
                                         <div style="text-align: center">
-
-                                            <el-button
-                                                type="danger"
-                                                icon="el-icon-error"
-                                                :title="userName === scope.row.creator || isSuperuser ? '调试失败' : '只有API创建者才修改状态'"
-                                                :disabled="userName != scope.row.creator && !isSuperuser"
-                                                circle size="mini"
-                                                @click="handleTagApi(scope.row.id, 'bug')"
-                                            >
-                                            </el-button>
-                                            <el-button
-                                                type="success"
-                                                icon="el-icon-check"
-                                                :title="userName === scope.row.creator || isSuperuser ? '调试成功' : '只有API创建者才能修改状态'"
-                                                :disabled="userName != scope.row.creator && !isSuperuser"
-                                                circle size="mini"
-                                                @click="handleTagApi(scope.row.id, 'success')"
-                                            >
-                                            </el-button>
                                             <el-button
                                                 type="danger"
                                                 icon="el-icon-delete"
