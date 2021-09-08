@@ -20,9 +20,10 @@
 
         <el-table-column
             label="断言类型"
-            width="250">
+            width="100">
             <template slot-scope="scope">
                 <el-tooltip
+                    style="width: 200px"
                     effect="dark"
                     :content="scope.row.comparator"
                     placement="bottom"
@@ -32,7 +33,6 @@
                         clearable
                         v-model="scope.row.comparator"
                         :fetch-suggestions="querySearch"
-                        placeholder="请输入断言类型"
                     >
                     </el-autocomplete>
                 </el-tooltip>
@@ -44,7 +44,7 @@
 
         <el-table-column
             label="期望类型"
-            width="170">
+            width="110">
             <template slot-scope="scope">
 
                 <el-select v-model="scope.row.type">
@@ -62,12 +62,20 @@
 
         <el-table-column
             label="期望返回值"
-            width="325">
+            width="300">
             <template slot-scope="scope">
                 <el-input clearable v-model.trim="scope.row.expect === null ? 'None' : scope.row.expect" placeholder="期望返回值"></el-input>
-
             </template>
         </el-table-column>
+
+        <el-table-column
+            label="断言描述"
+            width="300">
+            <template slot-scope="scope">
+                <el-input clearable v-model.trim="scope.row.desc === null ? 'None' : scope.row.desc" placeholder="断言描述"></el-input>
+            </template>
+        </el-table-column>
+
         <el-table-column>
             <template slot-scope="scope">
                 <el-row v-show="scope.row === currentRow">
@@ -81,7 +89,7 @@
                         icon="el-icon-document-copy"
                         size="mini"
                         type="info"
-                        title="复制变量"
+                        title="复制断言"
                         @click="handleCopy(scope.$index, scope.row)">
                     </el-button>
                     <el-button
@@ -161,6 +169,7 @@ export default {
                 actual: row.actual,
                 comparator: row.comparator,
                 type: row.type,
+                desc: row.desc,
             });
         },
         handleDelete(index, row) {
@@ -253,7 +262,7 @@ export default {
                     if (expect === 'exception') {
                         continue;
                     }
-                    obj[content['comparator']] = [content['actual'], expect];
+                    obj[content['comparator']] = [content['actual'], expect, content['desc']];
                     validate.validate.push(obj);
                 }
             }
