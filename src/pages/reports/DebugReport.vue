@@ -118,7 +118,7 @@
 
                                         prop="check"
                                         label="取值表达式"
-                                        width="180">
+                                        width="350">
                                     </el-table-column>
                                     <el-table-column
                                         prop="check_value"
@@ -134,6 +134,12 @@
                                         prop="expect"
                                         label="期望值"
                                         :formatter="expectValueFormatter"
+                                    >
+                                    </el-table-column>
+                                    <el-table-column
+                                        prop="desc"
+                                        label="描述"
+                                        :formatter="descValueFormatter"
                                     >
                                     </el-table-column>
                                 </el-table>
@@ -235,6 +241,9 @@ export default {
         },
         expectValueFormatter(row, column) {
             return this.valueFormatter(row.expect)
+        },
+        descValueFormatter(row, column) {
+            return this.valueFormatter(row.desc)
         },
         valueFormatter(value) {
             let parsedValue = ""
