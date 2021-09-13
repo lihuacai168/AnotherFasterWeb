@@ -60,9 +60,9 @@
                     <i class="iconfont">&#xe74a;</i>
                 </div>
                 <el-row type="flex">
-                   <el-col :span="16">
-                       <ApexCharts :options="apiPieOptions" :series="apiPieSeries"></ApexCharts>
-                   </el-col>
+                    <el-col :span="16">
+                        <ApexCharts :options="apiPieOptions" :series="apiPieSeries"></ApexCharts>
+                    </el-col>
                 </el-row>
                 <el-row type="flex" justify="end">
                     <el-col :span="12">
@@ -76,7 +76,17 @@
                     <span>Case</span>
                     <i class="iconfont">&#xe6da;</i>
                 </div>
-                <ApexCharts :options="casePieOptions" :series="casePieSeries"></ApexCharts>
+                <el-row type="flex">
+                    <el-col :span="16">
+                        <ApexCharts :options="casePieOptions" :series="casePieSeries"></ApexCharts>
+                    </el-col>
+                </el-row>
+
+                <el-row type="flex" justify="end">
+                    <el-col :span="12">
+                        <ApexCharts :options="coreCaseCoverRateOptions" :series="coreCaseCoverRateSeries"></ApexCharts>
+                    </el-col>
+                </el-row>
             </el-card>
             <el-card style="width: 30%">
                 <div slot="header">
@@ -108,8 +118,8 @@
                 <div slot="header">
                     <span>Report每日创建</span>
                     <i class="iconfont">&#xe66e;</i>
-<!--                    TODO 日期选择-->
-<!--                    <el-button style="float: right; padding: 3px 0" type="text">操作按钮</el-button>-->
+                    <!--                    TODO 日期选择-->
+                    <!--                    <el-button style="float: right; padding: 3px 0" type="text">操作按钮</el-button>-->
                 </div>
                 <ApexCharts type="area" :options="reportAreaOptions" :series="reportAreaSeries"></ApexCharts>
             </el-card>
@@ -152,6 +162,7 @@ export default {
                 labels: ['手动创建的API', '从YAPI导入API',]
             },
             apiCoverRateSeries: [],
+            coreCaseCoverRateSeries: [],
             apiCoverRateOptions: {
                 chart: {
                     height: 20,
@@ -184,6 +195,38 @@ export default {
                 },
                 labels: ["接口覆盖率"]
             },
+            coreCaseCoverRateOptions: {
+                chart: {
+                    height: 20,
+                    type: "radialBar"
+                },
+                plotOptions: {
+                    radialBar: {
+                        hollow: {
+                            margin: 15,
+                            size: "50%"
+                        },
+                        dataLabels: {
+                            showOn: "always",
+                            name: {
+                                offsetY: 0,
+                                show: true,
+                                color: "#888",
+                                fontSize: "13px"
+                            },
+                            value: {
+                                color: "#111",
+                                fontSize: "16px",
+                                show: true
+                            }
+                        }
+                    }
+                },
+                stroke: {
+                    lineCap: "round",
+                },
+                labels: ["核心用例覆盖率"]
+            },
             casePieOptions: {
                 plotOptions: {
                     pie: {
@@ -206,7 +249,7 @@ export default {
                     type: "donut",
                 },
                 // 饼图右上角的分类，会被接口返回值的覆盖
-                labels: ['冒烟用例', '集成用例', '监控脚本',]
+                labels: ['冒烟用例', '集成用例', '监控脚本', '核心用例']
             },
             reportPieOptions: {
                 plotOptions: {
@@ -326,6 +369,7 @@ export default {
             this.reportAreaSeries[0].data = reportCount
 
             this.apiCoverRateSeries.push(this.projectInfo.api_cover_rate)
+            this.coreCaseCoverRateSeries.push(this.projectInfo.core_case_cover_rate)
         },
         handlePie() {
             const pi = this.projectInfo

@@ -49,7 +49,7 @@
                         <el-form :model="projectForm"
                                  :rules="rules"
                                  ref="projectForm"
-                                 label-width="100px"
+                                 label-width="150px"
                                  class="project">
                             <el-form-item label="项目名称" prop="name">
                                 <el-input v-model="projectForm.name" clearable></el-input>
@@ -58,17 +58,16 @@
                             <el-form-item label="项目描述" prop="desc">
                                 <el-input v-model="projectForm.desc" clearable></el-input>
                             </el-form-item>
-                            <el-form ref="elForm" :model="projectForm" :rules="rules" size="medium" label-width="100px">
-                                <el-form-item label="负责人" prop="responsible">
-                                    <el-select v-model="projectForm.responsible" placeholder="请选择项目负责人" filterable
-                                               clearable
-                                               :style="{width: '100%'}">
-                                        <el-option v-for="(item, index) in responsibleOptions" :key="index"
-                                                   :label="item.label"
-                                                   :value="item.value" :disabled="item.disabled"></el-option>
-                                    </el-select>
-                                </el-form-item>
-                            </el-form>
+
+                            <el-form-item label="负责人" prop="responsible">
+                                <el-select v-model="projectForm.responsible" placeholder="请选择项目负责人" filterable
+                                           clearable
+                                           :style="{width: '100%'}">
+                                    <el-option v-for="(item, index) in responsibleOptions" :key="index"
+                                               :label="item.label"
+                                               :value="item.value" :disabled="item.disabled"></el-option>
+                                </el-select>
+                            </el-form-item>
 
                             <el-form-item label="YAPI地址" prop="yapi_base_url">
                                 <el-input v-model="projectForm.yapi_base_url" clearable></el-input>
@@ -76,6 +75,14 @@
 
                             <el-form-item label="YAPI token" prop="yapi_openapi_token">
                                 <el-input v-model="projectForm.yapi_openapi_token" clearable></el-input>
+                            </el-form-item>
+
+                            <el-form-item label="JIRA bearer token" prop="jira_bearer_token">
+                                <el-input v-model="projectForm.jira_bearer_token" clearable></el-input>
+                            </el-form-item>
+
+                            <el-form-item label="JIRA project_key" prop="jira_project_key">
+                                <el-input v-model="projectForm.jira_project_key" clearable></el-input>
                             </el-form-item>
 
                         </el-form>
@@ -97,7 +104,7 @@
             size="89%"
             :visible.sync="dashBoardVisible"
         >
-        <ProjectDashBoard ></ProjectDashBoard>
+            <ProjectDashBoard></ProjectDashBoard>
         </el-drawer>
 
         <el-container>
@@ -182,33 +189,37 @@
                                 <el-form :model="projectForm"
                                          :rules="rules"
                                          ref="projectForm"
-                                         label-width="100px"
-                                         class="project">
+                                         label-width="150px"
+                                >
                                     <el-form-item label="项目名称" prop="name">
                                         <el-input v-model="projectForm.name" clearable></el-input>
                                     </el-form-item>
                                     <el-form-item label="项目描述" prop="desc">
                                         <el-input v-model="projectForm.desc" clearable></el-input>
                                     </el-form-item>
-                                    <el-form ref="elForm" :model="projectForm" :rules="rules" size="medium"
-                                             label-width="100px">
-                                        <el-form-item label="负责人" prop="responsible">
-                                            <el-select v-model="projectForm.responsible" placeholder="请选择项目负责人"
-                                                       filterable
-                                                       clearable
-                                                       :style="{width: '100%'}">
-                                                <el-option v-for="(item, index) in responsibleOptions" :key="index"
-                                                           :label="item.label"
-                                                           :value="item.value" :disabled="item.disabled"></el-option>
-                                            </el-select>
-                                        </el-form-item>
-                                    </el-form>
+                                    <el-form-item label="负责人" prop="responsible">
+                                        <el-select v-model="projectForm.responsible" placeholder="请选择项目负责人"
+                                                   filterable
+                                                   clearable
+                                                   :style="{width: '100%'}">
+                                            <el-option v-for="(item, index) in responsibleOptions" :key="index"
+                                                       :label="item.label"
+                                                       :value="item.value" :disabled="item.disabled"></el-option>
+                                        </el-select>
+                                    </el-form-item>
+
                                     <el-form-item label="YAPI地址" prop="yapi_base_url">
                                         <el-input v-model="projectForm.yapi_base_url" clearable></el-input>
                                     </el-form-item>
 
                                     <el-form-item label="YAPI token" prop="yapi_openapi_token">
                                         <el-input v-model="projectForm.yapi_openapi_token" clearable></el-input>
+                                    </el-form-item>
+                                    <el-form-item label="JIRA bearer token" prop="jira_bearer_token">
+                                        <el-input v-model="projectForm.jira_bearer_token" clearable></el-input>
+                                    </el-form-item>
+                                    <el-form-item label="JIRA project_key" prop="jira_project_key">
+                                        <el-input v-model="projectForm.jira_project_key" clearable></el-input>
                                     </el-form-item>
                                 </el-form>
                                 <span slot="footer" class="dialog-footer">
@@ -259,6 +270,8 @@ export default {
                 id: '',
                 yapi_base_url: '',
                 yapi_openapi_token: '',
+                jira_bearer_token: '',
+                jira_project_key: '',
             },
             responsibleOptions: [],
             rules: {
@@ -280,7 +293,13 @@ export default {
                 ],
                 yapi_openapi_token: [
                     {required: false, message: 'YAPI openapi的token', trigger: 'blur'}
-                ]
+                ],
+                jira_bearer_token: [
+                    {required: false, message: 'JIRA bearer_token', trigger: 'blur'}
+                ],
+                jira_project_key: [
+                    {required: false, message: 'jira_project_key', trigger: 'blur'}
+                ],
             }
         }
     },
@@ -301,6 +320,8 @@ export default {
             this.projectForm.id = row['id'];
             this.projectForm.yapi_base_url = row['yapi_base_url'];
             this.projectForm.yapi_openapi_token = row['yapi_openapi_token'];
+            this.projectForm.jira_project_key = row['jira_project_key'];
+            this.projectForm.jira_bearer_token = row['jira_bearer_token'];
         },
         handleDelete(index, row) {
             this.$confirm('此操作将永久删除该项目, 是否继续?', '提示', {
@@ -389,6 +410,8 @@ export default {
             this.projectForm.id = '';
             this.projectForm.yapi_openapi_token = '';
             this.projectForm.yapi_base_url = '';
+            this.projectForm.jira_bearer_token = '';
+            this.projectForm.jira_project_key = '';
         },
         getUserList() {
             this.$api.getUserList().then(resp => {
