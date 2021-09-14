@@ -270,6 +270,10 @@ export const moveCase = params => {
     return axios.patch('/api/fastrunner/test/move_case/', params).then(res => res.data)
 };
 
+export const tagCase = params => {
+    return axios.patch('/api/fastrunner/test/tag/', params).then(res => res.data)
+};
+
 export const runSingleTestSuite = params => {
     return axios.post('/api/fastrunner/run_testsuite/', params).then(res => res.data)
 };

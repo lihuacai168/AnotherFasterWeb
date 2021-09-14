@@ -412,7 +412,8 @@ export default {
             tagOptions: {
                 1: '冒烟用例',
                 2: '集成用例',
-                3: '监控脚本'
+                3: '监控脚本',
+                4: '核心用例',
             },
             isSuperuser: this.$store.state.is_superuser,
             userName: this.$store.state.user,

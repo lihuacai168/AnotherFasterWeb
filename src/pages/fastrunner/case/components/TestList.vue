@@ -214,9 +214,37 @@
                     >
                         <el-table-column
                             type="selection"
-                            width="55"
+                            width="45"
                         >
                         </el-table-column>
+
+                        <el-table-column
+                            width="25"
+                        >
+                            <template slot-scope="scope">
+                                <el-dropdown @command="dropdownMenuChangeHandle">
+                                    <span><i class="el-icon-more"></i></span>
+                                    <el-dropdown-menu slot="dropdown">
+                                        <el-dropdown-item disabled style="background-color: #e2e2e2">
+                                            {{ selectTest.length }} 条更新为
+                                        </el-dropdown-item>
+
+                                        <el-dropdown-item :disabled="selectTest.length === 0" command="core">核心用例
+                                        </el-dropdown-item>
+                                        <el-dropdown-item :disabled="selectTest.length === 0" command="integrated">集成用例
+                                        </el-dropdown-item>
+                                        <el-dropdown-item :disabled="selectTest.length === 0" command="smoke">
+                                            冒烟用例
+                                        </el-dropdown-item>
+                                        <el-dropdown-item :disabled="selectTest.length === 0" command="monitor">
+                                            监控脚本
+                                        </el-dropdown-item>
+                                    </el-dropdown-menu>
+                                </el-dropdown>
+                            </template>
+
+                        </el-table-column>
+
 
                         <el-table-column
                             label="用例名称"
@@ -225,7 +253,7 @@
                             <template slot-scope="scope">
                                 <div>{{ scope.row.name }}
                                     <i class="el-icon-success " style="color: green" v-if="scope.row.tasks.length > 0 "
-                                      :title="'已加入定时任务: ' + scope.row.tasks.map(task => task.name).join('，')">
+                                       :title="'已加入定时任务: ' + scope.row.tasks.map(task => task.name).join('，')">
                                     </i>
                                 </div>
                             </template>
@@ -247,8 +275,9 @@
                         >
                             <template slot-scope="scope">
                                 <el-tag v-if="scope.row.tag==='冒烟用例'">{{ scope.row.tag }}</el-tag>
-                                <el-tag v-if="scope.row.tag==='集成用例'" type="success">{{ scope.row.tag }}</el-tag>
+                                <el-tag v-if="scope.row.tag==='集成用例'" type="info">{{ scope.row.tag }}</el-tag>
                                 <el-tag v-if="scope.row.tag==='监控脚本'" type="danger">{{ scope.row.tag }}</el-tag>
+                                <el-tag v-if="scope.row.tag==='核心用例'" type="success">{{ scope.row.tag }}</el-tag>
                             </template>
                         </el-table-column>
 
@@ -257,7 +286,7 @@
                             width="105"
                         >
                             <template slot-scope="scope">
-                                <div>{{ scope.row.update_time|datetimeFormat('MM-DD hh:mm')}}</div>
+                                <div>{{ scope.row.update_time|datetimeFormat('MM-DD hh:mm') }}</div>
                             </template>
                         </el-table-column>
 
@@ -758,6 +787,32 @@ export default {
         },
         onCloseRunCase() {
             this.currentConfigId = 0
+        },
+        /*
+        用例批量各类操作
+        */
+        dropdownMenuChangeHandle(command) {
+            const opMap = {
+                "smoke": 1,
+                "integrated": 2,
+                "monitor": 3,
+                "core": 4,
+            }
+            const tag = opMap[command]
+            const case_ids = this.selectTest.map(test => test.id)
+            this.$api.tagCase({
+                tag: tag,
+                case_ids: case_ids,
+                project_id: this.$route.params.id
+            }).then(resp => {
+                this.selectTest = []
+                this.$emit('update:isSelectCase', false);
+                if (resp.success) {
+                    this.getTestList();
+                } else {
+                    this.$message.error(resp.msg);
+                }
+            })
         }
     },
     mounted() {
