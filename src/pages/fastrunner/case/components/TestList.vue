@@ -30,6 +30,7 @@
                                 <el-dropdown-item command="1">冒烟用例</el-dropdown-item>
                                 <el-dropdown-item command="2">集成用例</el-dropdown-item>
                                 <el-dropdown-item command="3">监控脚本</el-dropdown-item>
+                                <el-dropdown-item command="4">核心用例</el-dropdown-item>
                                 <el-dropdown-item command="">所有</el-dropdown-item>
                             </el-dropdown-menu>
                         </el-dropdown>
